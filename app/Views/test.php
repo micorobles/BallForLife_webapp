@@ -2,13 +2,13 @@
 
 <?= $this->section('css'); ?>
 
-<link rel="stylesheet" href="<?= base_url('css/global.css');?>">
+<?= load_css('global.css'); ?>
 
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
 
-    <div class="container">
+    <div class="container-fluid row">
         <h1>TEST PAGE</h1>
     </div>
     

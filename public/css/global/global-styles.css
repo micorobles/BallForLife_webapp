@@ -1,0 +1,74 @@
+* {
+    box-sizing: border-box;
+}
+
+.bg-primary {
+    background-color: #161616 !important;
+    /* color: #a39d98; */
+}
+
+.bg-secondary {
+    background-color: #2b2b2b !important;
+    /* color: #a39d98; */
+}
+
+.text-secondary {
+    color: #a39d98 !important;
+}
+
+.font-sm {
+    font-size: 12px;
+}
+
+.font-md {
+    font-size: 14px;
+}
+
+.font-lg {
+    font-size: 22px;
+}
+
+.font-xl {
+    font-size: 24px;
+}
+
+.font-xxl {
+    font-size: 28px;
+}
+
+.input-group-text {
+    width: 100%;
+    justify-content: center;
+    background-color: #a39d98;
+    border: #a39d98d2;
+    color: white;
+}
+
+.input-group-prepend {
+    width: 15%;
+}
+
+ /* Adjust the font size for smaller screens */
+ @media (max-width: 1300px) {
+    .font-xxl {
+        font-size: 20px; /* Font size for tablets and smaller devices */
+    }
+}
+
+ @media (max-width: 992px) {
+    .font-xxl {
+        font-size: 16px; /* Font size for tablets and smaller devices */
+    }
+}
+
+ @media (max-width: 768px) {
+    .font-xxl {
+        font-size: 14px; /* Font size for tablets and smaller devices */
+    }
+}
+
+@media (max-width: 576px) {
+    .font-xxl {
+        font-size: 10px; /* Font size for mobile devices */
+    }
+}
