@@ -12,7 +12,7 @@
 <?= $this->section('content'); ?>
 
 <div class="container-fluid min-vh-100 min-vw-100 d-flex justify-content-center align-items-center bg-primary text-white">
-    <div class="container-md w-25 rounded bg-secondary p-3">
+    <div class="container-md w-25 rounded bg-secondary p-3 ">
         <div class="d-flex">
             <div class="d-flex align-items-center w-75">
                 <i class="fa-solid fa-basketball fa-3x"></i>
