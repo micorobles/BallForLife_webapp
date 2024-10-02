@@ -48,6 +48,14 @@
     width: 15%;
 }
 
+.btn {
+    transition: transform 0.3s ease; /* Animation effect */
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
  /* Adjust the font size for smaller screens */
  @media (max-width: 1300px) {
     .font-xxl {
