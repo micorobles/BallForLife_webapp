@@ -5,7 +5,7 @@ export function ajaxRequest(url, data) {
             url: url,
             data: data,
             dataType: 'json',
-            success: function(response) {
+            success: function(response) {               
                 resolve(response);
             },
             error: function(xhr, status, error) {

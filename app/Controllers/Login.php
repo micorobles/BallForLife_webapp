@@ -18,11 +18,11 @@ class Login extends BaseController
         $data['title'] = "Login";
         $data['username'] = $this->request->getPost('username');
         $data['password'] = $this->request->getPost('password');
+        $data['rememberMe'] = $this->request->getPost('rememberMe');
 
         if (!empty($data['username']) && !empty($data['password'])) {
             return $this->jsonResponse(true, 'Success!', $data,
             );
         }
-        // return view('test', $data);
     }
 }

@@ -48,8 +48,8 @@
             </div>
 
             <div class="checkbox checkbox-css mt-3">
-                <input type="checkbox" id="remember_checkbox" class="rounded-sm">
-                <label for="remember_checkbox" class="text-secondary font-sm light-text" style="display: inline-block; vertical-align: middle; margin-left: 2px;">
+                <input type="checkbox" name="rememberMe" id="rememberMe" class="rounded-sm">
+                <label for="rememberMe" class="text-secondary font-sm light-text" style="display: inline-block; vertical-align: middle; margin-left: 2px;">
                     <small>Remember Me</small>
                 </label>
             </div>
