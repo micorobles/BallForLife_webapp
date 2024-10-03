@@ -2,6 +2,36 @@
     box-sizing: border-box;
 }
 
+/*************************** FONTS ************************************/
+
+@font-face {
+    font-family: 'Fredoka';
+    src: url(../../fonts/Fredoka-Light.ttf) format('truetype');
+    font-weight: 300;
+}
+@font-face {
+    font-family: 'Fredoka';
+    src: url(../../fonts/Fredoka-Regular.ttf) format('truetype');
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Fredoka';
+    src: url(../../fonts/Fredoka-Medium.ttf) format('truetype');
+    font-weight: 500;
+}
+@font-face {
+    font-family: 'Fredoka';
+    src: url(../../fonts/Fredoka-SemiBold.ttf) format('truetype');
+    font-weight: 600;
+}
+@font-face {
+    font-family: 'Fredoka';
+    src: url(../../fonts/Fredoka-Bold.ttf) format('truetype');
+    font-weight: 700;
+}
+
+/*************************** COLORS ************************************/
+
 .bg-primary {
     background-color: #161616 !important;
     /* color: #a39d98; */
@@ -15,6 +45,8 @@
 .text-secondary {
     color: #a39d98 !important;
 }
+
+/*************************** FONT SIZE ************************************/
 
 .font-sm {
     font-size: 12px;
@@ -34,7 +66,33 @@
 
 .font-xxl {
     font-size: 28px;
+    font-family: 'Fredoka';
 }
+
+/*************************** FONT WEIGHTS ************************************/
+
+.light-text {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 300;
+}
+.regular-text {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 400;
+}
+.medium-text {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+}
+.semi-bold-text {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+}
+.bold-text {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+}
+
+/*************************** CUSTOM ELEMENTS STYLES ************************************/
 
 .input-group-text {
     width: 100%;
@@ -57,26 +115,26 @@
 }
 
  /* Adjust the font size for smaller screens */
- @media (max-width: 1300px) {
+ /* @media (max-width: 1300px) {
     .font-xxl {
-        font-size: 20px; /* Font size for tablets and smaller devices */
+        font-size: 20px; Font size for tablets and smaller devices
     }
 }
 
  @media (max-width: 992px) {
     .font-xxl {
-        font-size: 16px; /* Font size for tablets and smaller devices */
+        font-size: 16px; Font size for tablets and smaller devices
     }
 }
 
  @media (max-width: 768px) {
     .font-xxl {
-        font-size: 14px; /* Font size for tablets and smaller devices */
+        font-size: 14px; Font size for tablets and smaller devices
     }
 }
 
 @media (max-width: 576px) {
     .font-xxl {
-        font-size: 10px; /* Font size for mobile devices */
+        font-size: 10px; Font size for mobile devices
     }
-}
+} */

@@ -31,6 +31,6 @@ if (!function_exists('load_css')) {
 if (!function_exists('load_js')) {
     function load_js($filename)
     {
-        return '<script src="' . base_url("js/$filename") . '"></script>';
+        return '<script type="module" src="' . base_url("js/$filename") . '"></script>';
     }
 }

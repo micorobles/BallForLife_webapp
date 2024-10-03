@@ -55,4 +55,9 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
     }
+
+    protected function jsonResponse($success, $message, $data = []) 
+    {
+        return $this->response->setJSON(compact('success', 'message', 'data'));
+    }
 }
