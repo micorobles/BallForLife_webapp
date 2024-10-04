@@ -1,31 +1,55 @@
-import { ajaxRequest } from "../global/ajax.js";
+import { ajaxRequest, showToast } from "../global/global-functions.js";
 
 $(function () {
     console.log('document is ready!');
 
-    $('#frmLogin').on('submit', function (e) {
-        e.preventDefault();
-        // console.log('clicked!');
+    // Bind form submission
+    $('#frmLogin').on('submit', handleLogin);
 
-        // Collect form data
-        var loginData = {
-            username: $('#username').val(),
-            password: $('#password').val(),
-            rememberMe: $('#rememberMe').is(':checked')
-        };
+    // Bind password toggle
+    $('#show_hide_password a').on('click', togglePassword);
 
-        const url = $(this).attr('action');
-        const loginUser = ajaxRequest(url, loginData);
-
-        loginUser.then((response) => {
-            if (!response.success) {
-                console.error('Request error: ', response.message);
-                return;
-            }
-            console.log(response);
-        }).catch((error) => {
-            console.error('Errors: ', error);
-        });
-
-    });
 });
+
+async function handleLogin(e) {
+    e.preventDefault();
+
+    // Collect form data
+    const loginData = {
+        email: $('#email').val(),
+        password: $('#password').val(),
+        rememberMe: $('#rememberMe').is(':checked')
+    };
+
+    const url = $(this).attr('action');
+
+    const loginUser = await ajaxRequest(url, loginData);
+    
+    try {
+
+        if (!loginUser.success) {
+            showToast('error', 'Error: ', loginUser.message);
+            return;
+        }
+
+        showToast('success', '', loginUser.message);
+        console.log(loginUser);
+
+    } catch (error) {
+        // Handle any errors that occurred during the AJAX request
+        showToast('error', 'Error: ', 'An error occurred while processing your request from login.js.');
+        console.error('Errors: ', error);
+    };
+}
+
+function togglePassword(e) {
+    e.preventDefault();
+
+    const passwordField = $('#show_hide_password input');
+    const eyeIcon = $('#show_hide_password i')
+    const isTextType = passwordField.attr('type') === 'text';
+
+    passwordField.attr('type', isTextType ? 'password' : 'text');
+    eyeIcon.toggleClass("fa-eye-slash", isTextType);
+    eyeIcon.toggleClass("fa-eye", !isTextType);
+}

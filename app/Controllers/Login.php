@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use function PHPUnit\Framework\isNull;
+use App\Models\User;
 
 class Login extends BaseController
 {
@@ -15,14 +15,33 @@ class Login extends BaseController
 
     public function login()
     {
+        $users = new User();
         $data['title'] = "Login";
-        $data['username'] = $this->request->getPost('username');
+        $data['email'] = $this->request->getPost('email');
         $data['password'] = $this->request->getPost('password');
         $data['rememberMe'] = $this->request->getPost('rememberMe');
 
-        if (!empty($data['username']) && !empty($data['password'])) {
-            return $this->jsonResponse(true, 'Success!', $data,
-            );
+        if (empty($data['email']) && empty($data['password'])) {
+            return $this->jsonResponse(false, 'Cannot accept blank input!', $data);
+        }
+
+        try {
+
+            // SELECT FROM DB
+            $person = $users->where('is_deleted', false)
+                            ->where('email', $data['email'])
+                            ->where('password', $data['password'])
+                            ->first();
+    
+            if (!$person) {
+                return $this->jsonResponse(false, 'Email or password mismatch');
+            }
+    
+            return $this->jsonResponse(true, 'Successfully logged in!', $person);
+
+        } catch (\Exception $e) {
+            // Handle the exception
+            return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()]);
         }
     }
 }

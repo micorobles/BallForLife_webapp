@@ -1,0 +1,26 @@
+.input-group-text {
+    width: 100%;
+    justify-content: center;
+    background-color: #a39d98;
+    border: #a39d98d2;
+    color: white;
+}
+
+.input-group-prepend {
+    width: 15%;
+}
+
+.input-group-addon{
+    width: 40px !important;
+    background-color: #fff;
+    border: 0;
+    border-radius: 0rem .25rem .25rem 0rem;
+}
+
+.input-group-addon a {
+    color: #000;
+}
+
+.input-group-addon a:hover {
+    color: #747474;
+}

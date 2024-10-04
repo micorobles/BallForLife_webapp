@@ -1,6 +1,8 @@
 * {
     box-sizing: border-box;
-}
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+}   
 
 /*************************** FONTS ************************************/
 
@@ -93,18 +95,6 @@
 }
 
 /*************************** CUSTOM ELEMENTS STYLES ************************************/
-
-.input-group-text {
-    width: 100%;
-    justify-content: center;
-    background-color: #a39d98;
-    border: #a39d98d2;
-    color: white;
-}
-
-.input-group-prepend {
-    width: 15%;
-}
 
 .btn {
     transition: transform 0.3s ease; /* Animation effect */
