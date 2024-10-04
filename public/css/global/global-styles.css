@@ -68,7 +68,10 @@
 
 .font-xxl {
     font-size: 28px;
-    font-family: 'Fredoka';
+}
+
+.font-xxxl {
+    font-size: 34px;
 }
 
 /*************************** FONT WEIGHTS ************************************/

@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 
-class Login extends BaseController
+class LoginController extends BaseController
 {
     public function index(): string
     {
@@ -44,4 +44,6 @@ class Login extends BaseController
             return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()]);
         }
     }
+
+    
 }

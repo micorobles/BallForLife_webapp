@@ -82,7 +82,7 @@
         </div>
 
         <div class="font-sm text-secondary mt-2 light-text">
-            <small>Not a member yet? Click <a href="/" style="color:white;">here</a> to register.</small>
+            <small>Not a member yet? Click <a href="<?= base_url('register') ?>" style="color:white;">here</a> to register.</small>
         </div>
     </div>
 </div>
