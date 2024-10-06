@@ -30,13 +30,20 @@ class LoginController extends BaseController
             // SELECT FROM DB
             $person = $users->where('is_deleted', false)
                             ->where('email', $data['email'])
-                            ->where('password', $data['password'])
+                            // ->where('password', $hashedPassword)
                             ->first();
-    
+
+
+            // If no user found or the password doesn't match
             if (!$person) {
-                return $this->jsonResponse(false, 'Email or password mismatch');
+                return $this->jsonResponse(false, 'No user found.');
             }
-    
+            if (!password_verify($data['password'], $person['password'])) {
+                return $this->jsonResponse(false, 'Invalid credentials.');
+            }
+
+            error_log('Password verified successfully.');
+            
             return $this->jsonResponse(true, 'Successfully logged in!', $person);
 
         } catch (\Exception $e) {
@@ -44,6 +51,4 @@ class LoginController extends BaseController
             return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()]);
         }
     }
-
-    
 }

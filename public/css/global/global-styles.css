@@ -44,6 +44,10 @@
     /* color: #a39d98; */
 }
 
+.bg-accent {
+    background-color: #800000;
+}
+
 .text-secondary {
     color: #a39d98 !important;
 }
@@ -105,6 +109,13 @@
 
 .btn:hover {
     transform: scale(1.05);
+    background-color: #960303;
+    border: #960202e6;
+}
+
+.btn-custom-color {
+    background-color: #800000;
+    border: #800000e6;
 }
 
  /* Adjust the font size for smaller screens */

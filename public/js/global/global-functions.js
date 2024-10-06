@@ -24,6 +24,23 @@ export function showToast(type, title, message) {
     });
 }
 
+export function togglePassword(e) {
+    e.preventDefault();
+
+    // const passwordField = $('#show_hide_password input');
+    // const eyeIcon = $('#show_hide_password a i')
+
+    // Target the closest input field and eye icon when clicked
+    const passwordField = $(this).closest('.input-group').find('input');
+    const eyeIcon = $(this).find('i');
+    
+    const isTextType = passwordField.attr('type') === 'text';
+
+    passwordField.attr('type', isTextType ? 'password' : 'text');
+    eyeIcon.toggleClass("fa-eye-slash", isTextType);
+    eyeIcon.toggleClass("fa-eye", !isTextType);
+}
+
 iziToast.settings({
     timeout: 3000,               // Duration in milliseconds
     resetOnHover: true,          // Reset timeout when hovering

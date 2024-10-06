@@ -11,7 +11,7 @@ class User extends Model
     protected $allowedFields = [
         'firstname',
         'lastname',
-        'contactnum',
+        'contactNum',
         'email',
         'password',
     ];

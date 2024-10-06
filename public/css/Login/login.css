@@ -1,8 +1,10 @@
 .input-group-text {
     width: 100%;
     justify-content: center;
-    background-color: #a39d98;
-    border: #a39d98d2;
+    /* background-color: #a39d98; */
+    /* border: #a39d98d2; */
+    background-color: #800000;
+    border: #800000e6;
     color: white;
 }
 

@@ -59,7 +59,7 @@
             </div>
 
             <div class="mt-2">
-                <input id="btnLogin" type="submit" class="btn btn-primary btn-md btn-block" style="background-color: #a39d98; border: #a39d98d2;" value="Login"></input>
+                <input id="btnLogin" type="submit" class="btn btn-primary btn-md btn-block btn-custom-color" value="Login"></input>
             </div>
 
 

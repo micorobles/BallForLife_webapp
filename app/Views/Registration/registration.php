@@ -59,12 +59,12 @@
                 </div>
                 <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Last name" required>
             </div>
-            <div class="input-group has-validation mt-4">
+            <!-- <div class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text">-</span>
                 </div>
                 <input id="birthday" name="birthday" type="text" class="form-control" placeholder="Birthdate" required>
-            </div>
+            </div> -->
             <div class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text">-</span>
@@ -85,10 +85,22 @@
                     Please enter password.
                 </div>
             </div>
+            <div id="show_hide_password" class="input-group has-validation mt-4">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">*</span>
+                </div>
+                <input id="confirm-password" name="confirm-password" type="password" class="form-control"
+                    placeholder="Confirm password" minlength="8" required>
+                <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
+                    <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                </div>
+                <div class="invalid-feedback">
+                    Please enter password.
+                </div>
+            </div>
 
             <div class="mt-4">
-                <input id="btnRegister" type="submit" class="btn btn-primary btn-md btn-block"
-                    style="background-color: #a39d98; border: #a39d98d2;" value="Register"></input>
+                <input id="btnRegister" type="submit" class="btn btn-primary btn-md btn-block btn-custom-color" value="Register"></input>
             </div>
 
 
@@ -106,7 +118,7 @@
 
         <div class="row mt-2">
             <div class="col">
-                <button class="btn btn-block" style="background-color: #ffffffe6;:gray;  ">Sign in with
+                <button class="btn btn-block" style="background-color: #ffffffe6; border: gray;  ">Sign in with
                     Google</button>
             </div>
         </div>
@@ -124,7 +136,7 @@
 
 <?= $this->section('js'); ?>
 
-<?= load_js('Login/login.js'); ?>
+<?= load_js('Registration/registration.js'); ?>
 <?= load_js('global/global-functions.js'); ?>
 
 <?= $this->endSection(); ?>
