@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Libraries\TokenHelper;
 
 class LoginController extends BaseController
 {
@@ -33,7 +34,6 @@ class LoginController extends BaseController
                             // ->where('password', $hashedPassword)
                             ->first();
 
-
             // If no user found or the password doesn't match
             if (!$person) {
                 return $this->jsonResponse(false, 'No user found.');
@@ -41,14 +41,27 @@ class LoginController extends BaseController
             if (!password_verify($data['password'], $person['password'])) {
                 return $this->jsonResponse(false, 'Invalid credentials.');
             }
-
-            error_log('Password verified successfully.');
             
-            return $this->jsonResponse(true, 'Successfully logged in!', $person);
+            error_log('Person data: ' . print_r($person, true));
+
+            // User authenticated, generate token
+            $tokenHelper = new TokenHelper();
+            $token = $tokenHelper->generateToken($person['ID']); // Pass user ID to generate token
+
+            error_log('Password and person authenticated successfully. token: ' . $token . ', ID: ' . $person['ID']);
+            
+            // return $this->jsonResponse(true, 'Successfully logged in!', $person);
+            return $this->response
+                        ->setHeader('Authorization', 'Bearer ' . $token)
+                        ->setJSON([
+                            'success' => true, 
+                            'message' => 'Successfully logged in!',
+                            'data' => $person,
+                            'token' => $token]);
 
         } catch (\Exception $e) {
             // Handle the exception
-            return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()]);
+            return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()], '');
         }
     }
 }
