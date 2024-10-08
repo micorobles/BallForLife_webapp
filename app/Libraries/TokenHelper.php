@@ -18,7 +18,7 @@ class TokenHelper
         $payload = json_encode([
             'user_id' => $userID,
             'iat' => time(),        // Issued at
-            'exp' => time() + 3600, // Token expires in 1 hour
+            'exp' => time() + 120, // Token expires in 1 hour
         ]);
 
         // Encode header and payload
@@ -41,26 +41,37 @@ class TokenHelper
         // Recalculate the signature
         $signature = $this->base64UrlEncode(hash_hmac('sha256', $headerEncoded . '.' . $payloadEncoded, self::$secret, true));
 
+        
         // Check if the provided signature matches the recalculated one
-        return hash_equals($signature, $signatureEncoded);
-    }
-
-    public function decodeToken($token)
-    {
-        list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
-        $payload = json_decode($this->base64UrlDecode($payloadEncoded), true);
-        return $payload; // Returns decoded payload as an array
-    }
-
-    public function extractToken($authorizationHeader) {
-        $parts = explode(' ', $authorizationHeader);
-        if (count($parts) === 2 && strtoupper($parts[0]) === 'BEARER') {
-            $token = $parts[1];
-            return $token;
-        } else {
-            return 'Invalid authorization header format';
+        if (!hash_equals($signature, $signatureEncoded)) {
+            return false;
         }
+
+        // Decode payload to check expiration
+        $payload = json_decode($this->base64UrlDecode($payloadEncoded), true);
+        if(isset($payload['exp']) && $payload['exp'] < time()) {
+            return false;
+        }
+
+        return true;
     }
+
+    // public function decodeToken($token)
+    // {
+    //     list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
+    //     $payload = json_decode($this->base64UrlDecode($payloadEncoded), true);
+    //     return $payload; // Returns decoded payload as an array
+    // }
+
+    // public function extractToken($authorizationHeader) {
+    //     $parts = explode(' ', $authorizationHeader);
+    //     if (count($parts) === 2 && strtoupper($parts[0]) === 'BEARER') {
+    //         $token = $parts[1];
+    //         return $token;
+    //     } else {
+    //         return 'Invalid authorization header format';
+    //     }
+    // }
 
     // Helper functions to encode and decode base64 URL strings
     private function base64UrlEncode($data)

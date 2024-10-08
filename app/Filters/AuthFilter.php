@@ -15,32 +15,31 @@ class AuthFilter implements FilterInterface
         $tokenHelper = new TokenHelper();
 
         error_log('AuthFilter before method called.');
-        // error_log(print_r($request, true));
 
         // Bypass OPTIONS preflight requests
         if ($request->getMethod() === 'options') {
             return;
         }
 
-        $authorizationHeader = $request->header('Authorization');
+        // $authorizationHeader = $request->header('Authorization');
+        $cookieToken = $request->getCookie('authToken');
 
-        error_log("IN AUTH FILTER, AuthorizationHeader: " . $authorizationHeader, 0);
+        error_log("IN AUTH FILTER, cookieToken: " . $cookieToken, 0);
 
-        if (!$authorizationHeader) {
+        if (!$cookieToken) {
             return Services::response()->setJSON(['success' => false, 'message' => 'Token is missing']);
+            // return redirect()->to('/');
         }
 
-        $token = str_replace('Bearer ', '', $authorizationHeader->getValue());
-
-        // error_log('Token in AUTH FILTER: ', $token, 0);
+        // $token = str_replace('Bearer ', '', $authorizationHeader->getValue());
 
         // Validate the token
-        if (!$tokenHelper->validateToken($token)) {
+        if (!$tokenHelper->validateToken($cookieToken)) {
             return Services::response()->setJSON(['success' => false, 'message' => 'Invalid or expired token']);
         }
 
 
-        return Services::response()->setJSON(['success' => true, 'message' => 'Token valid.']);
+        // return Services::response()->setJSON(['success' => true, 'message' => 'Token valid.']);
         // Optionally, you can decode the token to retrieve the user ID
         // $payload = $tokenHelper->decodeToken($token);
         // $request->user = $payload['user_id']; // Attach user_id to the request
