@@ -17,7 +17,7 @@ class LoginController extends BaseController
         // $data['message'] = "HI!";
         return view('Login/login', $data);
     }
-
+//
     private function isLoggedIn()
     {
         // Check if token is exisiting in cookie
