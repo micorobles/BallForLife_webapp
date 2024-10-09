@@ -13,24 +13,24 @@ class HomepageController extends BaseController
         return view('Homepage/homepage', $data);
     }
 
-    public function logout()
-    {
-        helper('cookie');
-        $token = $this->request->getCookie('authToken');
-        error_log("authToken cookie before deletion: " . $token);
+    // public function logout()
+    // {
+    //     // helper('cookie');
+    //     $token = $this->request->getCookie('authToken');
+    //     error_log("authToken cookie before deletion: " . $token);
     
-        if ($token) {
-            // Attempt to delete the cookie without specifying a domain
-            delete_cookie('authToken', '', '/', '');
-            error_log("Attempted to delete authToken cookie");
+    //     if ($token) {
+    //         // Attempt to delete the cookie without specifying a domain
+    //         delete_cookie('authToken', '', '/', '');
+    //         error_log("Attempted to delete authToken cookie");
             
-            // Check if the cookie has been deleted
-            $tokenAfterDeletion = $this->request->getCookie('authToken');
-            error_log("authToken cookie after deletion attempt: " . $tokenAfterDeletion);
-        } else {
-            error_log("No authToken found to delete");
-        }
+    //         // Check if the cookie has been deleted
+    //         $tokenAfterDeletion = $this->request->getCookie('authToken');
+    //         error_log("authToken cookie after deletion attempt: " . $tokenAfterDeletion);
+    //     } else {
+    //         error_log("No authToken found to delete");
+    //     }
     
-        return redirect()->to('/');
-    }
+    //     return redirect()->to('/');
+    // }
 }

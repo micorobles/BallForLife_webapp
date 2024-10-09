@@ -3,11 +3,20 @@ import { ajaxRequest, showToast, togglePassword } from "../global/global-functio
 $(function () {
     console.log('document is ready!');
 
+    // Get flash data if auth fails
+    const flashMessage = $('#flash-data').text().trim() ?? '';
+    
+    if (flashMessage !== '') {
+        showToast('error', 'Error: ', flashMessage);
+    }
+        
+
     // Bind form submission
     $('#frmLogin').on('submit', handleLogin);
 
     // Bind password toggle
     $('#show_hide_password a').on('click', togglePassword);
+
 
 });
 
@@ -33,7 +42,7 @@ async function handleLogin(e) {
             return;
         }
 
-        showToast('success', '', loginUser.message);
+        // showToast('success', '', loginUser.message);
 
         // Store token in local storage
         console.log(loginUser);

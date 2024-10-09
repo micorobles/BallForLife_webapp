@@ -12,6 +12,9 @@
 
 <?= $this->section('content'); ?>
 
+<!-- Embed flash data in HTML -->
+<div id="flash-data" class="d-none"><?= session()->getFlashdata('authMessage') ?></div>
+
 <div class="container-fluid min-vh-100 min-vw-100 d-flex justify-content-center align-items-center bg-primary text-white">
     <div class="container bg-secondary rounded p-3" style="max-width: 400px;">
         <div class="row">
@@ -82,7 +85,7 @@
         </div>
 
         <div class="font-sm text-secondary mt-2 light-text">
-            <small>Not a member yet? Click <a href="<?= base_url('register') ?>" style="color:white;">here</a> to register.</small>
+            <small>Not a member yet? Click <a href="<?= base_url('registration') ?>" style="color:white;">here</a> to register.</small>
         </div>
     </div>
 </div>

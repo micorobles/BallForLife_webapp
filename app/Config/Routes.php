@@ -6,11 +6,10 @@ use App\Controllers\Pages;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'LoginController::index'); // Root URL ( localhost:8080 )
-$routes->post('login', 'LoginController::login');
-
-$routes->get('register', 'RegistrationController::index');
-$routes->post('register', 'RegistrationController::register');
+$routes->get('/', 'AccountController::index'); // Root URL ( localhost:8080 )
+$routes->post('login', 'AccountController::login');
+$routes->get('registration', 'AccountController::registration');
+$routes->post('register', 'AccountController::register');
 
 $routes->get('homepage', 'HomepageController::index');
 $routes->get('logout', 'HomepageController::logout'); 
