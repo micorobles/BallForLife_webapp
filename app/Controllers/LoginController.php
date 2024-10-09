@@ -7,11 +7,25 @@ use App\Libraries\TokenHelper;
 
 class LoginController extends BaseController
 {
-    public function index(): string
+    public function index()
     {
+        if ($this->isLoggedIn()) {
+            return redirect()->to('homepage');
+        }
+
         $data['title'] = "Login";
         // $data['message'] = "HI!";
         return view('Login/login', $data);
+    }
+
+    private function isLoggedIn()
+    {
+        // Check if token is exisiting in cookie
+        $token = $this->request->getCookie('authToken');
+
+        $tokenHelper = new TokenHelper();
+
+        return !empty($token) && $tokenHelper->validateToken($token);
     }
 
     public function login()
@@ -30,9 +44,9 @@ class LoginController extends BaseController
 
             // SELECT FROM DB
             $person = $users->where('is_deleted', false)
-                            ->where('email', $data['email'])
-                            // ->where('password', $hashedPassword)
-                            ->first();
+                ->where('email', $data['email'])
+                // ->where('password', $hashedPassword)
+                ->first();
 
             // If no user found or the password doesn't match
             if (!$person) {
@@ -41,7 +55,7 @@ class LoginController extends BaseController
             if (!password_verify($data['password'], $person['password'])) {
                 return $this->jsonResponse(false, 'Invalid credentials.');
             }
-            
+
             error_log('Person data: ' . print_r($person, true));
 
             // User authenticated, generate token
@@ -49,15 +63,16 @@ class LoginController extends BaseController
             $token = $tokenHelper->generateToken($person['ID']); // Pass user ID to generate token
 
             error_log('Password and person authenticated successfully. token: ' . $token . ', ID: ' . $person['ID']);
-            
+
             // return $this->jsonResponse(true, 'Successfully logged in!', $person);
             return $this->response
-                        ->setHeader('Authorization', 'Bearer ' . $token)
-                        ->setJSON([
-                            'success' => true, 
-                            'message' => 'Successfully logged in!',
-                            'data' => $person,
-                            'token' => $token]);
+                ->setHeader('Authorization', 'Bearer ' . $token)
+                ->setJSON([
+                    'success' => true,
+                    'message' => 'Successfully logged in!',
+                    'data' => $person,
+                    'token' => $token
+                ]);
 
         } catch (\Exception $e) {
             // Handle the exception

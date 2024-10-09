@@ -18,7 +18,7 @@ class TokenHelper
         $payload = json_encode([
             'user_id' => $userID,
             'iat' => time(),        // Issued at
-            'exp' => time() + 120, // Token expires in 1 hour
+            'exp' => time() + 3600, // Token expires in 1 hour
         ]);
 
         // Encode header and payload

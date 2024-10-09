@@ -13,6 +13,7 @@ $routes->get('register', 'RegistrationController::index');
 $routes->post('register', 'RegistrationController::register');
 
 $routes->get('homepage', 'HomepageController::index');
+$routes->get('logout', 'HomepageController::logout'); 
 // $routes->post('homepage', 'HomepageController::register');
 
 // $routes->get('/pages', 'Pages::index'); 

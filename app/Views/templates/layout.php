@@ -9,7 +9,9 @@
     <?= $this->renderSection('css') ?>
 </head>
 <body>
+    
     <?= $this->renderSection('content') ?>
+
 
 <!-- <em>$copy; 2022</em> -->
 

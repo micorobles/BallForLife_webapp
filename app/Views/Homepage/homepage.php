@@ -100,7 +100,8 @@
             </div>
 
             <div class="mt-4">
-                <input id="btnRegister" type="submit" class="btn btn-primary btn-md btn-block btn-custom-color" value="Register"></input>
+                <input id="btnRegister" type="submit" class="btn btn-primary btn-md btn-block btn-custom-color"
+                    value="Register"></input>
             </div>
 
 
@@ -122,6 +123,11 @@
                     Google</button>
             </div>
         </div>
+        <div class="row mt-2">
+            <div class="col">
+                <a href="<?= base_url('logout') ?>" class="btn btn-custom-color btn-block mt-4">Logout</a>
+            </div>
+        </div>
 
         <div class="font-sm text-secondary mt-2 light-text">
             <small>Already a member? Click <a href="<?= base_url('/') ?>" style="color:white;">here</a> to
@@ -129,6 +135,7 @@
         </div>
     </div>
 </div>
+
 
 <?= $this->endSection(); ?>
 
