@@ -7,6 +7,8 @@ if (!function_exists('load_bundle_css')) {
             <link rel="stylesheet" href="' . base_url('css/global/bootstrap.min.css') . '">
             <link rel="stylesheet" href="' . base_url('css/global/global-styles.css') . '">
             <link rel="stylesheet" href="' . base_url('css/global/iziToast.min.css') . '">
+            <link rel="stylesheet" href="' . base_url('css/templates/header.css') . '">
+            
         ';
     }
 }

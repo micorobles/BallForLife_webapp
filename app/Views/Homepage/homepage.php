@@ -4,7 +4,7 @@
 
 <?= $this->section('css'); ?>
 
-<?= load_css('Login/login.css') ?>
+<?= load_css('Homepage/homepage.css') ?>
 
 <?= $this->endSection(); ?>
 
@@ -13,12 +13,12 @@
 <?= $this->section('content'); ?>
 
 <div
-    class="container-fluid min-vh-100 min-vw-100 d-flex flex-column justify-content-center align-items-center bg-primary text-white">
+    class="content container-fluid d-flex flex-column justify-content-center align-items-center bg-primary text-white">
     <div class="container mb-3 d-flex justify-content-center" style="max-width: 400px;">
-        
+
         <div class="row mt-2">
             <div class="col">
-                <button id='btnLogout' class="btn btn-custom-color btn-block mt-4 text-white" >Logout</button>
+                <button id='btnLogout' class="btn btn-custom-color btn-block mt-4 text-white">Logout</button>
             </div>
         </div>
     </div>

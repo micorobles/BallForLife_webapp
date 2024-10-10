@@ -1,0 +1,23 @@
+header {
+    /* min-width: calc(100vw - 100px); */
+}
+
+header, header .row {
+    height: 50px;
+}
+
+.profile {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile:hover {
+    background-color: #ededed;
+}
+
+.profile img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: 1px solid #a39d98;
+}

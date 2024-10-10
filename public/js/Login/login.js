@@ -23,7 +23,6 @@ $(function () {
 async function handleLogin(e) {
     e.preventDefault();
 
-
     // Collect form data
     const loginData = {
         email: $('#email').val(),
