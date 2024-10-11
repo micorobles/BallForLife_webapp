@@ -2,7 +2,12 @@
     box-sizing: border-box;
     font-family: 'Fredoka', sans-serif;
     font-weight: 500;
-}   
+}
+
+body {
+    letter-spacing: 0;
+    -webkit-font-smoothing: antialiased;
+}
 
 /*************************** FONTS ************************************/
 
@@ -11,21 +16,25 @@
     src: url(../../fonts/Fredoka-Light.ttf) format('truetype');
     font-weight: 300;
 }
+
 @font-face {
     font-family: 'Fredoka';
     src: url(../../fonts/Fredoka-Regular.ttf) format('truetype');
     font-weight: 400;
 }
+
 @font-face {
     font-family: 'Fredoka';
     src: url(../../fonts/Fredoka-Medium.ttf) format('truetype');
     font-weight: 500;
 }
+
 @font-face {
     font-family: 'Fredoka';
     src: url(../../fonts/Fredoka-SemiBold.ttf) format('truetype');
     font-weight: 600;
 }
+
 @font-face {
     font-family: 'Fredoka';
     src: url(../../fonts/Fredoka-Bold.ttf) format('truetype');
@@ -61,28 +70,32 @@
 
 /*************************** FONT SIZE ************************************/
 
-.font-sm {
+.font-xs {
     font-size: 12px;
 }
 
-.font-md {
+.font-sm {
     font-size: 14px;
 }
 
-.font-lg {
-    font-size: 22px;
+.font-md {
+    font-size: 18px;
 }
 
-.font-xl {
+.font-lg {
     font-size: 24px;
 }
 
-.font-xxl {
+.font-xl {
     font-size: 28px;
 }
 
-.font-xxxl {
+.font-xxl {
     font-size: 34px;
+}
+
+.font-xxxl {
+    font-size: 38px;
 }
 
 /*************************** FONT WEIGHTS ************************************/
@@ -91,18 +104,22 @@
     font-family: 'Fredoka', sans-serif;
     font-weight: 300;
 }
+
 .regular-text {
     font-family: 'Fredoka', sans-serif;
     font-weight: 400;
 }
+
 .medium-text {
     font-family: 'Fredoka', sans-serif;
     font-weight: 500;
 }
+
 .semi-bold-text {
     font-family: 'Fredoka', sans-serif;
     font-weight: 600;
 }
+
 .bold-text {
     font-family: 'Fredoka', sans-serif;
     font-weight: 700;
@@ -111,7 +128,8 @@
 /*************************** CUSTOM ELEMENTS STYLES ************************************/
 
 .btn {
-    transition: transform 0.3s ease; /* Animation effect */
+    transition: transform 0.3s ease;
+    /* Animation effect */
 }
 
 .btn:hover {
@@ -125,31 +143,66 @@
     border: #800000e6;
 }
 
+h1 {
+    font-size: 1.875rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.3125rem;
+}
+
+h4 {
+    font-size: 1.125rem;
+}
+
+h5 {
+    font-size: .9375rem;
+}
+
+h6 {
+    font-size: .75rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+}
+
+.page-container {
+    padding-top: 50px;
+    transition: opacity .15s linear;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding: 10px 20px;
+}
+
+.sidebar {
+    width: 220px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding-top: 50px;
+    transition: width 0.3s;
+}
+
 .content {
+    margin-left: 220px;
+    background-color: rgb(231, 231, 231);
+    padding: 20px 30px;
     min-height: calc(100vh - 50px);
 }
-
- /* Adjust the font size for smaller screens */
- /* @media (max-width: 1300px) {
-    .font-xxl {
-        font-size: 20px; Font size for tablets and smaller devices
-    }
-}
-
- @media (max-width: 992px) {
-    .font-xxl {
-        font-size: 16px; Font size for tablets and smaller devices
-    }
-}
-
- @media (max-width: 768px) {
-    .font-xxl {
-        font-size: 14px; Font size for tablets and smaller devices
-    }
-}
-
-@media (max-width: 576px) {
-    .font-xxl {
-        font-size: 10px; Font size for mobile devices
-    }
-} */

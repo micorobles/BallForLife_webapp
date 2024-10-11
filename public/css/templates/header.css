@@ -1,9 +1,16 @@
 header {
     /* min-width: calc(100vw - 100px); */
+    height: 50px;
+    padding: 0;
 }
 
-header, header .row {
+header .row {
     height: 50px;
+    
+}
+
+.logo, .logo:hover {
+    text-decoration: none;
 }
 
 .profile {

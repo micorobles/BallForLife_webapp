@@ -27,11 +27,11 @@
             <div class="col-10  d-flex ">
                 <ul style="list-style-type:none; padding:0; margin:0;">
                     <li><span class="font-xxl regular-text" style="line-height: 1;"><span class="semi-bold-text">Ball</span> For Life</span></li>
-                    <li> <span class="font-md text-secondary mt-0 light-text">A life in <strong>Ball</strong>-ance</span></li>
+                    <li> <span class="font-sm text-secondary mt-0 light-text">A life in <strong>Ball</strong>-ance</span></li>
                 </ul>
             </div>
         </div>
-        <form id="frmLogin" action="<?= base_url('login') ?>" method="post">
+        <form id="frmLogin" class="font-xs" action="<?= base_url('login') ?>" method="post">
             <div class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text">@</span>
@@ -56,13 +56,13 @@
 
             <div class="checkbox checkbox-css mt-3">
                 <input type="checkbox" name="rememberMe" id="rememberMe" class="rounded-sm">
-                <label for="rememberMe" class="text-secondary font-sm light-text" style="display: inline-block; vertical-align: middle; margin-left: 2px;">
+                <label for="rememberMe" class="text-secondary font-xs light-text" style="display: inline-block; vertical-align: middle; margin-left: 2px;">
                     <small>Remember Me</small>
                 </label>
             </div>
 
             <div class="mt-2">
-                <input id="btnLogin" type="submit" class="btn btn-primary btn-md btn-block btn-custom-color" value="Login"></input>
+                <input id="btnLogin" type="submit" class="btn btn-primary btn-md btn-block btn-custom-color font-sm regular-text" value="Login"></input>
             </div>
 
 
@@ -80,11 +80,11 @@
 
         <div class="row mt-2">
             <div class="col">
-                <button class="btn btn-block" style="background-color: #ffffffe6; border:gray;  ">Sign in with Google</button>
+                <button class="btn btn-block font-sm regular-text" style="background-color: #ffffffe6; border:gray;  ">Sign in with Google</button>
             </div>
         </div>
 
-        <div class="font-sm text-secondary mt-2 light-text">
+        <div class="font-xs text-secondary mt-2 light-text">
             <small>Not a member yet? Click <a href="<?= base_url('registration') ?>" style="color:white;">here</a> to register.</small>
         </div>
     </div>
