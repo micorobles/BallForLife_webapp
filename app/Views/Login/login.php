@@ -61,8 +61,8 @@
                 </label>
             </div>
 
-            <div class="mt-2">
-                <input id="btnLogin" type="submit" class="btn btn-primary btn-md btn-block btn-custom-color font-sm regular-text" value="Login"></input>
+            <div class="mt-2 d-grid">
+                <input id="btnLogin" type="submit" class="btn btn-primary btn-md btn-custom-color font-sm regular-text" value="Login"></input>
             </div>
 
 
@@ -79,8 +79,8 @@
         </div>
 
         <div class="row mt-2">
-            <div class="col">
-                <button class="btn btn-block font-sm regular-text" style="background-color: #ffffffe6; border:gray;  ">Sign in with Google</button>
+            <div class="col d-grid">
+                <button class="btn font-sm regular-text" style="background-color: #ffffffe6; border:gray;  ">Sign in with Google</button>
             </div>
         </div>
 

@@ -99,8 +99,8 @@
                 </div>
             </div>
 
-            <div class="mt-4">
-                <input id="btnRegister" type="submit" class="btn btn-primary btn-md btn-block btn-custom-color" value="Register"></input>
+            <div class="mt-4 d-grid">
+                <input id="btnRegister" type="submit" class="btn btn-primary btn-md btn-custom-color" value="Register"></input>
             </div>
 
 
@@ -117,8 +117,8 @@
         </div>
 
         <div class="row mt-2">
-            <div class="col">
-                <button class="btn btn-block" style="background-color: #ffffffe6; border: gray;  ">Sign in with
+            <div class="col d-grid">
+                <button class="btn" style="background-color: #ffffffe6; border: gray;  ">Sign in with
                     Google</button>
             </div>
         </div>
