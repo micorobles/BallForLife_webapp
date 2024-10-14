@@ -215,3 +215,11 @@ footer {
     min-height: calc(100vh - 50px);
 }
 
+@media (max-width: 768px) {
+    .content {
+      margin-left: 0;
+    }
+    .page-container {
+        padding-top: 85px;
+    }
+}

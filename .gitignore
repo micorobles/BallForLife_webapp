@@ -2,9 +2,6 @@
 # Operating Specific Junk Files
 #-------------------------
 
-# Custom
-/app/config/App.php
-
 # OS X
 .DS_Store
 .AppleDouble
@@ -128,5 +125,3 @@ nb-configuration.xml
 /results/
 /phpunit*.xml
 app/Config/App.php
-app/Config/App.php
-public/css/global/app.min.css
