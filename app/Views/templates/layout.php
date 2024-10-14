@@ -15,49 +15,51 @@
 
     <!-- Header start -->
     <?php
-            $router = service('router'); // Router service
-            $controller = $router->controllerName();
-            $method = $router->methodName();
-            
-            if ($controller !== '\App\Controllers\AccountController' || ($method !== 'index' && $method !== 'registration')) {
-                ?>
-                <header class="bg-accent text-white text-center m-0 p-0">
-                    <?= $this->include('templates/header'); ?>
-                </header>
-                <?php 
-            }
-            ?>
-        <!-- Header end -->
-        
-        
-        <!-- Sidebar start -->
-        <?php
-        if ($controller !== '\App\Controllers\AccountController' || ($method !== 'index' && $method !== 'registration')) {
-            ?>
-            <div class="page-container">
+    $router = service('router'); // Router service
+    $controller = $router->controllerName();
+    $method = $router->methodName();
+
+    if ($controller !== '\App\Controllers\AccountController' || ($method !== 'index' && $method !== 'registration')) {
+    ?>
+        <header class="bg-accent text-white text-center m-0 p-0">
+            <?= $this->include('templates/header'); ?>
+        </header>
+    <?php
+    }
+    ?>
+    <!-- Header end -->
+
+
+    <!-- Sidebar start -->
+    <?php
+    if ($controller !== '\App\Controllers\AccountController' || ($method !== 'index' && $method !== 'registration')) {
+    ?>
+        <div class="page-container">
             <nav id="sidebar" class="sidebar bg-secondary">
                 <?= $this->include('templates/sidebar'); ?>
             </nav>
-            <?php 
-        }
-            ?>
-        <!-- Sidebar end -->
+        </div>
+    <?php
+    }
+    ?>
+    <!-- Sidebar end -->
 
-        <!-- Content start -->
-        <!-- <main class="col-md-9 col-lg-10 main-content p-4"> -->
-        
+    <!-- Content start -->
+    <div class="content">
         <?= $this->renderSection('content') ?>
-        <!-- </main> -->
-        <!-- Content end -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- Main layout end -->
+    </div>
 
-        <!-- Footer start -->
-        <!-- <footer class="bg-light text-center text-muted p-3">
-        <p>&copy; 2024 Your Company</p>
-        </footer> -->
-        <!-- Footer end -->
+    <!-- Content end -->
+
+
+
+
+
+    <!-- Footer start -->
+    <footer class="bg-light text-center text-muted p-2">
+        <span>&copy; 2024 Your Company</span>
+    </footer>
+    <!-- Footer end -->
     </div>
     <?= load_bundle_js() ?>
     <?= $this->renderSection('js') ?>

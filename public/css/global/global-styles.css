@@ -199,9 +199,19 @@ header {
     transition: width 0.3s;
 }
 
+footer {
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
 .content {
     margin-left: 220px;
     background-color: rgb(231, 231, 231);
     padding: 20px 30px;
     min-height: calc(100vh - 50px);
 }
+

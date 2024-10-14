@@ -15,6 +15,8 @@ $routes->get('homepage', 'HomepageController::index');
 $routes->get('logout', 'HomepageController::logout'); 
 // $routes->post('homepage', 'HomepageController::register');
 
+$routes->get('schedule', 'ScheduleController::index');
+
 // $routes->get('/pages', 'Pages::index'); 
 $routes->get('pages', [Pages::class, 'index']); // Static URL ( localhost:8080/page )
 $routes->get('(:segment)', [Pages::class, 'view']); // Dynamic URL ( localhost:8080/page1 or /page2 or /page3 )

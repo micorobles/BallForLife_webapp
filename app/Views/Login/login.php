@@ -34,18 +34,18 @@
         <form id="frmLogin" class="font-xs" action="<?= base_url('login') ?>" method="post">
             <div class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">@</span>
+                    <span class="input-group-text font-md">@</span>
                 </div>
-                <input id="email" name="email" type="email" class="form-control" required>
+                <input id="email" name="email" type="email" class="form-control" placeholder="name@example.com" required>
                 <div class="invalid-feedback">
                     Please choose an email.
                 </div>
             </div>
             <div id="show_hide_password" class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">*</span>
+                    <span class="input-group-text font-md">*</span>
                 </div>
-                <input id="password" name="password" type="password" class="form-control" required>
+                <input id="password" name="password" type="password" class="form-control" placeholder="********" required>
                 <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
                     <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                 </div>
@@ -62,7 +62,7 @@
             </div>
 
             <div class="mt-2 d-grid">
-                <input id="btnLogin" type="submit" class="btn btn-primary btn-md btn-custom-color font-sm regular-text" value="Login"></input>
+                <input id="btnLogin" type="submit" class="btn btn-primary btn-md btn-custom-color font-sm regular-text" style="height: 35px;" value="Login"></input>
             </div>
 
 
@@ -80,7 +80,7 @@
 
         <div class="row mt-2">
             <div class="col d-grid">
-                <button class="btn font-sm regular-text" style="background-color: #ffffffe6; border:gray;  ">Sign in with Google</button>
+                <button class="btn font-sm regular-text" style="background-color: #ffffffe6; border:gray; height: 35px; ">Sign in with Google</button>
             </div>
         </div>
 
