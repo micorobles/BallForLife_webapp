@@ -11,6 +11,14 @@ $(function () {
     // Handle sidebar minify button click
     $('.sidebar-minify-btn').on('click', toggleSidebarMinify);
 
+    // Handle breadcrumb clicks
+    $('.breadcrumb-item a').on('click', function(e) {
+        e.preventDefault(); // Prevent default anchor behavior
+        const breadcrumbUrl = this.href; // Get the URL from the clicked breadcrumb
+        highlightActiveLink(breadcrumbUrl); // Highlight the corresponding sidebar link
+        window.location.href = breadcrumbUrl; // Redirect to the clicked breadcrumb URL
+    });
+    
     // Close sidebar if clicked outside
     $(document).on('click', handleClickOutside);
 

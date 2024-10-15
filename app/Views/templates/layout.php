@@ -20,11 +20,11 @@
     $method = $router->methodName();
 
     if ($controller !== '\App\Controllers\AccountController' || ($method !== 'index' && $method !== 'registration')) {
-        ?>
+    ?>
         <!-- <header class="bg-accent text-white text-center m-0 p-0"> -->
-            <?= $this->include('templates/header'); ?>
+        <?= $this->include('templates/header'); ?>
         <!-- </header> -->
-        <?php
+    <?php
     }
     ?>
     <!-- Header end -->
@@ -33,16 +33,36 @@
     <!-- Sidebar start -->
     <?php
     if ($controller !== '\App\Controllers\AccountController' || ($method !== 'index' && $method !== 'registration')) {
-        ?>
+    ?>
         <div class="page-container">
             <!-- <nav id="sidebar" class="sidebar bg-secondary"> -->
-                <?= $this->include('templates/sidebar'); ?>
+            <?= $this->include('templates/sidebar'); ?>
             <!-- </nav> -->
         </div>
         <!-- Sidebar end -->
 
         <!-- Content start -->
         <div class="content">
+            <div class="header-container d-flex justify-content-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="<?= base_url('homepage'); ?>">Home</a>
+                    </li>
+                    <?php
+                    $breadcrumbs = generate_breadcrumbs(); // Get the breadcrumbs
+                    $last_index = count($breadcrumbs) - 1; // Get the index of the last breadcrumb
+
+                    foreach ($breadcrumbs as $index => $breadcrumb) {
+                        if ($index === $last_index) {
+                            // If it's the last breadcrumb, display it as plain text
+                            echo '<li class="breadcrumb-item active" aria-current="page"><a href="javascript:;"> ' . esc($breadcrumb['title']) . '</a></li>';
+                        } else {
+                            echo '<li class="breadcrumb-item"><a href="' . esc($breadcrumb['url']) . '">' . esc($breadcrumb['title']) . '</a></li>';
+                        }
+                    }
+                    ?>
+                </ol>
+            </div>
             <?= $this->renderSection('content') ?>
         </div>
         <!-- Content end -->
@@ -54,13 +74,13 @@
         </footer>
         <!-- Footer end -->
 
-        <?php
+    <?php
     } else {
-        ?>
+    ?>
 
         <?= $this->renderSection('content') ?>
 
-        <?php
+    <?php
     }
     ?>
 
