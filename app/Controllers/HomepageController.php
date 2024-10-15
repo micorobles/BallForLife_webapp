@@ -8,6 +8,7 @@ class HomepageController extends BaseController
 {
     public function index(): string
     {
+        helper('breadcrumb');
         $data['title'] = "Homepage";
         // $data['message'] = "HI!";
         return view('Homepage/homepage', $data);

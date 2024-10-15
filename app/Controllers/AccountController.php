@@ -7,6 +7,7 @@ use App\Libraries\TokenHelper;
 
 class AccountController extends BaseController
 {
+
     public function index()
     {
         if ($this->isLoggedIn()) {
@@ -30,6 +31,7 @@ class AccountController extends BaseController
 
     public function login()
     {
+        $session = \Config\Services::session();
         $users = new User();
         $data['title'] = "Login";
         $data['email'] = $this->request->getPost('email');
@@ -64,6 +66,12 @@ class AccountController extends BaseController
 
             error_log('Password and person authenticated successfully. token: ' . $token . ', ID: ' . $person['ID']);
 
+            $session->set([
+                'firstname' => $person['firstname'],
+                'lastname' => $person['lastname'],
+                'email' => $person['email'],
+            ]);
+
             // return $this->jsonResponse(true, 'Successfully logged in!', $person);
             return $this->response
                 ->setHeader('Authorization', 'Bearer ' . $token)
@@ -73,7 +81,6 @@ class AccountController extends BaseController
                     'data' => $person,
                     'token' => $token
                 ]);
-
         } catch (\Exception $e) {
             // Handle the exception
             return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()], '');
@@ -114,22 +121,21 @@ class AccountController extends BaseController
 
             // CHECK FROM DB TO AVOID DUPLICATION OF EMAIL
             $person = $users->where('is_deleted', false)
-                            ->where('email',$email)
-                            ->first();
+                ->where('email', $email)
+                ->first();
 
-            if($person) {
+            if ($person) {
                 return $this->jsonResponse(false, 'Email is already used');
             }
 
             // INSERT IF EMAIL IS NOT YET EXISTED
             $registerUser = $users->insert($userData);
 
-            if(!$registerUser) {
+            if (!$registerUser) {
                 return $this->jsonResponse(false, 'Error registering new user');
             }
 
             return $this->jsonResponse(true, 'Successfully registered!', $userData);
-
         } catch (\Exception $e) {
             return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()]);
         }

@@ -21,9 +21,9 @@
 
     if ($controller !== '\App\Controllers\AccountController' || ($method !== 'index' && $method !== 'registration')) {
         ?>
-        <header class="bg-accent text-white text-center m-0 p-0">
+        <!-- <header class="bg-accent text-white text-center m-0 p-0"> -->
             <?= $this->include('templates/header'); ?>
-        </header>
+        <!-- </header> -->
         <?php
     }
     ?>
@@ -35,9 +35,9 @@
     if ($controller !== '\App\Controllers\AccountController' || ($method !== 'index' && $method !== 'registration')) {
         ?>
         <div class="page-container">
-            <nav id="sidebar" class="sidebar bg-secondary">
+            <!-- <nav id="sidebar" class="sidebar bg-secondary"> -->
                 <?= $this->include('templates/sidebar'); ?>
-            </nav>
+            <!-- </nav> -->
         </div>
         <!-- Sidebar end -->
 
@@ -47,6 +47,7 @@
         </div>
         <!-- Content end -->
 
+        <div class="overlay"></div>
         <!-- Footer start -->
         <footer class="bg-light text-center text-muted p-2">
             <span>&copy; 2024 Your Company</span>

@@ -16,7 +16,20 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://192.168.1.17:8080/';
+    public string $baseURL = 'http://192.168.1.2:8080/';
+
+    /**
+     * Summary of session settings
+     * @var string
+     */
+    // public $sessionDriver = 'CodeIgniter\Session\Handlers\FileHandler';
+    // public $sessionCookieName = 'ci_session';
+    // public $sessionExpiration = 7200;
+    // public $sessionSavePath = WRITEPATH . 'session'; // For FileHandler
+    // public $sessionMatchIP = false;
+    // public $sessionTimeToUpdate = 300;
+    // public $sessionRegenerateDestroy = false;
+
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

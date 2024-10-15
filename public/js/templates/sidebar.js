@@ -11,7 +11,19 @@ $(function () {
     // Handle sidebar minify button click
     $('.sidebar-minify-btn').on('click', toggleSidebarMinify);
 
+    // Close sidebar if clicked outside
+    $(document).on('click', handleClickOutside);
+
+
 });
+
+function handleClickOutside(e) {
+    // Check if the sidebar is open and the click is outside the sidebar and toggle button
+    if ($('#sidebar').hasClass('show') && !$(e.target).closest('#sidebar, .header-toggle').length) {
+        $('#sidebar').removeClass('show'); // Hide sidebar
+        $('.overlay').removeClass('show'); // Hide overlay (optional)
+    }
+}
 
 // Function to highlight the active link
 function highlightActiveLink(url) {

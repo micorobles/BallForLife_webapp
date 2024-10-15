@@ -125,3 +125,4 @@ nb-configuration.xml
 /results/
 /phpunit*.xml
 app/Config/App.php
+app/Config/App.php
