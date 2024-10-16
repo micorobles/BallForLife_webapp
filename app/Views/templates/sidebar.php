@@ -2,7 +2,7 @@
 <nav id="sidebar" class="text-white sidebar">
     <div class="sidebar-heading py-3">
         <div id='sidebar-profile' class="sidebar-profile p-0 ps-4 rounded d-flex align-items-center">
-            <img src="<?= base_url('images/ROBLES.jpg') ?>" alt="">
+            <img src="<?= base_url( session()->get('profilePic') )  ?>" alt="">
             <ul class="ms-1" style="list-style-type:none; padding:0; margin:0;">
                 <li>
                     <span id='username' class="ms-2 medium-text font-sm semi-bold-text">
@@ -11,7 +11,7 @@
                 </li>
                 <li>
                     <span id='position' class="ms-2 regular-text font-xs light-text" style="font-weight: 300">
-                        Member
+                        <?= session()->get('position') ?>
                     </span>
                 </li>
             </ul>
@@ -69,13 +69,13 @@
         <li class="has-sub">
             <a href="javascript:;">
                 <b class="caret"></b>
-                <i class="fa fa-align-left"></i>
-                <span>Menu Level</span>
+                <i class="fa fa-gears"></i>
+                <span>Maintenance</span>
             </a>
             <ul class="sub-menu">
-                <li><a href="javascript:;">Menu 1.1</a></li>
+                <li><a href="javascript:;">Users Master</a></li>
                 <!-- <li><a href="javascript:;">Menu 2.2</a></li> -->
-                <li><a href="javascript:;">Menu 2.3</a></li>
+                <li><a href="javascript:;">Schedules Master</a></li>
             </ul>
         </li>
         <li>

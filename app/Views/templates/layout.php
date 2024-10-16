@@ -63,7 +63,15 @@
                     ?>
                 </ol>
             </div>
-            <?= $this->renderSection('content') ?>
+            <div class="panel border">
+                <div class="panel-header">
+                    <span class="page-header regular-text"><?= $title?></span>
+                </div>
+                <div class="panel-body">
+                    <?= $this->renderSection('content') ?>
+                </div>
+            </div>
+        </div>
         </div>
         <!-- Content end -->
 

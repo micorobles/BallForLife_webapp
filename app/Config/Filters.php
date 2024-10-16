@@ -116,6 +116,8 @@ class Filters extends BaseFilters
         'auth' => [
             'before' => [
                 'homepage',
+                'schedule',
+                'profile',
                 // 'homepage/*',
             ],
         ],

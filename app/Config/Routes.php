@@ -8,14 +8,18 @@ use App\Controllers\Pages;
  */
 $routes->get('/', 'AccountController::index'); // Root URL ( localhost:8080 )
 $routes->post('login', 'AccountController::login');
+
 $routes->get('registration', 'AccountController::registration');
 $routes->post('register', 'AccountController::register');
+
+$routes->get('profile', 'AccountController::profile');
 
 $routes->get('homepage', 'HomepageController::index');
 $routes->get('logout', 'HomepageController::logout'); 
 // $routes->post('homepage', 'HomepageController::register');
 
 $routes->get('schedule', 'ScheduleController::index');
+
 
 // $routes->get('/pages', 'Pages::index'); 
 $routes->get('pages', [Pages::class, 'index']); // Static URL ( localhost:8080/page )

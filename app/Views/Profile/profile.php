@@ -4,6 +4,7 @@
 
 <?= $this->section('css'); ?>
 
+<?= load_css('Profile/profile.css') ?>
 
 <?= $this->endSection(); ?>
 
@@ -11,7 +12,7 @@
 
 <?= $this->section('content'); ?>
 
-Schedule Body
+    <span>Profile Body</span>
 
 <?= $this->endSection(); ?>
 
@@ -20,5 +21,6 @@ Schedule Body
 <?= $this->section('js'); ?>
 
 <?= load_js('global/global-functions.js'); ?>
+<?= load_js('Profile/profile.js'); ?>
 
 <?= $this->endSection(); ?>

@@ -12,14 +12,7 @@
 
 <?= $this->section('content'); ?>
 
-<div class="panel border">
-    <div class="panel-header">
-        <span class="page-header regular-text">Homepage</span>
-    </div>
-    <div class="panel-body">
-        Panel body
-    </div>
-</div>
+ Homepage body
 
 <?= $this->endSection(); ?>
 

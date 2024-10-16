@@ -23,7 +23,7 @@
             <div class="btn-group">
                 <div id='profile' class="profile p-1 px-2 rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 
-                    <img src="<?= base_url('images/ROBLES.jpg') ?>" alt="">
+                    <img src="<?= base_url(session()->get('profilePic')) ?>" alt="">
                     <span class="ms-1 medium-text font-sm regular-text">
                          <?= ucfirst(session()->get('firstname')) . ' ' . ucfirst(session()->get('lastname')) ?>    
                     </span>
@@ -31,7 +31,7 @@
                 </div>
 
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('profile')?>">Profile</a></li>
                     <li><a class="dropdown-item" href="#">Messages</a></li>
                     <li>
                         <hr class="dropdown-divider">

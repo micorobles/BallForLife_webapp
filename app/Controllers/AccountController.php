@@ -66,12 +66,15 @@ class AccountController extends BaseController
 
             error_log('Password and person authenticated successfully. token: ' . $token . ', ID: ' . $person['ID']);
 
-            $session->set([
-                'firstname' => $person['firstname'],
-                'lastname' => $person['lastname'],
-                'email' => $person['email'],
-            ]);
+            // $session->set([
+            //     'profilePic' => $person['profilePic'],
+            //     'firstname' => $person['firstname'],
+            //     'lastname' => $person['lastname'],
+            //     'email' => $person['email'],
+            // ]);
 
+            $session->set(array_intersect_key($person, array_flip(['profilePic', 'firstname', 'lastname', 'position'])));
+            
             // return $this->jsonResponse(true, 'Successfully logged in!', $person);
             return $this->response
                 ->setHeader('Authorization', 'Bearer ' . $token)
@@ -112,11 +115,14 @@ class AccountController extends BaseController
             $users = new User();
 
             $userData = [
+                'profilePic' => '/images/profiles/user.png',
                 'email' => $email,
                 'firstname' => $firstname,
                 'lastname' => $lastname,
                 'contactNum' => $contactNum,
+                'position' => 'Member',
                 'password' => $hashedPassword,
+                'status' => 'active',
             ];
 
             // CHECK FROM DB TO AVOID DUPLICATION OF EMAIL
@@ -139,5 +145,10 @@ class AccountController extends BaseController
         } catch (\Exception $e) {
             return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()]);
         }
+    }
+
+    public function profile() {
+        $data['title'] = "Profile";
+        return view('Profile/profile', $data);
     }
 }

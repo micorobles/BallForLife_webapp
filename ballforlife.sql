@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 04, 2024 at 01:14 PM
+-- Generation Time: Oct 16, 2024 at 01:03 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -29,11 +29,14 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `user` (
   `ID` int(11) NOT NULL,
+  `profilePic` varchar(70) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `contactnum` char(11) NOT NULL,
+  `position` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `status` varchar(15) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -43,9 +46,9 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`ID`, `firstname`, `lastname`, `contactnum`, `email`, `password`, `created_at`, `is_deleted`, `updated_at`) VALUES
-(1, 'mico', 'robles', '09230853051', 'mic@gmail.com', 'mic', '2024-10-04 08:27:52', 0, '2024-10-04 08:27:52'),
-(2, 'lyka', 'jiao', '09398192788', 'lyka@gmail.com', 'lyka', '2024-10-04 08:38:48', 0, '2024-10-04 08:38:48');
+INSERT INTO `user` (`ID`, `profilePic`, `firstname`, `lastname`, `contactnum`, `position`, `email`, `password`, `status`, `created_at`, `is_deleted`, `updated_at`) VALUES
+(10, 'images/profiles/user.png', 'Mico', 'robles', '09230853051', 'Member', 'mic@gmail.com', '$2y$10$v2ttbe9G6xKuPjSgy1KmouXekoFOemgMbmqCXloqNjpBMFH7brEq6', 'active', '2024-10-16 07:18:18', 0, '2024-10-16 07:18:18'),
+(12, '/images/profiles/user.png', 'lyka', 'jiao', '09398192788', 'Member', 'lyka@gmail.com', '$2y$10$mvkYecOZvXnpIm2M4sbLCews1KsH1OVR0aDyb6cBHg6JpwNnY3/Sy', 'active', '2024-10-16 07:48:11', 0, '2024-10-16 07:48:11');
 
 --
 -- Indexes for dumped tables
@@ -65,7 +68,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
