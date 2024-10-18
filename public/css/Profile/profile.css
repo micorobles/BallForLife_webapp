@@ -33,14 +33,15 @@
 
 .profile-picture .status {
     float: left;
-    padding: 4px 10px;
+    /* padding: 4px 0px; */
     font-size: 16px;
 }
 
 .profile-picture .status .status-text{
-    padding: 5px 10px;
-    border-radius: 3px;
-    background-color: green;
+    padding: 10px 12px;
+    border-radius: .25rem;
+    background-color: rgb(0, 128, 0);
+    border: 1px solid #dee2e6;
     color: #fff;    
     font-size: 14px;
     font-weight: 400;
@@ -62,7 +63,7 @@
 }
 
 .profile-picture .profile-buttons>button {
-    padding: 10px 15px;
+    padding: 10px 12px;
 }
 
 .profile-picture .profile-buttons>button>i {
@@ -158,6 +159,34 @@
     background-color: transparent;
     color: #fff;
     outline: none;
+}
+
+#frmProfile .form-header {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+#frmProfile label {
+    margin-bottom: 10px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #717171bd;
+}
+
+#frmProfile .select2-container {
+    z-index: 1999 !important; /* Set a z-index higher than the modal */
+}
+
+#frmProfile .select2-dropdown {
+    z-index: 1999 !important; /* Ensures dropdown appears above the modal */
+}
+
+#frmProfile input {
+    font-size: 14px;
+    font-weight: 400;
+    /* color: #717171; */
+    padding: 6px;
+    border: 1px solid #dee2e6;
 }
 
 /* Adjust the height for mobile views <<< */
