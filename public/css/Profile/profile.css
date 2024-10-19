@@ -174,11 +174,11 @@
 }
 
 #frmProfile .select2-container {
-    z-index: 1999 !important; /* Set a z-index higher than the modal */
+    z-index: 1060 !important; /* Set a z-index higher than the modal */
 }
 
 #frmProfile .select2-dropdown {
-    z-index: 1999 !important; /* Ensures dropdown appears above the modal */
+    z-index: 1060 !important; /* Ensures dropdown appears above the modal */
 }
 
 #frmProfile input {

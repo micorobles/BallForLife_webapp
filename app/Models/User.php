@@ -10,10 +10,14 @@ class User extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'profilePic',
-        'firstname',
+        'firstname',    
         'lastname',
         'contactNum',
         'position',
+        'heightFeet',
+        'heightInch',
+        'weight',
+        'skills',
         'email',
         'password',
         'status',

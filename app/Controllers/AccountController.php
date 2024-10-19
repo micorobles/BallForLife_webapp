@@ -64,8 +64,6 @@ class AccountController extends BaseController
             $tokenHelper = new TokenHelper();
             $token = $tokenHelper->generateToken($person['ID']); // Pass user ID to generate token
 
-            error_log('Password and person authenticated successfully. token: ' . $token . ', ID: ' . $person['ID']);
-
             // $session->set([
             //     'profilePic' => $person['profilePic'],
             //     'firstname' => $person['firstname'],
@@ -73,8 +71,24 @@ class AccountController extends BaseController
             //     'email' => $person['email'],
             // ]);
 
-            $session->set(array_intersect_key($person, array_flip(['profilePic', 'firstname', 'lastname', 'position'])));
-            
+            $session->set(array_intersect_key($person, array_flip([
+                'ID',
+                'profilePic',
+                'firstname',
+                'lastname',
+                'position',
+                'contactnum',
+                'position',
+                'heightFeet',
+                'heightInch',
+                'weight',
+                'skills',
+                'email',
+                'status'
+            ])));
+
+            // error_log('Session: ', print_r($session));
+
             // return $this->jsonResponse(true, 'Successfully logged in!', $person);
             return $this->response
                 ->setHeader('Authorization', 'Bearer ' . $token)
@@ -147,7 +161,8 @@ class AccountController extends BaseController
         }
     }
 
-    public function profile() {
+    public function profile()
+    {
         $data['title'] = "Profile";
         return view('Profile/profile', $data);
     }
