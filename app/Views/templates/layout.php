@@ -65,7 +65,7 @@
             </div>
             <div class="panel border">
                 <div class="panel-header">
-                    <span class="page-header regular-text"><?= $title?></span>
+                    <span class="page-header regular-text"><?= $title ?></span>
                 </div>
                 <div class="panel-body">
                     <?= $this->renderSection('content') ?>
@@ -92,15 +92,10 @@
     }
     ?>
 
-
-
-
-
-
-
-
-
     </div>
+    <script>
+        const getUserURL = '<?= base_url('getUser') ?>'
+    </script>
     <?= load_bundle_js() ?>
     <?= $this->renderSection('js') ?>
 </body>

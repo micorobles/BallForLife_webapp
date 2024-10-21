@@ -31,7 +31,7 @@ async function handleLogin(e) {
     };
 
     const url = $(this).attr('action');
-    const loginUser = await ajaxRequest(url, loginData);
+    const loginUser = await ajaxRequest('POST', url, loginData);
 
     try {
 

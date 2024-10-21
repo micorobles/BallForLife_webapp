@@ -22,14 +22,14 @@
             <span>Status: &nbsp;</span>
             <span id='txtStatus' class="status-text"><?= ucfirst(session()->get('status')) ?></span>
         </div>
-        <img src="<?= base_url(session()->get('profilePic')) ?>" alt="">
+        <img id='profilePic' src="<?= base_url(session()->get('profilePic')) ?>" alt="">
         <div class="profile-buttons">
             <button class="btn btn-custom-color text-white font-sm light-text" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Edit Profile <i class="fa-solid fa-user-pen fa-1x"></i>
             </button>
         </div>
-
     </div>
+    
     <div class="general-information">
         <div class="information-header">
             <i class="fa fa-circle-info me-2"></i>
@@ -39,19 +39,19 @@
             <div class="row">
                 <div class="col-5 col-md-4 col-xl-3 d-flex flex-column">
                     <label>First Name</label>
-                    <span id="firstname"><?= ucfirst(session()->get('firstname')) ?></span>
+                    <span id="firstname"></span>
                 </div>
                 <div class="col-7 col-md-4 col-xl-3 d-flex flex-column">
                     <label>Last Name</label>
-                    <span id="firstname"><?= ucfirst(session()->get('lastname')) ?></span>
+                    <span id="lastname"></span>
                 </div>
                 <div class="col-5 col-md-4 col-xl-3 d-flex flex-column">
                     <label>Phone</label>
-                    <span id="firstname"><?= session()->get('contactnum') ?></span>
+                    <span id="contactNum"></span>
                 </div>
                 <div class="col-7 col-md-4 col-xl-3 d-flex flex-column">
                     <label>Email</label>
-                    <span id="firstname"><?= session()->get('email') ?></span>
+                    <span id="email"></span>
                 </div>
             </div>
         </div>
@@ -65,15 +65,15 @@
             <div class="row">
                 <div class="col-4 d-flex flex-column">
                     <label>Position</label>
-                    <span id="firstname"><?= ucfirst(session()->get('position')) ?></span>
+                    <span id="_position"></span>
                 </div>
                 <div class="col-4 d-flex flex-column">
                     <label>Height</label>
-                    <span id="firstname"><?= session()->get('heightFeet') ?>'<?= session()->get('heightInch') ?></span>
+                    <span id="height"></span>
                 </div>
                 <div class="col-4 d-flex flex-column">
                     <label>Weight</label>
-                    <span id="firstname"><?= session()->get('weight') ?> lbs</span>
+                    <span id="weight"></span>
                 </div>
                 <div class="col-0 d-flex flex-column">
 
@@ -81,20 +81,20 @@
                 <div class="col-12 col-xl-6 d-flex flex-column mt-4">
                     <label>Skills</label>
                     <div class="skills-input-container">
-                        <select id="skills-select-display" class="skills-select" multiple="multiple" style="width: 100%;" disabled>
+                        <select id="skills-select" class="skills-select" multiple="multiple" style="width: 100%;" disabled>
                             <?php
 
-                            $skillsString = session()->get('skills');
-                            $skillsArray = explode(',', $skillsString);
-                            $skillsArray = array_map('trim', $skillsArray);
+                            // $skillsArray = session()->get('skills');
+                            // $skillsArray = explode(',', $skillsString);
+                            // $skillsArray = array_map('trim', $skillsArray);
 
                             // Define all possible skills
-                            $allSkills = ['Dribbling', 'Shooting', 'Passing', 'Defense', 'Rebounding', 'Footwork', 'Ball-Handling', 'Jumping', 'Teamwork', 'Perimeter', 'Low Post', 'Pullups', 'Coast2Coast'];
+                            // $allSkills = ['Dribbling', 'Shooting', 'Passing', 'Defense', 'Rebounding', 'Footwork', 'Ball-Handling', 'Jumping', 'Teamwork', 'Perimeter', 'Low Post', 'Pullups', 'Coast2Coast'];
 
-                            foreach ($allSkills as $skill) {
-                                $selected = in_array($skill, $skillsArray) ? 'selected' : '';
-                                echo "<option value=\"$skill\" $selected>$skill</option>";
-                            }
+                            // foreach ($allSkills as $skill) {
+                            //     $selected = in_array($skill, $skillsArray) ? 'selected' : '';
+                            //     echo "<option value=\"$skill\" $selected>$skill</option>";
+                            // }
 
                             ?>
                         </select>
@@ -115,26 +115,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id='frmProfile' action="<?= base_url('edit-profile') ?>">
+                <form id='frmProfile' action="<?= base_url('editProfile') ?>">
                     <div class="row">
                         <div class="col-12 form-header">
                             <span>General Information</span>
                         </div>
                         <div class="col-6">
                             <label for="firstname">First Name:</label>
-                            <input type="text" id="firstname" class="w-100" name="firstname" value="<?= ucfirst(session()->get('firstname')) ?>">
+                            <input type="text" id="modal-firstname" class="w-100" name="firstname" value="">
                         </div>
                         <div class="col-6">
                             <label for="lastname">Last Name:</label>
-                            <input type="text" id="lastname" class="w-100" name="lastname" value="<?= ucfirst(session()->get('lastname')) ?>">
+                            <input type="text" id="modal-lastname" class="w-100" name="lastname" value="">
                         </div>
                         <div class="col-6">
                             <label for="phone">Phone:</label>
-                            <input type="number" id="phone" class="w-100" name="phone" value="<?= session()->get('contactnum') ?>">
+                            <input type="number" id="modal-contactNum" class="w-100" name="phone" value="">
                         </div>
                         <div class="col-6">
                             <label for="email">Email:</label>
-                            <input type="email" id="email" class="w-100" name="email" value="<?= session()->get('email') ?>">
+                            <input type="email" id="modal-email" class="w-100" name="email" value="" disabled>
                         </div>
                         <div class="col-6">
 
@@ -146,34 +146,34 @@
                         </div>
                         <div class="col-6">
                             <label for="position">Position:</label>
-                            <input type="text" id="position" class="w-100" name="position" value="<?= ucfirst(session()->get('position')) ?>">
+                            <input type="text" id="modal-position" class="w-100" name="position" value="">
                         </div>
                         <div class="col-6">
                             <label for="height">Height:</label>
                             <div class="input-group">
-                                <input type="number" id="feet" class="form-control" name="feet" placeholder="Feet" value="<?= session()->get('heightFeet') ?>">
+                                <input type="number" id="modal-heightFeet" class="form-control" name="heightFeet" placeholder="Feet" value="">
                                 <span class="input-group-text">'</span>
-                                <input type="number" id="inches" class="form-control" name="inches" placeholder="Inches" value="<?= session()->get('heightInch') ?>">
+                                <input type="number" id="modal-heightInch" class="form-control" name="heightInches" placeholder="Inches" value="">
                                 <span class="input-group-text">"</span>
                             </div>
                         </div>
                         <div class="col-6">
                             <label for="weight">Weight:</label>
                             <div class="input-group">
-                                <input type="number" id="weight" class="form-control" name="weight" value="<?= session()->get('weight') ?>">
+                                <input type="number" id="modal-weight" class="form-control" name="weight" value="">
                                 <span class="input-group-text">lbs</span>
                             </div>
                         </div>
                         <div class="col-12">
                             <label for="skills">Skills:</label>
                             <div class="skills-input-container">
-                                <select id="skills-select" class="skills-select" name="skills[]" multiple="multiple" style="width: 100%; z-index:999;">
+                                <select id="modal-skills-select" class="skills-select" name="skills[]" multiple="multiple" style="width: 100%; z-index:999;">
                                     <?php
 
-                                    foreach ($allSkills as $skill) {
-                                        $selected = in_array($skill, $skillsArray) ? 'selected' : '';
-                                        echo "<option value=\"$skill\" $selected>$skill</option>";
-                                    }
+                                    // foreach ($allSkills as $skill) {
+                                    //     $selected = in_array($skill, $skillsArray) ? 'selected' : '';
+                                    //     echo "<option value=\"$skill\" $selected>$skill</option>";
+                                    // }
                                     ?>
                                     <!-- <option value="Dribbling">Dribbling</option>
                                     <option value="Passing">Passing</option>
@@ -202,6 +202,7 @@
         </div>
     </div>
 </div>
+
 <?= $this->endSection(); ?>
 
 <!-- ADDITIONAL JS -->

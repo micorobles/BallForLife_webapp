@@ -31,7 +31,7 @@ async function handleRegistration(e) {
     };
 
     const url = $(this).attr('action');
-    const registerUser = await ajaxRequest(url, registrationData);
+    const registerUser = await ajaxRequest('POST', url, registrationData);
 
     try {
 

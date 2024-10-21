@@ -1,8 +1,8 @@
 
-export function ajaxRequest(url, data) {
+export function ajaxRequest(type, url, data) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            type: 'POST',
+            type: type,
             url: url,
             data: data,
             dataType: 'json',
@@ -55,3 +55,8 @@ iziToast.settings({
         // console.log('Toast is closing');
     }
 });
+
+export function ucfirst(str) {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}

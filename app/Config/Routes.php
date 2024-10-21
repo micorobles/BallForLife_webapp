@@ -8,11 +8,13 @@ use App\Controllers\Pages;
  */
 $routes->get('/', 'AccountController::index'); // Root URL ( localhost:8080 )
 $routes->post('login', 'AccountController::login');
+$routes->get('getUser', 'AccountController::getUser');
 
 $routes->get('registration', 'AccountController::registration');
 $routes->post('register', 'AccountController::register');
 
 $routes->get('profile', 'AccountController::profile');
+$routes->post('editProfile', 'AccountController::editProfile');
 
 $routes->get('homepage', 'HomepageController::index');
 $routes->get('logout', 'HomepageController::logout'); 

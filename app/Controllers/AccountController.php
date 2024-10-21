@@ -19,6 +19,19 @@ class AccountController extends BaseController
         return view('Login/login', $data);
     }
 
+    public function getUser() {
+        $users = new User();
+        $userID = session()->get('ID');
+
+        $getUser = $users->find($userID);
+
+        if(!$getUser) {
+            return $this->jsonResponse(false, 'Could not find user');
+        }
+
+        return $this->jsonResponse(true, 'User found.', $getUser);
+
+    }
     private function isLoggedIn()
     {
         // Check if token is exisiting in cookie
@@ -82,7 +95,7 @@ class AccountController extends BaseController
                 'heightFeet',
                 'heightInch',
                 'weight',
-                'skills',
+                // 'skills',
                 'email',
                 'status'
             ])));
@@ -157,7 +170,7 @@ class AccountController extends BaseController
 
             return $this->jsonResponse(true, 'Successfully registered!', $userData);
         } catch (\Exception $e) {
-            return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()]);
+            return $this->jsonResponse(false, 'An error occurred while processing your request from account controller.', ['error' => $e->getMessage()]);
         }
     }
 
@@ -165,5 +178,60 @@ class AccountController extends BaseController
     {
         $data['title'] = "Profile";
         return view('Profile/profile', $data);
+    }
+
+    public function editProfile()
+    {
+
+        $session = \Config\Services::session();
+
+        try {
+
+            $users = new User();
+            $userID = session()->get('ID');
+
+            // Get user input
+            $profileData  = [
+                'firstname' => $this->request->getPost('firstname'),
+                'lastname' => $this->request->getPost('lastname'),
+                'contactNum' => $this->request->getPost('phone'),
+                // 'phone' => $this->request->getPost('phone'),
+                'position' => $this->request->getPost('position'),
+                'heightFeet' => $this->request->getPost('heightFeet'),
+                'heightInch' => $this->request->getPost('heightInches'),
+                'weight' => $this->request->getPost('weight'),
+                'skills' => json_encode($this->request->getPost('skills')), // Convert array to JSON
+            ];
+
+            // Update user profile in the database
+            $updateUser = $users->update($userID, $profileData);
+
+
+            if (!$updateUser) {
+                return $this->jsonResponse(false, 'Error updating profile!', $profileData);
+            }
+
+            // $skills = json_decode($profileData['skills']);
+
+            $session->set(array_intersect_key($profileData, array_flip([
+                'firstname',
+                'lastname',
+                'position',
+                'contactNum',
+                'position',
+                'heightFeet',
+                'heightInch',
+                'weight',
+            ])));
+
+            // Set skills separately
+            $session->set('skills', json_decode($profileData['skills']));
+
+            error_log('SESSION DATA: ' . print_r($session->get(), true));
+
+            return $this->jsonResponse(true, 'Profile Updated!', $profileData);
+        } catch (\Exception $e) {
+            return $this->jsonResponse(false, 'An error occurred while processing your request from account controller.', ['error' => $e->getMessage()]);
+        }
     }
 }

@@ -56,12 +56,18 @@ class TokenHelper
         return true;
     }
 
-    // public function decodeToken($token)
-    // {
-    //     list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
-    //     $payload = json_decode($this->base64UrlDecode($payloadEncoded), true);
-    //     return $payload; // Returns decoded payload as an array
-    // }
+   // Add the decodeToken function to extract the user_id
+   public function decodeToken($token)
+   {
+       // Split the token into its parts
+       list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
+
+       // Decode the payload
+       $payload = json_decode($this->base64UrlDecode($payloadEncoded), true);
+
+       // Return the user_id if it exists
+       return isset($payload['user_id']) ? $payload['user_id'] : null;
+   }
 
     // public function extractToken($authorizationHeader) {
     //     $parts = explode(' ', $authorizationHeader);
