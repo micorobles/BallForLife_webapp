@@ -9,6 +9,7 @@ class User extends Model
     protected $table = 'user';
     protected $primaryKey = 'id';
     protected $allowedFields = [
+        'coverPhoto',
         'profilePic',
         'firstname',    
         'lastname',

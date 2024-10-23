@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Libraries\TokenHelper;
 
+// use CodeIgniter\Files\File;
+
 class AccountController extends BaseController
 {
 
@@ -19,18 +21,18 @@ class AccountController extends BaseController
         return view('Login/login', $data);
     }
 
-    public function getUser() {
+    public function getUser()
+    {
         $users = new User();
         $userID = session()->get('ID');
 
         $getUser = $users->find($userID);
 
-        if(!$getUser) {
+        if (!$getUser) {
             return $this->jsonResponse(false, 'Could not find user');
         }
 
         return $this->jsonResponse(true, 'User found.', $getUser);
-
     }
     private function isLoggedIn()
     {
@@ -76,13 +78,6 @@ class AccountController extends BaseController
             // User authenticated, generate token
             $tokenHelper = new TokenHelper();
             $token = $tokenHelper->generateToken($person['ID']); // Pass user ID to generate token
-
-            // $session->set([
-            //     'profilePic' => $person['profilePic'],
-            //     'firstname' => $person['firstname'],
-            //     'lastname' => $person['lastname'],
-            //     'email' => $person['email'],
-            // ]);
 
             $session->set(array_intersect_key($person, array_flip([
                 'ID',
@@ -203,6 +198,10 @@ class AccountController extends BaseController
                 'skills' => json_encode($this->request->getPost('skills')), // Convert array to JSON
             ];
 
+            // Handle file uploads
+            $this->handleFileUpload($this->request->getFile('pictureFile'), 'profiles', $userID, $profileData, 'profilePic');
+            $this->handleFileUpload($this->request->getFile('coverPhotoFile'), 'cover-photos', $userID, $profileData, 'coverPhoto');
+
             // Update user profile in the database
             $updateUser = $users->update($userID, $profileData);
 
@@ -214,6 +213,7 @@ class AccountController extends BaseController
             // $skills = json_decode($profileData['skills']);
 
             $session->set(array_intersect_key($profileData, array_flip([
+                'profilePic',
                 'firstname',
                 'lastname',
                 'position',
@@ -232,6 +232,35 @@ class AccountController extends BaseController
             return $this->jsonResponse(true, 'Profile Updated!', $profileData);
         } catch (\Exception $e) {
             return $this->jsonResponse(false, 'An error occurred while processing your request from account controller.', ['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Handle file upload and move to public directory.
+     *
+     * @param \CodeIgniter\HTTP\Files\UploadedFile $file The file to be uploaded.
+     * @param string $folder The folder where the file will be stored.
+     * @param string $userID The user ID to create a unique file name.
+     * @param array $profileData The array where the image path will be added.
+     * @param string $key The key under which the image path will be stored in profileData.
+     * @return void
+     */
+    
+    private function handleFileUpload(\CodeIgniter\HTTP\Files\UploadedFile $file, $folder, $userID, &$profileData, $key)
+    {
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            // Define a new name for the uploaded file
+            $newFileName = $userID . '_' . $file->getName();
+            $uploadPath = WRITEPATH . 'images/uploads/' . $folder . '/'; // Change this to your upload directory
+
+            // Move the file to the writable directory
+            $file->move($uploadPath, $newFileName);
+
+            // Move to public folder
+            copy($uploadPath . $newFileName, 'images/uploads/' . $folder . '/' . $newFileName);
+
+            // Add the image path to the profile data
+            $profileData[$key] = 'images/uploads/' . $folder . '/' . $newFileName; // Store the path relative to your public directory
         }
     }
 }

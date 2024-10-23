@@ -23,11 +23,10 @@ class AuthFilter implements FilterInterface
         }
 
         $cookieToken = get_cookie('authToken');
-        $userID = $tokenHelper->decodeToken($cookieToken);
-
+        
         error_log("IN AUTH FILTER, cookieToken: " . $cookieToken, 0);
-        error_log("IN AUTH FILTER, userID: " . $userID, 0);
-
+        // error_log("IN AUTH FILTER, userID: " . $userID, 0);
+        
         if (!$cookieToken) {
             // Set flashdata for showing the message after redirect
             session()->setFlashdata('authMessage', 'You are not logged in. Please log in to continue.');
@@ -40,6 +39,8 @@ class AuthFilter implements FilterInterface
             session()->setFlashdata('authMessage', 'Your session has expired. Please log in to continue.');
             return redirect()->to('/');
         }
+        
+        $userID = $tokenHelper->decodeToken($cookieToken);
 
         if (!$userID) {
             session()->setFlashdata('authMessage', 'Your session has expired. Please log in to continue.');

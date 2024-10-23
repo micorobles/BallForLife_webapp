@@ -10,6 +10,8 @@ $routes->get('/', 'AccountController::index'); // Root URL ( localhost:8080 )
 $routes->post('login', 'AccountController::login');
 $routes->get('getUser', 'AccountController::getUser');
 
+$routes->get('userMaster', 'UserMasterController::index');
+
 $routes->get('registration', 'AccountController::registration');
 $routes->post('register', 'AccountController::register');
 

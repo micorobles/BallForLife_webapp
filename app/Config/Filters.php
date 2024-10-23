@@ -119,6 +119,7 @@ class Filters extends BaseFilters
                 'schedule',
                 'profile',
                 'editProfile',
+                'getUsers',
                 // 'homepage/*',
             ],
         ],

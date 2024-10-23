@@ -12,6 +12,11 @@
 
 <body>
 
+<div class="spinner-overlay" id="loader">
+    <div class="spinner">
+        <div class="ball"></div>
+    </div>
+</div>
 
     <!-- Header start -->
     <?php
@@ -95,6 +100,7 @@
     </div>
     <script>
         const getUserURL = '<?= base_url('getUser') ?>'
+        const baseURL = '<?= base_url(); ?>';
     </script>
     <?= load_bundle_js() ?>
     <?= $this->renderSection('js') ?>

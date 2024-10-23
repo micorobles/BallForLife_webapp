@@ -14,7 +14,7 @@
 
 <div class="container">
     <div class="cover-photo rounded">
-        <img src="<?= base_url('images/cover_photo2.png') ?>" alt="">
+        <img id="coverPhoto" src="" alt="">
     </div>
 
     <div class="profile-picture">
@@ -29,7 +29,7 @@
             </button>
         </div>
     </div>
-    
+
     <div class="general-information">
         <div class="information-header">
             <i class="fa fa-circle-info me-2"></i>
@@ -37,19 +37,19 @@
         </div>
         <div class="information-body">
             <div class="row">
-                <div class="col-5 col-md-4 col-xl-3 d-flex flex-column">
+                <div class="col-6 col-md-4 col-xl-3 d-flex flex-column">
                     <label>First Name</label>
                     <span id="firstname"></span>
                 </div>
-                <div class="col-7 col-md-4 col-xl-3 d-flex flex-column">
+                <div class="col-6 col-md-4 col-xl-3 d-flex flex-column">
                     <label>Last Name</label>
                     <span id="lastname"></span>
                 </div>
-                <div class="col-5 col-md-4 col-xl-3 d-flex flex-column">
+                <div class="col-6 col-md-4 col-xl-3 d-flex flex-column">
                     <label>Phone</label>
                     <span id="contactNum"></span>
                 </div>
-                <div class="col-7 col-md-4 col-xl-3 d-flex flex-column">
+                <div class="col-6 col-md-4 col-xl-3 d-flex flex-column">
                     <label>Email</label>
                     <span id="email"></span>
                 </div>
@@ -63,40 +63,25 @@
         </div>
         <div class="information-body">
             <div class="row">
-                <div class="col-4 d-flex flex-column">
+                <div class="col-6 col-md-4 col-xl-3 d-flex flex-column">
                     <label>Position</label>
                     <span id="_position"></span>
                 </div>
-                <div class="col-4 d-flex flex-column">
+                <div class="col-6 col-md-4 col-xl-3 d-flex flex-column">
                     <label>Height</label>
                     <span id="height"></span>
                 </div>
-                <div class="col-4 d-flex flex-column">
+                <div class="col-6 col-md-4 mt-md-0 mt-4 col-xl-3 d-flex flex-column">
                     <label>Weight</label>
                     <span id="weight"></span>
                 </div>
-                <div class="col-0 d-flex flex-column">
+                <!-- <div class="col-0 d-flex flex-column">
 
-                </div>
+                </div> -->
                 <div class="col-12 col-xl-6 d-flex flex-column mt-4">
                     <label>Skills</label>
                     <div class="skills-input-container">
                         <select id="skills-select" class="skills-select" multiple="multiple" style="width: 100%;" disabled>
-                            <?php
-
-                            // $skillsArray = session()->get('skills');
-                            // $skillsArray = explode(',', $skillsString);
-                            // $skillsArray = array_map('trim', $skillsArray);
-
-                            // Define all possible skills
-                            // $allSkills = ['Dribbling', 'Shooting', 'Passing', 'Defense', 'Rebounding', 'Footwork', 'Ball-Handling', 'Jumping', 'Teamwork', 'Perimeter', 'Low Post', 'Pullups', 'Coast2Coast'];
-
-                            // foreach ($allSkills as $skill) {
-                            //     $selected = in_array($skill, $skillsArray) ? 'selected' : '';
-                            //     echo "<option value=\"$skill\" $selected>$skill</option>";
-                            // }
-
-                            ?>
                         </select>
                     </div>
                 </div>
@@ -117,7 +102,21 @@
             <div class="modal-body">
                 <form id='frmProfile' action="<?= base_url('editProfile') ?>">
                     <div class="row">
-                        <div class="col-12 form-header">
+                        <div class="col-12 d-flex justify-content-center">
+                            <img id="coverPhotoPreview" src="" alt="Cover Photo Preview">
+                        </div>
+                        <div class="col-12">
+                            <label for="coverPhotoFile" class="form-label">Upload cover photo</label>
+                            <input type="file" class="form-control" id="coverPhotoFile" name="coverPhotoFile" accept=".png, .jpg, .jpeg">
+                        </div>
+                        <div class="col-12 d-flex justify-content-center mt-4">
+                            <img id="profilePreview" src="" alt="Profile Picture Preview">
+                        </div>
+                        <div class="col-12">
+                            <label for="pictureFile" class="form-label">Upload profile picture</label>
+                            <input type="file" class="form-control" id="pictureFile" name="pictureFile" accept=".png, .jpg, .jpeg">
+                        </div>
+                        <div class="col-12 form-header mt-4">
                             <span>General Information</span>
                         </div>
                         <div class="col-6">
@@ -166,28 +165,8 @@
                         </div>
                         <div class="col-12">
                             <label for="skills">Skills:</label>
-                            <div class="skills-input-container">
+                            <div class="modal-skills-input-container" style="position:relative;">
                                 <select id="modal-skills-select" class="skills-select" name="skills[]" multiple="multiple" style="width: 100%; z-index:999;">
-                                    <?php
-
-                                    // foreach ($allSkills as $skill) {
-                                    //     $selected = in_array($skill, $skillsArray) ? 'selected' : '';
-                                    //     echo "<option value=\"$skill\" $selected>$skill</option>";
-                                    // }
-                                    ?>
-                                    <!-- <option value="Dribbling">Dribbling</option>
-                                    <option value="Passing">Passing</option>
-                                    <option value="Defense">Defense</option>
-                                    <option value="Rebounding">Rebounding</option>
-                                    <option value="Footwork">Footwork</option>
-                                    <option value="Ball-Handling">Ball Handling</option>
-                                    <option value="Jumping">Jumping</option>
-                                    <option value="Teamwork">Teamwork</option>
-                                    <option value="Shooting">Shooting</option>
-                                    <option value="Perimeter">Perimeter</option>
-                                    <option value="Low-Post">Low Post</option>
-                                    <option value="Pullups">Pullups</option>
-                                    <option value="Coast-to-Coast">Coast to Coast</option> -->
                                 </select>
                             </div>
                         </div>
@@ -197,7 +176,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id='btnFrmProfile' type="button" class="btn btn-primary">Save</button>
+                <button id='btnFrmProfile' type="submit" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>

@@ -1,13 +1,18 @@
 
-export function ajaxRequest(type, url, data) {
+export function ajaxRequest(type, url, data, options = {}) {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: type,
             url: url,
             data: data,
+            ...options,
             dataType: 'json',
+            beforeSend: function() {
+                $('#loader').show();
+            },
             success: function (response) {
                 resolve(response);
+                $('#loader').fadeOut(300);
             },
             error: function (xhr, status, error) {
                 // reject(xhr, status, error);

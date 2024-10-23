@@ -42,7 +42,9 @@ function highlightActiveLink(url) {
             // Expand submenu if the link is inside one
             if ($(this).closest('.sub-menu').length) {
                 $(this).closest('.has-sub').addClass('expand');
+                $(this).closest('.has-sub').addClass('active');
                 $(this).closest('.sub-menu').slideDown(0); // Ensure the submenu is visible
+
             }
         }
     });
