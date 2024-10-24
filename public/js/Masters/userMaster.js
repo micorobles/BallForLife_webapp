@@ -31,6 +31,8 @@
 
             self.$tblUser = $('#tblUser').DataTable({
                 orderCellsTop: true, // Keeps the sorting on the first row, not the second
+                responsive: true,
+                select: true,
             });
 
             return this;

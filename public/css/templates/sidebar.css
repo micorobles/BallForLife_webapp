@@ -305,7 +305,9 @@ ul {
 }
 
 .sidebar .nav>li>a:focus,
-.sidebar .nav>li>a:hover {
+.sidebar .nav>li>a:hover,
+.sidebar .nav>li.has-sub>ul>li>a:focus,
+.sidebar .nav>li.has-sub>ul>li>a:hover {
     background: 0 0;
     color: #fff;
 }

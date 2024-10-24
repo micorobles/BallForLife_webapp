@@ -14,7 +14,7 @@
 <?= $this->section('content'); ?>
 
 <div class="container-fluid">
-    <table id="tblUser" >
+    <table id="tblUser">
         <thead>
             <tr>
                 <!-- <th hidden>ID</th> -->
@@ -32,6 +32,14 @@
                 <td>Mico</td>
                 <td>Robles</td>
                 <td>Member</td>
+                <td>10-24-24</td>
+            </tr>
+            <tr>
+                <!-- <td hidden>2</td> -->
+                <td>lyka@gmail.com</td>
+                <td>Lyka</td>
+                <td>Jiao</td>
+                <td>Point Guard</td>
                 <td>10-24-24</td>
             </tr>
             <tr>
