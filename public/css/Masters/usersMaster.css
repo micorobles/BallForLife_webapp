@@ -1,0 +1,41 @@
+table {
+    width: 100%;
+    /* border: 1px solid #800000; */
+}
+
+th {
+    background-color: #800000;
+    border: 1px solid #800000;
+    color: white;
+}
+
+td {
+    border: 1px solid #4f54583c;
+}
+
+table thead tr:nth-child(2) > th{
+    background-color: white;
+    padding: 0 !important;
+    border: 1px solid #800000;
+    /* pointer-events: none; */
+    /* padding-right: 0 !important; */
+}
+
+table thead tr:nth-child(2) > th > span > input{
+    /* width: 100%; */
+    /* pointer-events: auto; */
+    border: none;
+    /* border-color: 1px solid gray; */
+}
+
+table thead tr:nth-child(2) > th > span > .form-control:focus {
+    /* color: #212529;
+    background-color: #fff; */
+    border-color: none !important;
+    /* outline: 0; */
+    box-shadow: none !important;
+}
+
+table thead tr:nth-child(2) > th > .dt-column-order{
+    display: none;
+}
