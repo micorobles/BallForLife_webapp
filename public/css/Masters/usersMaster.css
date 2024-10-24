@@ -78,6 +78,20 @@ table thead tr:nth-child(2)>th>.dt-column-order {
     margin-right: 8px;
 }
 
+div.dt-container .dt-input,
+div.dt-container .dt-search input  {
+    border: 1px solid #800000;
+}
+
+div.dt-container .dt-search input:focus-visible {
+    outline: 2px solid #800000;  /* Add a green outline when focused */
+    border: 1px solid #800000;   /* Change border color on focus */
+    background-color: #f0f0f0;   /* Light gray background on focus */
+    color: #333;                 /* Change text color */
+    box-shadow: 0 0 5px rgba(128, 0, 0, 0.5); /* Add subtle box shadow */
+    transition: all 0.2s ease;   /* Smooth transition */
+}
+
 @media screen and (max-width: 767px) {
     div.dt-container div.dt-layout-row:not(.dt-layout-table) {
         display: flex;
@@ -85,42 +99,16 @@ table thead tr:nth-child(2)>th>.dt-column-order {
 }
 
 @media screen and (max-width: 576px) {
-    /* div.dt-container div.dt-layout-row:not(.dt-layout-table) {
-        display: flex;
-    } */
 
+    /* Data table entries and search container */
     #tblUser_wrapper > div:nth-child(1) {
         display: flex;
     }
 
+    /* Data table pagination container */
     #tblUser_wrapper > div:nth-child(3) {
         margin-top: 10px;
         display: block;
     }
 
-    #tblUser_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-start > div {
-        /* display: flex;
-        align-items: center; */
-        /* float: left; */
-        margin: 0;
-    }
-
-    #tblUser_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-start > div > label {
-        display: none;
-    }
-
-    #tblUser_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-end {
-        /* display: flex;
-        justify-content: end;
-        align-items: center; */
-        /* float: right; */
-        margin: 0;
-    }
-
 }
-
-/* @media (max-width: 576) {
-    div.dt-container div.dt-layout-row:not(.dt-layout-table) {
-        display: block;
-    }
-} */
