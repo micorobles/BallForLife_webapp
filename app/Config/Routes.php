@@ -11,6 +11,7 @@ $routes->post('login', 'AccountController::login');
 $routes->get('getUser', 'AccountController::getUser');
 
 $routes->get('userMaster', 'UserMasterController::index');
+$routes->post('getUserList', 'UserMasterController::getUserList');
 
 $routes->get('registration', 'AccountController::registration');
 $routes->post('register', 'AccountController::register');

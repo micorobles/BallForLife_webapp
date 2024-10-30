@@ -26,30 +26,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <!-- <td hidden>1</td> -->
-                <td>mic@gmail.com</td>
-                <td>Mico</td>
-                <td>Robles</td>
-                <td>Member</td>
-                <td>10-24-24</td>
-            </tr>
-            <tr>
-                <!-- <td hidden>2</td> -->
-                <td>lyka@gmail.com</td>
-                <td>Lyka</td>
-                <td>Jiao</td>
-                <td>Point Guard</td>
-                <td>10-24-24</td>
-            </tr>
-            <tr>
-                <!-- <td hidden>2</td> -->
-                <td>lyka@gmail.com</td>
-                <td>Lyka</td>
-                <td>Jiao</td>
-                <td>Point Guard</td>
-                <td>10-24-24</td>
-            </tr>
+           
         </tbody>
     </table>
 </div>
