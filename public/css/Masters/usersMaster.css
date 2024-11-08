@@ -1,3 +1,28 @@
+.buttons-container > button {   
+    width: 25%;
+}
+
+.drpdownStatus {
+    color: white; /* Text color for the selected dropdown */
+    /* Example background color (bg-info) */
+}
+
+.drpdownStatus option {
+    color: black; /* Keep option text color unchanged */
+    background-color: white; /* Keep option background color unchanged */
+    font-weight: 300;
+
+}
+
+.drpdownStatus:focus {
+    outline: none; /* Remove focus outline if you prefer */
+}
+
+/* If you want to change caret color when text is white */
+.drpdownStatus.selectpicker::after {
+    border-top-color: white !important; /* Caret color */
+}
+
 table {
     width: 100%;
     /* border: 1px solid #800000; */

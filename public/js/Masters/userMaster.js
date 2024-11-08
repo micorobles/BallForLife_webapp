@@ -19,7 +19,7 @@
             if (!$('#tblUser').hasClass('dataTable')) {
 
                 $('#tblUser thead tr').clone(true).appendTo('#tblUser thead');
-                $('#tblUser thead tr:nth-child(2) th').each(function (i) {  
+                $('#tblUser thead tr:nth-child(2) th').each(function (i) {
                     var title = $(this).text();
                     $(this).html("<input type='text' class='form-control form-control-sm' placeholder='" + title + "' />");
 
@@ -31,7 +31,7 @@
                                 .draw();
                         }
                     });
-                    
+
                 });
 
             }
@@ -63,20 +63,84 @@
                     },
                 },
                 columns: [
+                    { data: "id", visible: false },
                     { data: "email" },
                     { data: "firstname" },
                     { data: "lastname" },
                     { data: "position" },
+                    {
+                        data: "status",
+                        render: function (data, type, row) {
+                            const statuses = ['Active', 'Inactive', 'Ban', 'Pending'];
+                            let optionsHTML = statuses
+                                .map(status =>
+                                    `<option value="${status}" ${data === status ? 'selected' : ''}>${status}</option>`
+                                )
+                                .join("");
+                            // Return the dropdown HTML
+                            return `
+                                    <select class="form-select form-select-sm drpdownStatus" data-id=${row.id} disabled>
+                                        ${optionsHTML}
+                                    </select>
+                                    
+                                    `;
+                        }
+                    },
                     { data: "updated_at" },
                 ],
                 drawCallback: function (settings) {
+                    $('.drpdownStatus').each(function () {
+                        self.applyStatusColor(this);
+                    });
                     console.log("Table drawn successfully");
                 },
             });
 
-            return this;
 
+            self.$tblUser.on('select', function (e, dt, type, indexes) {
+                if (type === 'row') {
+                    // Get data of selected rows
+                    var selectedRow = self.$tblUser
+                        .rows(indexes)
+                        .data()
+                        .toArray();  // Convert the data to an array if you want to work with it
+
+                    // Iterate through the selected rows' data and log each row's data or process as needed
+                    selectedRow.forEach(function (row) {
+                        // console.log('Selected Row Data:', row); // Outputs the full row data
+                        $('#btnDelete').prop('disabled', false);
+                        $('#btnView').prop('disabled', false);
+                        $('.drpdownStatus').prop('disabled', false);
+                        console.log('Selected ID:', row.id); // Outputs the ID if "id" is part of the data
+                    });
+                }
+            });
+
+            return this;
         },
+
+        applyStatusColor: function (dropdown) {
+            const status = dropdown.options[dropdown.selectedIndex].value;
+            // console.log(status);
+
+            $(dropdown).removeClass('bg-success bg-warning bg-danger bg-secondary');
+            switch (status) {
+                case 'Active':
+                    $(dropdown).addClass('bg-success text-white');
+                    break;
+                case 'Inactive':
+                    $(dropdown).addClass('bg-warning');
+                    break;
+                case 'Ban':
+                    $(dropdown).addClass('bg-danger');
+                    break;
+                case 'Pending':
+                    $(dropdown).addClass('bg-info');
+                    break;
+                default:
+                    dropdown.style.backgroundColor = '';
+            }
+        }
     }
 
     UserMaster.init.prototype = UserMaster.prototype;
@@ -84,5 +148,19 @@
     $(document).ready(function () {
         var _U = UserMaster();
         _U.drawDataTables();
+
+        $(document).on('click', function (e) {
+            if (
+                !$(e.target).closest('#tblUser').length &&
+                !$(e.target).closest('#btnDelete').length &&
+                !$(e.target).closest('#btnView').length &&
+                !$(e.target).closest('.drpdownStatus').length
+            ) {
+                // Deselect all rows if the click is outside the table or on specified buttons
+                _U.$tblUser.rows().deselect();
+                $('#btnDelete').prop('disabled', true);
+                $('#btnView').prop('disabled', true);
+            }
+        });
     });
 })();

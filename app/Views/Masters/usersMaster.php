@@ -13,15 +13,21 @@
 
 <?= $this->section('content'); ?>
 
-<div class="container-fluid">
+<div class="container buttons-container">
+    <button id="btnDelete" class="btn btn-danger font-sm me-2" disabled>Delete</button>
+    <button id="btnView" class="btn btn-secondary font-sm" disabled>View</button>
+    <!-- <button class="btn btn-primary"></button> -->
+</div>
+<div class="container-fluid border-top mt-2">
     <table id="tblUser">
         <thead>
             <tr>
-                <!-- <th hidden>ID</th> -->
+                <th>ID</th>
                 <th>E-mail Address</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Position</th>
+                <th>Status</th>
                 <th>Update Date</th>
             </tr>
         </thead>

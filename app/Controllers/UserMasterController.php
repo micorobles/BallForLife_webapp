@@ -23,7 +23,7 @@ class UserMasterController extends BaseController
         $start = intval($this->request->getPost('start'));
         $length = intval($this->request->getPost('length'));
         $order = $this->request->getPost('order') ?? []; // Use empty array if not set
-        $columns = ['email', 'firstname', 'lastname', 'position', 'updated_at'];
+        $columns = ['email', 'firstname', 'lastname', 'position', 'status','updated_at'];
 
         // Determine sorting
         $sortColumnIndex = $order[0]['column'] ?? 0; // Default to first column
@@ -62,13 +62,16 @@ class UserMasterController extends BaseController
         $totalCount = $users->countAll();
         $filteredCount = $builder->countAllResults(false); // Count with current filters
 
+        error_log('User list: ' . print_r($userList, true));
         // Prepare the data response
         $data = array_map(function ($user) {
             return [
+                'id' => $user['ID'],
                 'email' => $user['email'],
                 'firstname' => $user['firstname'],
                 'lastname' => $user['lastname'],
                 'position' => $user['position'],
+                'status' => $user['status'],
                 'updated_at' => $user['updated_at']
             ];
         }, $userList);

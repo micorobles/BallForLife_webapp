@@ -16,7 +16,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://192.168.1.8:8080/';
+    public string $baseURL = 'http://192.168.1.21:8080/';
 
     /**
      * Summary of session settings
