@@ -1,8 +1,18 @@
-import { ajaxRequest, showToast, ucfirst } from "../global/global-functions.js";
+import {
+    ajaxRequest, showToast, ucfirst, setTextIfExists, setValueIfExists, setSrcIfExists,
+    clearSelectIfExists, addOptionsIfExists
+} from "../global/global-functions.js";
+
+const currentURL = window.location.pathname;
+const userID = currentURL.split('/').pop();
 
 $(function () {
 
-    getProfileData();
+
+    if (currentURL.includes('profile/')) {
+        console.log(userID);
+        getProfileData(userID);
+    }
     initializeSelect2();
 
     // Bind event handlers
@@ -58,6 +68,9 @@ async function handleEditProfile(e) {
     const editUser = await ajaxRequest('POST', url, formData, {
         contentType: false,
         processData: false,
+    }).catch(function (error) {
+        console.error("AJAX error response:", error.responseText); // Log the response from the server
+        throw error;  // Rethrow the error after logging
     });
 
 
@@ -69,7 +82,7 @@ async function handleEditProfile(e) {
         }
 
         // location.reload();
-        getProfileData();
+        getProfileData(userID);
         showToast('success', '', editUser.message);
         // console.log(editUser);
 
@@ -83,28 +96,30 @@ async function handleEditProfile(e) {
     }
 }
 
-async function getProfileData() {
+export async function getProfileData(userID) {
 
-    const getUserData = await ajaxRequest('GET', getUserURL, '');
+    const getUserData = await ajaxRequest('GET', getUserURL + userID, '');
     const user = getUserData.data;
-    
+
     if (!getUserData.success) {
         console.error('Error: ', getUserData.message);
         return;
     }
 
     populateData(user);
-    
-    
+
+
 }
 
 function populateData(user) {
-    const skillsArray = JSON.parse(user.skills) ?? '';
-    
-    // console.log(user.profilePic);
+    // const skillsArray = JSON.parse(user.skills) ?? '';
+    const skillsArray = Array.isArray(user.skills) ? user.skills : JSON.parse(user.skills || '[]');
+
     // Clear existing options
-    $('#skills-select').empty();
-    $('#modal-skills-select').empty();
+    // $('#skills-select').empty();
+    // $('#modal-skills-select').empty();
+    clearSelectIfExists('#skills-select');
+    clearSelectIfExists('#modal-skills-select');
 
     const allSkills = [
         'Dribbling', 'Shooting', 'Passing', 'Defense', 'Rebounding', 'Footwork',
@@ -112,39 +127,94 @@ function populateData(user) {
         'Coast2Coast'
     ];
 
-    allSkills.forEach(function (skill) {
-        const selected = skillsArray.includes(skill) ? 'selected' : '';
-        $('#skills-select').append(`<option value="${skill}" ${selected}>${skill}</option>`);
-        $('#modal-skills-select').append(`<option value="${skill}" ${selected}>${skill}</option>`);
-    });
+    addOptionsIfExists('#skills-select', allSkills, skillsArray);
+    addOptionsIfExists('#modal-skills-select', allSkills, skillsArray);
+    // allSkills.forEach(function (skill) {
+    //     const selected = skillsArray.includes(skill) ? 'selected' : '';
+    //     $('#skills-select').append(`<option value="${skill}" ${selected}>${skill}</option>`);
+    //     $('#modal-skills-select').append(`<option value="${skill}" ${selected}>${skill}</option>`);
+    // });
 
-    $('#coverPhoto').attr('src', baseURL + user.coverPhoto);
-    $('#coverPhotoPreview').attr('src', baseURL + user.coverPhoto);
-    $('#profilePic').attr('src', baseURL + user.profilePic);
-    $('#profilePreview').attr('src', baseURL + user.profilePic);
-    $('#firstname').text(ucfirst(user.firstname));
-    $('#modal-firstname').val(ucfirst(user.firstname));
-    $('#lastname').text(ucfirst(user.lastname));
-    $('#modal-lastname').val(ucfirst(user.lastname));
-    $('#contactNum').text(user.contactnum);
-    $('#modal-contactNum').val(user.contactnum);
-    $('#email').text(user.email);
-    $('#modal-email').val(user.email);
-    $('#_position').text(ucfirst(user.position));
-    $('#modal-position').val(ucfirst(user.position));
-    $('#height').text(user.heightFeet + "'" + user.heightInch);
-    $('#weight').text(user.weight + ' lbs');
-    $('#modal-heightFeet').val(user.heightFeet);
-    $('#modal-heightInch').val(user.heightInch);
-    $('#modal-weight').val(user.weight);
+    setSrcIfExists('#coverPhoto', baseURL + user.coverPhoto);
+    setSrcIfExists('#coverPhotoPreview', baseURL + user.coverPhoto);
+    setSrcIfExists('#profilePic', baseURL + user.profilePic);
+    setSrcIfExists('#profilePreview', baseURL + user.profilePic);
+    // $('#coverPhoto').attr('src', baseURL + user.coverPhoto);
+    // $('#coverPhotoPreview').attr('src', baseURL + user.coverPhoto);
+    // $('#profilePic').attr('src', baseURL + user.profilePic);
+    // $('#profilePreview').attr('src', baseURL + user.profilePic);
 
-    // Populate header changes
-    $('#header-profilePic').attr('src', baseURL + user.profilePic);
-    $('#header-fullName').text(ucfirst(user.firstname) + ' ' + ucfirst(user.lastname));
+    setTextIfExists('#txtStatus', ucfirst(user.status));
+    // $('#txtStatus').text(ucfirst(user.status));
 
-    // Populate sidebar changes
-    $('#sidebar-profilePic').attr('src', baseURL + user.profilePic);
-    $('#username').text(ucfirst(user.firstname) + ' ' + ucfirst(user.lastname));
-    $('#position').text(ucfirst(user.position));
+    let container = $('.status-text');
+
+    if (container.length) {
+        $(container).removeClass('bg-success bg-warning bg-danger bg-secondary');
+        switch (user.status) {
+            case 'Active':
+                $(container).css('background-color', '#198754');
+                break;
+            case 'Inactive':
+                $(container).css('background-color', '#ffc107');
+                break;
+            case 'Ban':
+                $(container).css('background-color', '#dc3545');
+                break;
+            case 'Pending':
+                $(container).css('background-color', '#0dcaf0');
+                break;
+            default:
+                $(container).css('background-color', '');
+        }
+    }
+
+    setTextIfExists('#firstname', ucfirst(user.firstname));
+    setValueIfExists('#modal-firstname', ucfirst(user.firstname));
+    // $('#firstname').text(ucfirst(user.firstname));
+    // $('#modal-firstname').val(ucfirst(user.firstname));
+
+    setTextIfExists('#lastname', ucfirst(user.lastname));
+    setValueIfExists('#modal-lastname', ucfirst(user.lastname));
+    // $('#lastname').text(ucfirst(user.lastname));
+    // $('#modal-lastname').val(ucfirst(user.lastname));
+
+    setTextIfExists('#contactNum', user.contactnum);
+    setValueIfExists('#modal-contactNum', user.contactnum);
+    // $('#contactNum').text(user.contactnum);
+    // $('#modal-contactNum').val(user.contactnum);
+
+    setTextIfExists('#email', user.email);
+    setValueIfExists('#modal-email', user.email);
+    // $('#email').text(user.email);
+    // $('#modal-email').val(user.email);
+
+    setTextIfExists('#_position', ucfirst(user.position));
+    setValueIfExists('#modal-position', ucfirst(user.position));
+    // $('#_position').text(ucfirst(user.position));
+    // $('#modal-position').val(ucfirst(user.position));
+
+    setTextIfExists('#height', `${user.heightFeet}'${user.heightInch}`);
+    setValueIfExists('#modal-heightFeet', user.heightFeet);
+    setValueIfExists('#modal-heightInch', user.heightInch);
+    // $('#height').text(user.heightFeet + "'" + user.heightInch);
+    // $('#modal-heightFeet').val(user.heightFeet);
+    // $('#modal-heightInch').val(user.heightInch);
+
+    setTextIfExists('#weight', `${user.weight} lbs`);
+    setValueIfExists('#modal-weight', user.weight);
+    // $('#weight').text(user.weight + ' lbs');
+    // $('#modal-weight').val(user.weight);
+
+    if (currentURL.includes('profile/')) {
+        // Populate header changes
+        $('#header-profilePic').attr('src', baseURL + user.profilePic);
+        $('#header-fullName').text(ucfirst(user.firstname) + ' ' + ucfirst(user.lastname));
+
+        // Populate sidebar changes
+        $('#sidebar-profilePic').attr('src', baseURL + user.profilePic);
+        $('#username').text(ucfirst(user.firstname) + ' ' + ucfirst(user.lastname));
+        $('#position').text(ucfirst(user.position));
+    }
 
 }

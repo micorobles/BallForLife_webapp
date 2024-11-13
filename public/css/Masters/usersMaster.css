@@ -1,26 +1,16 @@
-.buttons-container > button {   
-    width: 25%;
+.crud-buttons {   
+    width: 100%;
 }
 
-.drpdownStatus {
-    color: white; /* Text color for the selected dropdown */
-    /* Example background color (bg-info) */
+.status-container {
+    text-align: center;
+    padding: 4px;
+    border-radius: 3px;
+    border-color: transparent;
 }
 
-.drpdownStatus option {
-    color: black; /* Keep option text color unchanged */
-    background-color: white; /* Keep option background color unchanged */
-    font-weight: 300;
-
-}
-
-.drpdownStatus:focus {
-    outline: none; /* Remove focus outline if you prefer */
-}
-
-/* If you want to change caret color when text is white */
-.drpdownStatus.selectpicker::after {
-    border-top-color: white !important; /* Caret color */
+.status-container span {
+    font-weight: 400;
 }
 
 table {
@@ -115,6 +105,36 @@ div.dt-container .dt-search input:focus-visible {
     color: #333;                 /* Change text color */
     box-shadow: 0 0 5px rgba(128, 0, 0, 0.5); /* Add subtle box shadow */
     transition: all 0.2s ease;   /* Smooth transition */
+}
+
+#frmUserProfile .form-check-input {
+    margin-top: .3rem;
+}
+
+#frmUserProfile .form-check-label {
+    font-weight: 400;
+    font-size: 15px;
+    color: black;
+}
+
+#frmUserProfile .password-input-group {
+    position: relative;
+}
+
+#frmUserProfile #pwCopy {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    cursor: pointer;
+}
+
+#frmUserProfile #shuffle-icon {
+    cursor: pointer;
+    border-radius: 0rem .25rem .25rem 0rem;
+    background-color: #800000;
+    border: 1px solid #800000bf;
+    color: white;
+    font-weight: 400;
 }
 
 @media screen and (max-width: 767px) {

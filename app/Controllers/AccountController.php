@@ -21,10 +21,10 @@ class AccountController extends BaseController
         return view('Login/login', $data);
     }
 
-    public function getUser()
+    public function getUser($userID)
     {
         $users = new User();
-        $userID = session()->get('ID');
+        // $userID = session()->get('ID');
 
         $getUser = $users->find($userID);
 
@@ -169,7 +169,7 @@ class AccountController extends BaseController
         }
     }
 
-    public function profile()
+    public function profile($userId)
     {
         $data['title'] = "Profile";
         return view('Profile/profile', $data);
@@ -197,6 +197,8 @@ class AccountController extends BaseController
                 'weight' => $this->request->getPost('weight'),
                 'skills' => json_encode($this->request->getPost('skills')), // Convert array to JSON
             ];
+
+            // $profileData['skills'] = json_encode($this->request->getPost('skills')); // Convert array to JSON
 
             // Handle file uploads
             $this->handleFileUpload($this->request->getFile('pictureFile'), 'profiles', $userID, $profileData, 'profilePic');
@@ -227,7 +229,7 @@ class AccountController extends BaseController
             // Set skills separately
             $session->set('skills', json_decode($profileData['skills']));
 
-            error_log('SESSION DATA: ' . print_r($session->get(), true));
+            // error_log('SESSION DATA: ' . print_r($session->get(), true));
 
             return $this->jsonResponse(true, 'Profile Updated!', $profileData);
         } catch (\Exception $e) {

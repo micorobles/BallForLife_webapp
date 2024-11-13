@@ -31,7 +31,7 @@
                 </div>
 
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="<?= base_url('profile')?>">Profile</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('profile/' . session()->get('ID') )?>">Profile</a></li>
                     <li><a class="dropdown-item" href="#">Messages</a></li>
                     <li>
                         <hr class="dropdown-divider">

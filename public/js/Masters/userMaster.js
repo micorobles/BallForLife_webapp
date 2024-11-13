@@ -1,3 +1,6 @@
+import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } from "../global/global-functions.js";
+import { getProfileData } from "../Profile/profile.js";
+
 "use strict";
 (function () {
     const UserMaster = function () {
@@ -71,25 +74,18 @@
                     {
                         data: "status",
                         render: function (data, type, row) {
-                            const statuses = ['Active', 'Inactive', 'Ban', 'Pending'];
-                            let optionsHTML = statuses
-                                .map(status =>
-                                    `<option value="${status}" ${data === status ? 'selected' : ''}>${status}</option>`
-                                )
-                                .join("");
-                            // Return the dropdown HTML
+
                             return `
-                                    <select class="form-select form-select-sm drpdownStatus" data-id=${row.id} disabled>
-                                        ${optionsHTML}
-                                    </select>
-                                    
-                                    `;
+                                <div class="status-container">
+                                    <span>${data}</span>
+                                </div>
+                            `;
                         }
                     },
                     { data: "updated_at" },
                 ],
                 drawCallback: function (settings) {
-                    $('.drpdownStatus').each(function () {
+                    $('.status-container').each(function () {
                         self.applyStatusColor(this);
                     });
                     console.log("Table drawn successfully");
@@ -107,41 +103,209 @@
 
                     // Iterate through the selected rows' data and log each row's data or process as needed
                     selectedRow.forEach(function (row) {
-                        // console.log('Selected Row Data:', row); // Outputs the full row data
-                        $('#btnDelete').prop('disabled', false);
-                        $('#btnView').prop('disabled', false);
-                        $('.drpdownStatus').prop('disabled', false);
-                        console.log('Selected ID:', row.id); // Outputs the ID if "id" is part of the data
+                        self.selectedRowID = row.id;
+                        $('.crud-buttons').prop('disabled', false);
+                        // console.log('Selected ID:', row.id); // Outputs the ID if "id" is part of the data
                     });
+                }
+            });
+
+            self.$tblUser.on('draw', function () {
+                $('.status-container').each(function () {
+                    self.applyStatusColor(this);
+                });
+                // console.log("Colors applied on draw event");
+            });
+
+            return this;
+        },
+        applyStatusColor: function (container) {
+            const status = $(container).find('span').text().trim();
+            // console.log("Applying color for status:", status);
+            // console.log(status);
+
+            $(container).removeClass('bg-success bg-warning bg-danger bg-secondary');
+            switch (status) {
+                case 'Active':
+                    $(container).addClass('bg-success text-white');
+                    break;
+                case 'Inactive':
+                    $(container).addClass('bg-warning');
+                    break;
+                case 'Ban':
+                    $(container).addClass('bg-danger');
+                    break;
+                case 'Pending':
+                    $(container).addClass('bg-info');
+                    break;
+                default:
+                    $(container).css('background-color', '');
+            }
+            return this;
+        },
+        modifyUserStatusOrPassword: function () {
+            var self = this;
+            const modifyURL = baseURL + `modifyUser/${self.selectedRowID}`;
+
+            // $('#frmUserProfile input:disabled').prop('disabled', false);
+
+            let formData = new FormData($('#frmUserProfile')[0]);
+
+            // for (let [key, value] of formData.entries()) {
+            //     console.log(key + ': ' + value);
+            // }
+
+            showQuestionToast({
+                message: 'Are you sure you want to modify this user?',
+                onYes: async function (instance, toast) {
+                    const modifyUser = await ajaxRequest('POST', modifyURL, formData, {
+                        contentType: false,
+                        processData: false,
+                    }).catch(function (error) {
+                        console.error("AJAX error response:", error.responseText);
+                        throw error;
+                    });
+
+                    if (!modifyUser) {
+                        showToast('error', 'Error: ', modifyUser.message);
+                    }
+
+                    showToast('success', '', modifyUser.message);
+                    $('#modifyUserModal').modal('hide');
+                    self.$tblUser.ajax.reload();
+
+                },
+            });
+
+            iziToast.question({
+                timeout: 20000,
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'question',
+                zindex: 999999,
+                // title: 'Confirm',
+                message: 'Are you sure to modify this user?',
+                position: 'center',
+                buttons: [
+                    ['<button><b>YES</b></button>', async function (instance, toast) {
+
+                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                        
+                    }, true],
+                    ['<button>NO</button>', function (instance, toast) {
+
+                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+                    }],
+                ],
+            });
+
+
+
+        },
+        populateUserModal: async function () {
+            var self = this;
+
+            const getUserURL = baseURL + `getUser/${self.selectedRowID}`;
+            const frmID = 'frmUserProfile';
+
+            const getUser = await ajaxRequest('GET', getUserURL, '');
+
+            if (!getUser) {
+                showToast('error', 'Error: ', getUser.message);
+            }
+
+            const userDetails = getUser.data;
+
+            var formInputs = [];
+
+            $.each($(`#${frmID} [id*='modal-']`), function (i, e) {
+                var $input = $(e);
+                formInputs.push({
+                    id: $input.attr('id'),
+                    name: $input.attr('name'),
+                    type: $input.attr('type'),
+                    element: $input
+                });
+            });
+
+            // console.log('FORM INPUTS: ', formInputs);
+            $.each(userDetails, function (key, value) {
+                var strippedKey = key.trim();
+
+                // Find the form input element that matches the key
+                var formInput = formInputs.find(input => input.name.replace('modal-', '') === strippedKey);
+
+                if (formInput) {
+                    // console.log('FORM INPUT: ', formInput);
+                    if (formInput.type === 'text') {
+                        formInput.element.val(value);
+                    }
+
+                    if (formInput.type === 'radio') {
+                        $(`input[name="${formInput.name}"]`).each(function () {
+                            if ($(this).val() === value) {
+                                $(this).prop('checked', true);
+                            }
+                        });
+                    }
                 }
             });
 
             return this;
         },
+        generatePassword: function () {
+            var length = 8,
+                characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()",
+                password = '';
 
-        applyStatusColor: function (dropdown) {
-            const status = dropdown.options[dropdown.selectedIndex].value;
-            // console.log(status);
-
-            $(dropdown).removeClass('bg-success bg-warning bg-danger bg-secondary');
-            switch (status) {
-                case 'Active':
-                    $(dropdown).addClass('bg-success text-white');
-                    break;
-                case 'Inactive':
-                    $(dropdown).addClass('bg-warning');
-                    break;
-                case 'Ban':
-                    $(dropdown).addClass('bg-danger');
-                    break;
-                case 'Pending':
-                    $(dropdown).addClass('bg-info');
-                    break;
-                default:
-                    dropdown.style.backgroundColor = '';
+            for (var i = 0, n = characters.length; i < length; ++i) {
+                password += characters.charAt(Math.floor(Math.random() * n));
             }
+
+            return password;
+        },
+        copyPassword: function () {
+            var passwordValue = $('#modal-password').val();
+
+            // Create a temporary div with contentEditable
+            const tempDiv = document.createElement("div");
+            tempDiv.contentEditable = true; // Make it editable
+            document.body.appendChild(tempDiv); // Append it to the body
+
+            // Set the text and select it
+            tempDiv.innerText = passwordValue;
+            const range = document.createRange();
+            range.selectNodeContents(tempDiv);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            // Copy the selected text
+            try {
+                const successful = document.execCommand("copy");
+                if (successful) {
+                    //  alert("Password copied to clipboard!");
+                    showToast('info', '', 'Password copied to clipboard.');
+                } else {
+                    //  alert("Failed to copy password.");
+                    showToast('error', '', 'Failed to copy password');
+                }
+            } catch (err) {
+                console.error("Fallback: Unable to copy", err);
+            }
+
+            // Clean up: remove the temporary div and clear selection
+            document.body.removeChild(tempDiv);
+            selection.removeAllRanges();
+
+            return this;
         }
     }
+
+
 
     UserMaster.init.prototype = UserMaster.prototype;
 
@@ -149,18 +313,75 @@
         var _U = UserMaster();
         _U.drawDataTables();
 
+        ////////////////////////////////////////////////////////////////
+        ///// TABLE EVENTS
+        ////////////////////////////////////////////////////////////////
+
         $(document).on('click', function (e) {
             if (
                 !$(e.target).closest('#tblUser').length &&
-                !$(e.target).closest('#btnDelete').length &&
-                !$(e.target).closest('#btnView').length &&
-                !$(e.target).closest('.drpdownStatus').length
+                !$(e.target).closest('.crud-buttons').length &&
+                !$(e.target).closest('#viewProfileModal, #modifyUserModal').length &&
+                !$(e.target).closest('td').length
             ) {
                 // Deselect all rows if the click is outside the table or on specified buttons
-                _U.$tblUser.rows().deselect();
-                $('#btnDelete').prop('disabled', true);
-                $('#btnView').prop('disabled', true);
+                deselectRowsAndDisableButtons();
+            }
+
+        });
+
+        $(document).on('keydown', function (event) {
+
+            if (event.key === 'Escape' && !isIziToastActive) {
+                $('#viewProfileModal').modal('hide');
+                $('#modifyUserModal').modal('hide');
+                // deselectRowsAndDisableButtons();
             }
         });
+
+        $('#tblUser tbody').on('dblclick', 'tr', function (e) {
+            _U.$tblUser.rows($(this)).select();
+            $('#viewProfileModal').modal('show');
+            profileAction();
+        });
+
+        $('#btnView').on('click', profileAction);
+
+        $('#btnModifyUser').on('click', function () {
+            _U.populateUserModal();
+        });
+
+        $('#btnSaveUser').click(function (e) {
+            e.preventDefault();
+            console.log('submitted');
+            _U.modifyUserStatusOrPassword();
+        });
+
+        ////////////////////////////////////////////////////////////////
+        ///// MODAL/FORM FUNCTIONS
+        ////////////////////////////////////////////////////////////////
+
+        $('#pwCopy').click(_U.copyPassword);
+
+        $('#shuffle-icon').click(function () {
+            $('#modal-password').val(_U.generatePassword);
+        });
+
+        ////////////////////////////////////////////////////////////////
+        ///// FUNCTIONS
+        ////////////////////////////////////////////////////////////////
+
+        function deselectRowsAndDisableButtons() {
+            _U.$tblUser.rows().deselect();
+            $('.crud-buttons').prop('disabled', true);
+        }
+
+        function profileAction() {
+            const rowID = _U.selectedRowID ?? 0;
+            console.log(rowID);
+            // $('#viewProfileModal').modal('show');
+            getProfileData(rowID);
+        }
     });
+
 })();

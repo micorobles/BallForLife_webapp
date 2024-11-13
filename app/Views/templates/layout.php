@@ -8,15 +8,16 @@
     <?= load_bundle_css() ?>
     <!-- Additional CSS -->
     <?= $this->renderSection('css') ?>
+
 </head>
 
 <body>
 
-<div class="spinner-overlay" id="loader">
-    <div class="spinner">
-        <div class="ball"></div>
+    <div class="spinner-overlay" id="loader">
+        <div class="spinner">
+            <div class="ball"></div>
+        </div>
     </div>
-</div>
 
     <!-- Header start -->
     <?php
@@ -58,8 +59,15 @@
                     $last_index = count($breadcrumbs) - 1; // Get the index of the last breadcrumb
 
                     foreach ($breadcrumbs as $index => $breadcrumb) {
+
+                        // Check if the breadcrumb is related to the profile page
+                        if (strpos($breadcrumb['url'], 'profile/') !== false) {
+                            $breadcrumb['title'] = session()->get('firstname');
+                        }
+                        $breadcrumb['url'] = base_url('profile/' . session()->get('ID'));
+
                         if ($index === $last_index) {
-                            // If it's the last breadcrumb, display it as plain text
+                            // If it's the last breadcrumb, display it as plain text and make it active
                             echo '<li class="breadcrumb-item active" aria-current="page"><a href="javascript:;"> ' . esc($breadcrumb['title']) . '</a></li>';
                         } else {
                             echo '<li class="breadcrumb-item"><a href="' . esc($breadcrumb['url']) . '">' . esc($breadcrumb['title']) . '</a></li>';
@@ -98,8 +106,31 @@
     ?>
 
     </div>
+
+
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="confirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title medium-text" id="confirmationModalLabel">Confirmation</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id='btnSaveUser' type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
-        const getUserURL = '<?= base_url('getUser') ?>'
+        const getUserURL = '<?= base_url('getUser/') ?>'
         const baseURL = '<?= base_url(); ?>';
     </script>
     <?= load_bundle_js() ?>

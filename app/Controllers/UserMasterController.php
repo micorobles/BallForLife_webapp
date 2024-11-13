@@ -33,7 +33,8 @@ class UserMasterController extends BaseController
         $sortColumn = $columns[$sortColumnIndex]; 
 
         // Initialize query builder
-        $builder = $users->orderBy($sortColumn, $sortDirection);
+        $builder = $users->where('is_deleted', false)
+                         ->orderBy($sortColumn, $sortDirection);
 
         // Apply column-specific search
         foreach ($columns as $index => $columnName) {
@@ -82,5 +83,19 @@ class UserMasterController extends BaseController
             "recordsFiltered" => $filteredCount, // Updated to count after filtering
             "data" => $data
         ]);
+    }
+    public function modifyUserStatusOrPassword($userID) {
+        $users = new User();
+
+        $userChanges['status'] = $this->request->getPost('modal-status');
+        // $userChanges['status'] = $this->request->getPost('modal-status');
+
+        $modifyUser = $users->update($userID, $userChanges);
+
+        if (!$modifyUser) {
+            return $this->jsonResponse(false, 'Error modifying user');
+        }
+
+        return $this->jsonResponse(true, 'User modified', $modifyUser);
     }
 }
