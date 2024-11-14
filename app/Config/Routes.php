@@ -13,6 +13,7 @@ $routes->get('getUser/(:num)', 'AccountController::getUser/$1');
 $routes->get('userMaster', 'UserMasterController::index');
 $routes->post('getUserList', 'UserMasterController::getUserList');
 $routes->post('modifyUser/(:num)', 'UserMasterController::modifyUserStatusOrPassword/$1');
+$routes->post('deleteUser/(:num)', 'UserMasterController::deleteUser/$1');
 
 $routes->get('registration', 'AccountController::registration');
 $routes->post('register', 'AccountController::register');

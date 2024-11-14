@@ -104,6 +104,8 @@ import { getProfileData } from "../Profile/profile.js";
                     // Iterate through the selected rows' data and log each row's data or process as needed
                     selectedRow.forEach(function (row) {
                         self.selectedRowID = row.id;
+                        self.selectedRowFirstName = row.firstname;
+                        self.selectedRowLastName = row.lastname;
                         $('.crud-buttons').prop('disabled', false);
                         // console.log('Selected ID:', row.id); // Outputs the ID if "id" is part of the data
                     });
@@ -151,9 +153,9 @@ import { getProfileData } from "../Profile/profile.js";
 
             let formData = new FormData($('#frmUserProfile')[0]);
 
-            // for (let [key, value] of formData.entries()) {
-            //     console.log(key + ': ' + value);
-            // }
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
+            }
 
             showQuestionToast({
                 message: 'Are you sure you want to modify this user?',
@@ -170,40 +172,33 @@ import { getProfileData } from "../Profile/profile.js";
                         showToast('error', 'Error: ', modifyUser.message);
                     }
 
+                    console.log(modifyUser);
                     showToast('success', '', modifyUser.message);
                     $('#modifyUserModal').modal('hide');
                     self.$tblUser.ajax.reload();
 
                 },
             });
+        },
+        deleteUser: function () {
+            var self = this;
+            const deleteURL = baseURL + `deleteUser/${self.selectedRowID}`;
 
-            iziToast.question({
-                timeout: 20000,
-                close: false,
-                overlay: true,
-                displayMode: 'once',
-                id: 'question',
-                zindex: 999999,
-                // title: 'Confirm',
-                message: 'Are you sure to modify this user?',
-                position: 'center',
-                buttons: [
-                    ['<button><b>YES</b></button>', async function (instance, toast) {
+            console.log('Name: ', self.selectedRowFirstName);
+            showQuestionToast({
+                message: `Are you sure you want to delete ${self.selectedRowFirstName} ${self.selectedRowLastName}?`,
+                onYes: async function (instance, toast) {
+                    const deleteUser = await ajaxRequest('POST', deleteURL, '');
+                      
+                    if (!deleteUser) {
+                        showToast('error', 'Error: ', deleteUser.message);
+                    }
 
-                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-
-                        
-                    }, true],
-                    ['<button>NO</button>', function (instance, toast) {
-
-                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-
-                    }],
-                ],
+                    console.log(deleteUser);
+                    showToast('success', '', deleteUser.message);
+                    self.$tblUser.ajax.reload();
+                },
             });
-
-
-
         },
         populateUserModal: async function () {
             var self = this;
@@ -322,7 +317,7 @@ import { getProfileData } from "../Profile/profile.js";
                 !$(e.target).closest('#tblUser').length &&
                 !$(e.target).closest('.crud-buttons').length &&
                 !$(e.target).closest('#viewProfileModal, #modifyUserModal').length &&
-                !$(e.target).closest('td').length
+                !$(e.target).closest('td').length && !isIziToastActive
             ) {
                 // Deselect all rows if the click is outside the table or on specified buttons
                 deselectRowsAndDisableButtons();
@@ -355,6 +350,11 @@ import { getProfileData } from "../Profile/profile.js";
             e.preventDefault();
             console.log('submitted');
             _U.modifyUserStatusOrPassword();
+        });
+
+        $('#btnDeleteUser').click(function (e) {
+            e.preventDefault();
+            _U.deleteUser();
         });
 
         ////////////////////////////////////////////////////////////////

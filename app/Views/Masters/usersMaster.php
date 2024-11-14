@@ -23,7 +23,7 @@
             </button>
         </div>
         <div class="col-6 col-md-4 col-lg-3">
-            <button id="btnDelete" class="crud-buttons btn btn-danger font-sm me-2" disabled><i class="fa-regular fa-trash-can me-1"></i>Delete</button>
+            <button id="btnDeleteUser" class="crud-buttons btn btn-danger font-sm me-2" disabled><i class="fa-regular fa-trash-can me-1"></i>Delete</button>
         </div>
         <div class="col-6 mt-2 col-md-4 mt-md-0 col-lg-3 mt-lg-0">
             <button id="btnView" class="crud-buttons btn btn-secondary font-sm" data-bs-toggle="modal" data-bs-target="#viewProfileModal" disabled><i class="fa-regular fa-eye me-1"></i> View</button>

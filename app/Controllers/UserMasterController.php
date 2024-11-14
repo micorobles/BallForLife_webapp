@@ -88,14 +88,26 @@ class UserMasterController extends BaseController
         $users = new User();
 
         $userChanges['status'] = $this->request->getPost('modal-status');
-        // $userChanges['status'] = $this->request->getPost('modal-status');
+        // $userChanges['password'] = $this->request->getPost('modal-password');
+        $userChanges['password'] = password_hash($this->request->getPost('modal-password'), PASSWORD_DEFAULT);
 
         $modifyUser = $users->update($userID, $userChanges);
 
         if (!$modifyUser) {
-            return $this->jsonResponse(false, 'Error modifying user');
+            return $this->jsonResponse(false, 'Error modifying user', $userChanges);
         }
 
         return $this->jsonResponse(true, 'User modified', $modifyUser);
+    }
+    public function deleteUser($userID) {
+        $users = new User();
+
+        $deleteUser = $users->update($userID, ['is_deleted' => true]);
+
+        if (!$deleteUser) {
+            return $this->jsonResponse(false, 'Error deleting user', $deleteUser);
+        }
+
+        return $this->jsonResponse(true, 'User deleted', '');
     }
 }

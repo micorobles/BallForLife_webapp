@@ -22,5 +22,6 @@ class User extends Model
         'email',
         'password',
         'status',
+        'is_deleted',
     ];
 }
