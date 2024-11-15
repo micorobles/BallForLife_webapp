@@ -79,8 +79,12 @@
         </div>
 
         <div class="row mt-2">
-            <div class="col d-grid">
+            <!-- <div class="col d-grid">
                 <button class="btn font-sm regular-text" style="background-color: #ffffffe6; border:gray; height: 35px; ">Sign in with Google</button>
+            </div> -->
+            <div id="gSignInWrapper" class="d-flex justify-content-center">
+                <!-- <span class="label">Sign in with Google</span> -->
+                <div id="googleSignInBtn"></div>
             </div>
         </div>
 
@@ -96,6 +100,7 @@
 
 <?= $this->section('js'); ?>
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <?= load_js('Login/login.js'); ?>
 <?= load_js('global/global-functions.js'); ?>
 

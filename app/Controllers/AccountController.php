@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Libraries\TokenHelper;
+use Google_Client;
+use Google_Service_Oauth2;
+use CodeIgniter\Controller;
 
 // use CodeIgniter\Files\File;
 
@@ -123,8 +126,8 @@ class AccountController extends BaseController
     {
         // Get user input
         $email = $this->request->getPost('email');
-        $firstname = $this->request->getPost('firstname');
-        $lastname = $this->request->getPost('lastname');
+        $firstname = ucfirst($this->request->getPost('firstname'));
+        $lastname = ucfirst($this->request->getPost('lastname'));
         $contactNum = $this->request->getPost('contactNum');
         $password = $this->request->getPost('password');
 
@@ -137,14 +140,14 @@ class AccountController extends BaseController
             $users = new User();
 
             $userData = [
-                'profilePic' => '/images/profiles/user.png',
+                'profilePic' => 'images/uploads/user.png',
                 'email' => $email,
                 'firstname' => $firstname,
                 'lastname' => $lastname,
                 'contactNum' => $contactNum,
                 'position' => 'Member',
                 'password' => $hashedPassword,
-                'status' => 'active',
+                'status' => 'Pending',
             ];
 
             // CHECK FROM DB TO AVOID DUPLICATION OF EMAIL
@@ -162,6 +165,7 @@ class AccountController extends BaseController
             if (!$registerUser) {
                 return $this->jsonResponse(false, 'Error registering new user');
             }
+
 
             return $this->jsonResponse(true, 'Successfully registered!', $userData);
         } catch (\Exception $e) {
@@ -247,7 +251,7 @@ class AccountController extends BaseController
      * @param string $key The key under which the image path will be stored in profileData.
      * @return void
      */
-    
+
     private function handleFileUpload(\CodeIgniter\HTTP\Files\UploadedFile $file, $folder, $userID, &$profileData, $key)
     {
         if ($file && $file->isValid() && !$file->hasMoved()) {
@@ -263,6 +267,88 @@ class AccountController extends BaseController
 
             // Add the image path to the profile data
             $profileData[$key] = 'images/uploads/' . $folder . '/' . $newFileName; // Store the path relative to your public directory
+        }
+    }
+
+    public function google()
+    {
+        $users = new User();
+        $session = \Config\Services::session();
+        $tokenHelper = new TokenHelper();
+
+        // Get the ID token from the POST request
+        $id_token = $this->request->getPost('id_token');
+
+        if (!$id_token) {
+            return $this->jsonResponse(false, 'ID token is required', '');
+        }
+
+        // Initialize the Google Client
+        $client = new Google_Client([
+            'client_id' => '242089388933-osq14fn5jc01gpu49d13a90546ghs5g7.apps.googleusercontent.com' // Replace with your Google Client ID
+        ]);
+
+        try {
+            // Verify the ID token with Google
+            $payload = $client->verifyIdToken($id_token);
+
+            if ($payload) {
+                // Extract Google user details from the payload
+                $googleID = $payload['sub'];
+                $userEmail = $payload['email'];
+                $firstname = $payload['given_name'] ?? 'Lebron';
+                $lastname = $payload['family_name'] ?? 'James';
+                $profilePic = $payload['picture'];
+
+                // Prepare user data to insert or update
+                $userData = [
+                    'email' => $userEmail,
+                    'profilePic' => $profilePic,
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
+                    'position' => 'Member',
+                    'status' => 'Pending',
+                ];
+
+                // Check if the user already exists in the database
+                $registeredUser = $users->where('is_deleted', false)
+                    ->where('email', $userEmail)
+                    ->first();
+
+                // If user doesn't exist, insert new user data
+                if (!$registeredUser) {
+                    $users->insert($userData);
+                    $registeredUser = $users->where('is_deleted', false)
+                        ->where('email', $userEmail)
+                        ->first();
+                }
+
+                // Generate authentication token
+                $token = $tokenHelper->generateToken($registeredUser['ID']);
+
+                // Set session data
+                $session->set([
+                    'ID' => $registeredUser['ID'],
+                    'email' => $registeredUser['email'],
+                    'profilePic' => $registeredUser['profilePic'],
+                    'firstname' => $registeredUser['firstname'],
+                    'lastname' => $registeredUser['lastname'],
+                    'position' => $registeredUser['position'],
+                    'status' => $registeredUser['status']
+                ]);
+
+                error_log('Profile Picture URL: ' . $profilePic);
+
+                // Return success response with token
+                return $this->jsonResponse(true, 'Successfully signed in!', $token);
+            } else {
+                // Invalid ID token
+                return $this->jsonResponse(false, 'Invalid ID token', '');
+            }
+        } catch (\Exception $e) {
+            // Catch any exceptions and return error
+            log_message('error', 'Error verifying Google ID token: ' . $e->getMessage());
+            return $this->jsonResponse(false, 'Error verifying token', '');
         }
     }
 }

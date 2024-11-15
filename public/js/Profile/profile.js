@@ -112,8 +112,18 @@ export async function getProfileData(userID) {
 }
 
 function populateData(user) {
+    console.log(user);
     // const skillsArray = JSON.parse(user.skills) ?? '';
     const skillsArray = Array.isArray(user.skills) ? user.skills : JSON.parse(user.skills || '[]');
+
+    let profilePicUrl = user.profilePic;
+
+    if (profilePicUrl && !/^https?:\/\//i.test(profilePicUrl)) {
+        // If it's a relative URL, prepend the baseURL
+        profilePicUrl = baseURL + profilePicUrl;
+    }
+
+    
 
     // Clear existing options
     // $('#skills-select').empty();
@@ -137,8 +147,8 @@ function populateData(user) {
 
     setSrcIfExists('#coverPhoto', baseURL + user.coverPhoto);
     setSrcIfExists('#coverPhotoPreview', baseURL + user.coverPhoto);
-    setSrcIfExists('#profilePic', baseURL + user.profilePic);
-    setSrcIfExists('#profilePreview', baseURL + user.profilePic);
+    setSrcIfExists('#profilePic', profilePicUrl);
+    setSrcIfExists('#profilePreview', profilePicUrl);
     // $('#coverPhoto').attr('src', baseURL + user.coverPhoto);
     // $('#coverPhotoPreview').attr('src', baseURL + user.coverPhoto);
     // $('#profilePic').attr('src', baseURL + user.profilePic);
@@ -194,25 +204,25 @@ function populateData(user) {
     // $('#_position').text(ucfirst(user.position));
     // $('#modal-position').val(ucfirst(user.position));
 
-    setTextIfExists('#height', `${user.heightFeet}'${user.heightInch}`);
+    setTextIfExists('#height', `${user.heightFeet ?? 0}'${user.heightInch ?? 0}`);
     setValueIfExists('#modal-heightFeet', user.heightFeet);
     setValueIfExists('#modal-heightInch', user.heightInch);
     // $('#height').text(user.heightFeet + "'" + user.heightInch);
     // $('#modal-heightFeet').val(user.heightFeet);
     // $('#modal-heightInch').val(user.heightInch);
 
-    setTextIfExists('#weight', `${user.weight} lbs`);
+    setTextIfExists('#weight', `${user.weight ?? 0} lbs`);
     setValueIfExists('#modal-weight', user.weight);
     // $('#weight').text(user.weight + ' lbs');
     // $('#modal-weight').val(user.weight);
 
     if (currentURL.includes('profile/')) {
         // Populate header changes
-        $('#header-profilePic').attr('src', baseURL + user.profilePic);
+        $('#header-profilePic').attr('src', profilePicUrl);
         $('#header-fullName').text(ucfirst(user.firstname) + ' ' + ucfirst(user.lastname));
 
         // Populate sidebar changes
-        $('#sidebar-profilePic').attr('src', baseURL + user.profilePic);
+        $('#sidebar-profilePic').attr('src', profilePicUrl);
         $('#username').text(ucfirst(user.firstname) + ' ' + ucfirst(user.lastname));
         $('#position').text(ucfirst(user.position));
     }

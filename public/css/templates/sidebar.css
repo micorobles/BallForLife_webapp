@@ -4,7 +4,8 @@
 }
 
 .sidebar .sidebar-heading {
-    background-image: url('../../images/cover_photo.jpg');
+    /* background-image: url('../../images/cover_photo.jpg'); */
+    background-color: transparent;
     position: relative;
     background-size: cover;
     background-position: center;

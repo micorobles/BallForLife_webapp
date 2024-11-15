@@ -9,18 +9,19 @@ use App\Controllers\Pages;
 $routes->get('/', 'AccountController::index'); // Root URL ( localhost:8080 )
 $routes->post('login', 'AccountController::login');
 $routes->get('getUser/(:num)', 'AccountController::getUser/$1');
+$routes->get('profile/(:num)', 'AccountController::profile/$1');
+$routes->post('editProfile', 'AccountController::editProfile');
+$routes->get('registration', 'AccountController::registration');
+$routes->post('register', 'AccountController::register');
+$routes->post('google', 'AccountController::google');
 
 $routes->get('userMaster', 'UserMasterController::index');
 $routes->post('getUserList', 'UserMasterController::getUserList');
 $routes->post('modifyUser/(:num)', 'UserMasterController::modifyUserStatusOrPassword/$1');
 $routes->post('deleteUser/(:num)', 'UserMasterController::deleteUser/$1');
 
-$routes->get('registration', 'AccountController::registration');
-$routes->post('register', 'AccountController::register');
 
-$routes->get('profile/(:num)', 'AccountController::profile/$1');
 // $routes->get('profile', 'AccountController::profile');
-$routes->post('editProfile', 'AccountController::editProfile');
 
 $routes->get('homepage', 'HomepageController::index');
 $routes->get('logout', 'HomepageController::logout'); 

@@ -140,6 +140,12 @@ export function clearSelectIfExists(selector) {
 
 export function addOptionsIfExists(selector, options, selectedOptions = []) {
     const element = $(selector);
+    
+    // Ensure selectedOptions is an array
+    if (!Array.isArray(selectedOptions)) {
+        selectedOptions = [];
+    }
+    
     if (element.length) {
         options.forEach(option => {
             const selected = selectedOptions.includes(option) ? 'selected' : '';

@@ -96,19 +96,46 @@ import { getProfileData } from "../Profile/profile.js";
             self.$tblUser.on('select', function (e, dt, type, indexes) {
                 if (type === 'row') {
                     // Get data of selected rows
-                    var selectedRow = self.$tblUser
-                        .rows(indexes)
-                        .data()
-                        .toArray();  // Convert the data to an array if you want to work with it
+                    // var selectedRow = self.$tblUser
+                    //     .rows(indexes)
+                    //     .data()
+                    //     .toArray();  
+                    var selectedRows = self.$tblUser.rows({ selected: true }).data().toArray();
+
+                    self.isSingleSelection = selectedRows.length === 1;
+
+                    self.selectedRowID = null;
+                    self.rowIDs = [];
+                    self.rowDetails = [];
+
+                    // if (self.isSingleSelection) {
+                    //     self.selectedRowID = selectedRows[0].id;
+                    // }
 
                     // Iterate through the selected rows' data and log each row's data or process as needed
-                    selectedRow.forEach(function (row) {
-                        self.selectedRowID = row.id;
-                        self.selectedRowFirstName = row.firstname;
-                        self.selectedRowLastName = row.lastname;
+                    selectedRows.forEach(function (row) {
+                        // self.selectedRowID = row.id;
+                        // self.selectedRowFirstName = row.firstname;
+                        // self.selectedRowLastName = row.lastname;
+                        self.rowIDs.push(row.id);
+                        self.rowDetails.push({
+                            firstname: row.firstname,
+                            lastname: row.lastname
+                        });
+
                         $('.crud-buttons').prop('disabled', false);
                         // console.log('Selected ID:', row.id); // Outputs the ID if "id" is part of the data
                     });
+
+                    console.log(self.isSingleSelection);
+                    if (self.isSingleSelection) {
+                        self.selectedRowID = self.rowIDs[0];
+                        $('.crud-buttons').prop('disabled', false);
+                    } else {
+                        $('.crud-buttons').prop('disabled', true);
+                        $('#btnDeleteUser').prop('disabled', false);
+                    }
+
                 }
             });
 
@@ -153,9 +180,9 @@ import { getProfileData } from "../Profile/profile.js";
 
             let formData = new FormData($('#frmUserProfile')[0]);
 
-            for (let [key, value] of formData.entries()) {
-                console.log(key + ': ' + value);
-            }
+            // for (let [key, value] of formData.entries()) {
+            //     console.log(key + ': ' + value);
+            // }
 
             showQuestionToast({
                 message: 'Are you sure you want to modify this user?',
@@ -172,7 +199,7 @@ import { getProfileData } from "../Profile/profile.js";
                         showToast('error', 'Error: ', modifyUser.message);
                     }
 
-                    console.log(modifyUser);
+                    // console.log(modifyUser);
                     showToast('success', '', modifyUser.message);
                     $('#modifyUserModal').modal('hide');
                     self.$tblUser.ajax.reload();
@@ -182,21 +209,52 @@ import { getProfileData } from "../Profile/profile.js";
         },
         deleteUser: function () {
             var self = this;
-            const deleteURL = baseURL + `deleteUser/${self.selectedRowID}`;
 
-            console.log('Name: ', self.selectedRowFirstName);
+            const selectedNames = self.rowDetails.map(row => `${row.firstname} ${row.lastname}`).join(', ');
+            const deleteMessage = self.isSingleSelection ? `Are you sure you want to delete ${selectedNames}?` 
+                                  : `Are you sure you want to delete these users: ${selectedNames}?`;  
+
             showQuestionToast({
-                message: `Are you sure you want to delete ${self.selectedRowFirstName} ${self.selectedRowLastName}?`,
+                message: deleteMessage,
                 onYes: async function (instance, toast) {
-                    const deleteUser = await ajaxRequest('POST', deleteURL, '');
-                      
-                    if (!deleteUser) {
-                        showToast('error', 'Error: ', deleteUser.message);
-                    }
 
-                    console.log(deleteUser);
-                    showToast('success', '', deleteUser.message);
-                    self.$tblUser.ajax.reload();
+
+                    // for (const userID of self.rowIDs) {
+                    //     const deleteURL = baseURL + `deleteUser/${userID}`;
+
+                    //     try {
+                    //         const deleteUser = await ajaxRequest('POST', deleteURL, '');
+    
+                    //         if (!deleteUser) {
+                    //             showToast('error', 'Error: ', deleteUser.message);
+                    //         }
+    
+                    //         showToast('success', '', deleteUser.message);
+                    //     } catch (error) {
+                    //         showToast('error', 'Error: ', error.message);
+                    //     }
+                    // }
+                    // self.$tblUser.ajax.reload();
+
+                    try {
+                        // Loop through selected IDs, handling both single and multiple deletions
+                        const deletePromises = self.rowIDs.map(userID => {
+                            const deleteURL = baseURL + `deleteUser/${userID}`;
+                            return ajaxRequest('POST', deleteURL, '')
+                                .then(deleteUser => {
+                                    if (!deleteUser) throw new Error(deleteUser.message);
+                                    return deleteUser.message;
+                                });
+                        });
+        
+                        // Wait for all deletion requests to complete
+                        const results = await Promise.all(deletePromises);
+                        results.forEach(message => showToast('success', '', message));
+        
+                        self.$tblUser.ajax.reload();
+                    } catch (error) {
+                        showToast('error', 'Error: ', error.message);
+                    }
                 },
             });
         },
@@ -348,7 +406,6 @@ import { getProfileData } from "../Profile/profile.js";
 
         $('#btnSaveUser').click(function (e) {
             e.preventDefault();
-            console.log('submitted');
             _U.modifyUserStatusOrPassword();
         });
 
@@ -378,7 +435,6 @@ import { getProfileData } from "../Profile/profile.js";
 
         function profileAction() {
             const rowID = _U.selectedRowID ?? 0;
-            console.log(rowID);
             // $('#viewProfileModal').modal('show');
             getProfileData(rowID);
         }

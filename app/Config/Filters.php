@@ -120,6 +120,7 @@ class Filters extends BaseFilters
                 'profile',
                 'editProfile',
                 'getUsers',
+                'usersMaster',
                 // 'homepage/*',
             ],
         ],

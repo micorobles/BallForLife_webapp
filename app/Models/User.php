@@ -23,5 +23,6 @@ class User extends Model
         'password',
         'status',
         'is_deleted',
+        'created_at'
     ];
 }

@@ -2,7 +2,7 @@
 <nav id="sidebar" class="text-white sidebar">
     <div class="sidebar-heading py-3">
         <div id='sidebar-profile' class="sidebar-profile p-0 ps-4 rounded d-flex align-items-center">
-            <img id="sidebar-profilePic" src="<?= base_url( session()->get('profilePic') )  ?>" alt="">
+            <img id="sidebar-profilePic" src="" alt="">
             <ul class="ms-1" style="list-style-type:none; padding:0; margin:0;">
                 <li>
                     <span id='username' class="ms-2 medium-text font-sm semi-bold-text">

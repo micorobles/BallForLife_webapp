@@ -22,7 +22,7 @@
             <span>Status: &nbsp;</span>
             <span id='txtStatus' class="status-text"><?= ucfirst(session()->get('status')) ?></span>
         </div>
-        <img id='profilePic' src="<?= base_url(session()->get('profilePic')) ?>" alt="">
+        <img id='profilePic' src="" alt="">
         <div class="profile-buttons">
             <button class="btn btn-custom-color text-white font-sm light-text" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Edit Profile <i class="fa-solid fa-user-pen fa-1x"></i>
