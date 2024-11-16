@@ -9,16 +9,18 @@ const userID = currentURL.split('/').pop();
 $(function () {
 
 
-    if (currentURL.includes('profile/')) {
-        console.log(userID);
-        getProfileData(userID);
-    }
-    initializeSelect2();
-
-    // Bind event handlers
-    $('#btnFrmProfile').on('click', handleEditProfile)
-    handleFilePreview('#pictureFile', '#profilePreview');
-    handleFilePreview('#coverPhotoFile', '#coverPhotoPreview');
+    $(document).ready(function() {
+        if (currentURL.includes('profile/')) {
+            console.log(userID);
+            getProfileData(userID);
+        }
+        initializeSelect2();
+    
+        // Bind event handlers
+        $('#btnFrmProfile').on('click', handleEditProfile)
+        handleFilePreview('#pictureFile', '#profilePreview');
+        handleFilePreview('#coverPhotoFile', '#coverPhotoPreview');
+    });
 
 });
 

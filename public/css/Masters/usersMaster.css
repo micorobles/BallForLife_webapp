@@ -137,6 +137,12 @@ div.dt-container .dt-search input:focus-visible {
     font-weight: 400;
 }
 
+#frmUserProfile #modal-role{
+    font-size: 15px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 767px) {
     div.dt-container div.dt-layout-row:not(.dt-layout-table) {
         display: flex;

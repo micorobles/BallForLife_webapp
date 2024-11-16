@@ -7,7 +7,7 @@ class TokenHelper
 
     private static $secret = 'z@[weU79NMf<ya;?^vp+x."vrX-CSaz&wf4Y2q=[TSxt2V6")7?f,4<~[M%>DwBj*2EVX@cJm$,M#93TyNQDe48?<*hjp@at5Ku/';
 
-    public function generateToken($userID)
+    public function generateToken($userID, $userRole)
     {
 
         $header = json_encode([
@@ -17,6 +17,7 @@ class TokenHelper
 
         $payload = json_encode([
             'user_id' => $userID,
+            'user_role' => $userRole,
             'iat' => time(),        // Issued at
             'exp' => time() + 3600, // Token expires in 1 hour
         ]);
@@ -33,7 +34,8 @@ class TokenHelper
         return $base64UrlHeader . '.' . $base64UrlPayload . '.' . $base64UrlSignature;
     }
 
-    public function validateToken($token) {
+    public function validateToken($token)
+    {
 
         // Split token into parts
         list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
@@ -41,33 +43,40 @@ class TokenHelper
         // Recalculate the signature
         $signature = $this->base64UrlEncode(hash_hmac('sha256', $headerEncoded . '.' . $payloadEncoded, self::$secret, true));
 
-        
         // Check if the provided signature matches the recalculated one
         if (!hash_equals($signature, $signatureEncoded)) {
             return false;
         }
 
         // Decode payload to check expiration
-        $payload = json_decode($this->base64UrlDecode($payloadEncoded), true);
-        if(isset($payload['exp']) && $payload['exp'] < time()) {
+        $payloadDecoded = $this->base64UrlDecode($payloadEncoded);
+
+        $payload = json_decode($payloadDecoded, true);
+
+        // Check for expiration
+        if (isset($payload['exp']) && $payload['exp'] < time()) {
+            error_log("Token expired. Expiry Time: " . $payload['exp'] . " Current Time: " . time());
             return false;
         }
 
         return true;
     }
 
-   // Add the decodeToken function to extract the user_id
-   public function decodeToken($token)
-   {
-       // Split the token into its parts
-       list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
+    // Add the decodeToken function to extract the user_id
+    public function decodeToken($token)
+    {
+        // Split the token into its parts
+        list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
 
-       // Decode the payload
-       $payload = json_decode($this->base64UrlDecode($payloadEncoded), true);
+        // Decode the payload
+        $payload = json_decode($this->base64UrlDecode($payloadEncoded), true);
 
-       // Return the user_id if it exists
-       return isset($payload['user_id']) ? $payload['user_id'] : null;
-   }
+        // Return the user_id if it exists
+        return [
+            'id' => isset($payload['user_id']) ? $payload['user_id'] : null,
+            'role' => isset($payload['user_role']) ? $payload['user_role'] : null,
+        ];
+    }
 
     // public function extractToken($authorizationHeader) {
     //     $parts = explode(' ', $authorizationHeader);

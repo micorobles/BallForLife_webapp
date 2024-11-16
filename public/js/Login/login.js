@@ -34,7 +34,9 @@ $(function () {
                 if (response.success) {
                     console.log('response: ', response);
                     document.cookie = `authToken=${response.data}; path=/; max-age=3600`;
+
                     window.location.href = baseURL + '/homepage'; 
+                    
                 } else {
                     console.error("Failed to login with Google: ", response.message);
                 }
@@ -110,7 +112,7 @@ async function handleLogin(e) {
         // Store token in local storage
         console.log(loginUser);
 
-        document.cookie = `authToken=${loginUser.token}; path=/; max-age=3600`;
+        document.cookie = `authToken=${loginUser.data}; path=/; max-age=3600`;
         window.location.href = window.location.origin + '/homepage';
 
     } catch (error) {

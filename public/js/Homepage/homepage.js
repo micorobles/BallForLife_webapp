@@ -1,6 +1,20 @@
+"use strict";
 $(function () {
-    console.log('document is ready!');
+    const Homepage = function () {
+        return new Homepage.init();
+    }
+    Homepage.init = function () {
 
-   
+    }
+    Homepage.prototype = {
+       
+    }
+
+    Homepage.init.prototype = Homepage.prototype;
+
+    $(document).ready(function() {
+        var _H = Homepage();
+
+    });
 });
 

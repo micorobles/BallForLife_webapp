@@ -3,14 +3,23 @@
 namespace App\Controllers;
 
 use App\Models\User;
-
+use App\Libraries\TokenHelper;
 class HomepageController extends BaseController
 {
+    protected $users;
+    protected $session;
+    protected $tokenHelper;
+
+    public function __construct()
+    {
+        $this->users = model(User::class);  // Inject the User model into the controller
+        $this->session = \Config\Services::session();
+        $this->tokenHelper = new TokenHelper();
+    }
     public function index(): string
     {
         helper('breadcrumb');
         $data['title'] = "Homepage";
-        // $data['message'] = "HI!";
         return view('Homepage/homepage', $data);
     }
 

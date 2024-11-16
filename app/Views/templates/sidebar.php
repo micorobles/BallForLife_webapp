@@ -2,7 +2,7 @@
 <nav id="sidebar" class="text-white sidebar">
     <div class="sidebar-heading py-3">
         <div id='sidebar-profile' class="sidebar-profile p-0 ps-4 rounded d-flex align-items-center">
-            <img id="sidebar-profilePic" src="" alt="">
+            <img id="sidebar-profilePic" src="" alt="" data-src="<?=  session()->get('profilePic') ?>">
             <ul class="ms-1" style="list-style-type:none; padding:0; margin:0;">
                 <li>
                     <span id='username' class="ms-2 medium-text font-sm semi-bold-text">
@@ -54,18 +54,9 @@
                 <span>Feed</span>
             </a>
         </li>
-        <li class="has-sub">
-            <a href="javascript:;">
-                <b class="caret"></b>
-                <i class="fa fa-align-left"></i>
-                <span>Menu Level</span>
-            </a>
-            <ul class="sub-menu">
-                <li><a href="javascript:;">s</a></li>
-                <!-- <li><a href="javascript:;">Menu 2.2</a></li> -->
-                <li><a href="javascript:;">Menu 2.3</a></li>
-            </ul>
-        </li>
+
+        <?php if (session()->get('userRole') === 'Admin'): ?>
+            
         <li class="has-sub">
             <a href="javascript:;">
                 <b class="caret"></b>
@@ -78,6 +69,9 @@
                 <li><a href="javascript:;">Schedules Master</a></li>
             </ul>
         </li>
+        
+        <?php endif; ?>
+        
         <li>
             <a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify">
                 <i class="fa fa-angle-double-left" style="font-size: 12px;"></i>

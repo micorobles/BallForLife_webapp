@@ -173,6 +173,13 @@
                                 <input type="text" id="modal-email" class="form-control" name="modal-email" disabled>
                             </div>
                             <div class="col-12 col-md-12 col-xl-6 mt-3">
+                                <label>Role</label>
+                                <div class="modal-role-input-container" style="position:relative;">
+                                    <select id="modal-role" class="form-select" name="modal-role" type="select" style="width: 100%; z-index:999;">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-xl-6 mt-3">
                                 <label>Status</label>
                                 <div class="border pt-2 d-flex justify-content-center rounded ">
                                     <div class="form-check form-check-inline">
@@ -194,10 +201,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-12 col-xl-6 d-flex flex-column mt-3">
+                            <div class="col-12 col-md-12 col-xl-12 d-flex flex-column mt-3">
                                 <label>Password</label>
                                 <div class="input-group mb-3 password-input-group">
-                                    <input type="text" id="modal-password" class="form-control" name="modal-password" readonly>
+                                    <input type="text" id="modal-password" class="form-control" name="modal-password">
                                     <span class="input-group-text" id="shuffle-icon"><i class="fa-solid fa-shuffle fa-1x"></i></span>
                                     <i id="pwCopy" class="fa-solid fa-copy fa-1x"></i>
                                 </div>

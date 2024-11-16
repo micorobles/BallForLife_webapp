@@ -3,9 +3,22 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Libraries\TokenHelper;
 
 class UserMasterController extends BaseController
 {
+
+    protected $users;
+    protected $session;
+    protected $tokenHelper;
+
+    public function __construct()
+    {
+        $this->users = model(User::class);  // Inject the User model into the controller
+        $this->session = \Config\Services::session();
+        $this->tokenHelper = new TokenHelper();
+    }
+
     public function index(): string
     {
         helper('breadcrumb');
@@ -16,25 +29,23 @@ class UserMasterController extends BaseController
 
     public function getUserList()
     {
-        $users = new User();
-
         // Get parameters from the request
         $draw = intval($this->request->getPost('draw'));
         $start = intval($this->request->getPost('start'));
         $length = intval($this->request->getPost('length'));
         $order = $this->request->getPost('order') ?? []; // Use empty array if not set
-        $columns = ['email', 'firstname', 'lastname', 'position', 'status','updated_at'];
-
+        $columns = ['email', 'firstname', 'lastname', 'position', 'status', 'updated_at'];
+        
         // Determine sorting
         $sortColumnIndex = $order[0]['column'] ?? 0; // Default to first column
         $sortDirection = $order[0]['dir'] ?? 'asc';
 
         // Validate the sort column index
-        $sortColumn = $columns[$sortColumnIndex]; 
+        $sortColumn = $columns[$sortColumnIndex];
 
         // Initialize query builder
-        $builder = $users->where('is_deleted', false)
-                         ->orderBy($sortColumn, $sortDirection);
+        $builder = $this->users->where('is_deleted', false)
+            ->orderBy($sortColumn, $sortDirection);
 
         // Apply column-specific search
         foreach ($columns as $index => $columnName) {
@@ -60,10 +71,10 @@ class UserMasterController extends BaseController
         $userList = $builder->findAll($length, $start);
 
         // Get total count of users for recordsTotal
-        $totalCount = $users->countAll();
+        $totalCount = $this->users->countAll();
         $filteredCount = $builder->countAllResults(false); // Count with current filters
 
-        error_log('User list: ' . print_r($userList, true));
+        // error_log('User list: ' . print_r($userList, true));
         // Prepare the data response
         $data = array_map(function ($user) {
             return [
@@ -84,14 +95,15 @@ class UserMasterController extends BaseController
             "data" => $data
         ]);
     }
-    public function modifyUserStatusOrPassword($userID) {
-        $users = new User();
+    public function modifyUserStatusOrPassword($userID)
+    {
 
         $userChanges['status'] = $this->request->getPost('modal-status');
+        $userChanges['role'] = $this->request->getPost('modal-role');
         // $userChanges['password'] = $this->request->getPost('modal-password');
         $userChanges['password'] = password_hash($this->request->getPost('modal-password'), PASSWORD_DEFAULT);
 
-        $modifyUser = $users->update($userID, $userChanges);
+        $modifyUser = $this->users->update($userID, $userChanges);
 
         if (!$modifyUser) {
             return $this->jsonResponse(false, 'Error modifying user', $userChanges);
@@ -99,10 +111,10 @@ class UserMasterController extends BaseController
 
         return $this->jsonResponse(true, 'User modified', $modifyUser);
     }
-    public function deleteUser($userID) {
-        $users = new User();
+    public function deleteUser($userID)
+    {
 
-        $deleteUser = $users->update($userID, ['is_deleted' => true]);
+        $deleteUser = $this->users->update($userID, ['is_deleted' => true]);
 
         if (!$deleteUser) {
             return $this->jsonResponse(false, 'Error deleting user', $deleteUser);

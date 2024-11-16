@@ -23,7 +23,7 @@
             <div class="btn-group">
                 <div id='profile' class="profile p-1 px-2 rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 
-                    <img id="header-profilePic" src="" alt="">
+                    <img id="header-profilePic" src="" alt="" data-src="<?=  session()->get('profilePic') ?>" >
                     <span id="header-fullName" class="ms-1 medium-text font-sm regular-text">
                          <?= ucfirst(session()->get('firstname')) . ' ' . ucfirst(session()->get('lastname')) ?>    
                     </span>

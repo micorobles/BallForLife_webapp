@@ -13,6 +13,17 @@ use CodeIgniter\Controller;
 class AccountController extends BaseController
 {
 
+    protected $users;
+    protected $session;
+    protected $tokenHelper;
+
+    public function __construct()
+    {
+        $this->users = model(User::class);  // Inject the User model into the controller
+        $this->session = \Config\Services::session();
+        $this->tokenHelper = new TokenHelper();
+    }
+
     public function index()
     {
         if ($this->isLoggedIn()) {
@@ -26,10 +37,8 @@ class AccountController extends BaseController
 
     public function getUser($userID)
     {
-        $users = new User();
-        // $userID = session()->get('ID');
 
-        $getUser = $users->find($userID);
+        $getUser = $this->users->find($userID);
 
         if (!$getUser) {
             return $this->jsonResponse(false, 'Could not find user');
@@ -37,20 +46,12 @@ class AccountController extends BaseController
 
         return $this->jsonResponse(true, 'User found.', $getUser);
     }
-    private function isLoggedIn()
-    {
-        // Check if token is exisiting in cookie
-        $token = $this->request->getCookie('authToken');
-
-        $tokenHelper = new TokenHelper();
-
-        return !empty($token) && $tokenHelper->validateToken($token);
-    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////// LOGIN FUNCTIONS /////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function login()
     {
-        $session = \Config\Services::session();
-        $users = new User();
         $data['title'] = "Login";
         $data['email'] = $this->request->getPost('email');
         $data['password'] = $this->request->getPost('password');
@@ -62,58 +63,88 @@ class AccountController extends BaseController
 
         try {
 
-            // SELECT FROM DB
-            $person = $users->where('is_deleted', false)
-                ->where('email', $data['email'])
-                // ->where('password', $hashedPassword)
-                ->first();
+            $authResult = $this->authenticateUser($data['email'], $data['password']);
 
-            // If no user found or the password doesn't match
-            if (!$person) {
-                return $this->jsonResponse(false, 'No user found.');
-            }
-            if (!password_verify($data['password'], $person['password'])) {
-                return $this->jsonResponse(false, 'Invalid credentials.');
+            if (!$authResult['success']) {
+                return $this->jsonResponse(false, $authResult['message']);
             }
 
-            error_log('Person data: ' . print_r($person, true));
+            $person = $authResult['person'];
+            error_log('Person ID: ' . $person['ID']);
+            error_log('Person ROLE: ' . $person['role']);
+            $token = $this->generateAuthToken($person['ID'], $person['role']);
+            $this->setSessionData($person);
 
-            // User authenticated, generate token
-            $tokenHelper = new TokenHelper();
-            $token = $tokenHelper->generateToken($person['ID']); // Pass user ID to generate token
+            // error_log('Person data: ' . print_r($person, true));
 
-            $session->set(array_intersect_key($person, array_flip([
-                'ID',
-                'profilePic',
-                'firstname',
-                'lastname',
-                'position',
-                'contactnum',
-                'position',
-                'heightFeet',
-                'heightInch',
-                'weight',
-                // 'skills',
-                'email',
-                'status'
-            ])));
-
-            // error_log('Session: ', print_r($session));
-
-            // return $this->jsonResponse(true, 'Successfully logged in!', $person);
-            return $this->response
-                ->setHeader('Authorization', 'Bearer ' . $token)
-                ->setJSON([
-                    'success' => true,
-                    'message' => 'Successfully logged in!',
-                    'data' => $person,
-                    'token' => $token
-                ]);
+            return $this->jsonResponse(true, 'Successfully logged in!',  $token);
         } catch (\Exception $e) {
             // Handle the exception
             return $this->jsonResponse(false, 'An error occurred while processing your request from login controller.', ['error' => $e->getMessage()], '');
         }
     }
+    public function google()
+    {
+        // Get the ID token from the POST request
+        $id_token = $this->request->getPost('id_token');
+
+        if (!$id_token) {
+            return $this->jsonResponse(false, 'ID token is required', '');
+        }
+
+        try {
+            // $payload = $client->verifyIdToken($id_token);
+            $payload = $this->verifyGoogleToken($id_token);
+
+            if (!$payload) {
+                error_log('Invalid ID token: ' . $id_token);
+                return $this->jsonResponse(false, 'Invalid ID token', '');
+            }
+
+            // Extract user details from the payload
+            $googleID = $payload['sub'];
+            $userEmail = $payload['email'];
+            $firstname = $payload['given_name'] ?? '';
+            $lastname = $payload['family_name'] ?? '';
+            $profilePic = $payload['picture'];
+
+            // Prepare user data to insert or update
+            $userData = [
+                'role' => 'User',
+                'email' => $userEmail,
+                'profilePic' => $profilePic,
+                'firstname' => $firstname,
+                'lastname' => $lastname,
+                'position' => 'Member',
+                'status' => 'Pending',
+            ];
+
+            $authResult = $this->authenticateUser($userEmail);
+
+            $person = $authResult['success'] ? $authResult['person'] : $this->registerGoogleUser($userData);
+
+            error_log('Person ID: ' . $person['ID']);
+            error_log('Person ROLE: ' . $person['role']);
+
+            $token = $this->generateAuthToken($person['ID'], $person['role']);
+
+            $this->setSessionData($person);
+
+            return $this->jsonResponse(true, 'Successfully signed in!', $token);
+        } catch (\Google_Service_Exception $e) {
+            // Log specific Google service error
+            error_log('Google service error: ' . $e->getMessage());
+            return $this->jsonResponse(false, 'Google service error: ' . $e->getMessage(), '');
+        } catch (\Exception $e) {
+            // Catch general exceptions and log the error
+            error_log('Error verifying Google ID token: ' . $e->getMessage());
+            return $this->jsonResponse(false, 'Error verifying token', '');
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////// REGISTER FUNCTIONS ////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function registration(): string
     {
@@ -137,9 +168,8 @@ class AccountController extends BaseController
 
         try {
 
-            $users = new User();
-
             $userData = [
+                'role' => 'User',
                 'profilePic' => 'images/uploads/user.png',
                 'email' => $email,
                 'firstname' => $firstname,
@@ -151,7 +181,7 @@ class AccountController extends BaseController
             ];
 
             // CHECK FROM DB TO AVOID DUPLICATION OF EMAIL
-            $person = $users->where('is_deleted', false)
+            $person = $this->users->where('is_deleted', false)
                 ->where('email', $email)
                 ->first();
 
@@ -160,7 +190,7 @@ class AccountController extends BaseController
             }
 
             // INSERT IF EMAIL IS NOT YET EXISTED
-            $registerUser = $users->insert($userData);
+            $registerUser = $this->users->insert($userData);
 
             if (!$registerUser) {
                 return $this->jsonResponse(false, 'Error registering new user');
@@ -173,6 +203,24 @@ class AccountController extends BaseController
         }
     }
 
+    private function registerGoogleUser($userData)
+    {
+        $registerUser = $this->users->insert($userData);
+
+        if (!$registerUser) {
+            throw new \Exception('Error registering your account.');
+        }
+
+        // Return the newly created user
+        return $this->users->where('is_deleted', false)
+            ->where('email', $userData['email'])
+            ->first();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////// PROFILE FUNCTIONS ////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public function profile($userId)
     {
         $data['title'] = "Profile";
@@ -182,11 +230,8 @@ class AccountController extends BaseController
     public function editProfile()
     {
 
-        $session = \Config\Services::session();
-
         try {
 
-            $users = new User();
             $userID = session()->get('ID');
 
             // Get user input
@@ -209,7 +254,7 @@ class AccountController extends BaseController
             $this->handleFileUpload($this->request->getFile('coverPhotoFile'), 'cover-photos', $userID, $profileData, 'coverPhoto');
 
             // Update user profile in the database
-            $updateUser = $users->update($userID, $profileData);
+            $updateUser = $this->users->update($userID, $profileData);
 
 
             if (!$updateUser) {
@@ -218,7 +263,7 @@ class AccountController extends BaseController
 
             // $skills = json_decode($profileData['skills']);
 
-            $session->set(array_intersect_key($profileData, array_flip([
+            $this->session->set(array_intersect_key($profileData, array_flip([
                 'profilePic',
                 'firstname',
                 'lastname',
@@ -231,7 +276,7 @@ class AccountController extends BaseController
             ])));
 
             // Set skills separately
-            $session->set('skills', json_decode($profileData['skills']));
+            $this->session->set('skills', json_decode($profileData['skills']));
 
             // error_log('SESSION DATA: ' . print_r($session->get(), true));
 
@@ -241,6 +286,59 @@ class AccountController extends BaseController
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////// COMMON FUNCTIONS ////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private function verifyGoogleToken($id_token)
+    {
+        $client = new Google_Client([
+            'client_id' => '242089388933-osq14fn5jc01gpu49d13a90546ghs5g7.apps.googleusercontent.com' // Replace with your Google Client ID
+        ]);
+
+        return $client->verifyIdToken($id_token);
+    }
+
+    private function isLoggedIn()
+    {
+        // Check if token is exisiting in cookie
+        $token = $this->request->getCookie('authToken');
+
+        return !empty($token) && $this->tokenHelper->validateToken($token);
+    }
+    private function authenticateUser($email, $password = null)
+    {
+        $person = $this->users->where('is_deleted', false)
+            ->where('email', $email)
+            ->first();
+
+        if (!$person) {
+            return ['success' => false, 'message' => 'No user found.'];
+        }
+
+        if ($password && !password_verify($password, $person['password'])) {
+            return ['success' => false, 'message' => 'Invalid credentials.'];
+        }
+
+        return ['success' => true, 'person' => $person];
+    }
+    private function setSessionData($user)
+    {
+        $this->session->set(array_intersect_key($user, array_flip([
+            'ID',
+            'profilePic',
+            'firstname',
+            'lastname',
+            'position',
+            'contactnum',
+            'email',
+            'status',
+        ])));
+    }
+    private function generateAuthToken($userId, $userRole)
+    {
+        return $this->tokenHelper->generateToken($userId, $userRole);
+    }
     /**
      * Handle file upload and move to public directory.
      *
@@ -251,7 +349,6 @@ class AccountController extends BaseController
      * @param string $key The key under which the image path will be stored in profileData.
      * @return void
      */
-
     private function handleFileUpload(\CodeIgniter\HTTP\Files\UploadedFile $file, $folder, $userID, &$profileData, $key)
     {
         if ($file && $file->isValid() && !$file->hasMoved()) {
@@ -269,86 +366,8 @@ class AccountController extends BaseController
             $profileData[$key] = 'images/uploads/' . $folder . '/' . $newFileName; // Store the path relative to your public directory
         }
     }
-
-    public function google()
+    public function unauthorized()
     {
-        $users = new User();
-        $session = \Config\Services::session();
-        $tokenHelper = new TokenHelper();
-
-        // Get the ID token from the POST request
-        $id_token = $this->request->getPost('id_token');
-
-        if (!$id_token) {
-            return $this->jsonResponse(false, 'ID token is required', '');
-        }
-
-        // Initialize the Google Client
-        $client = new Google_Client([
-            'client_id' => '242089388933-osq14fn5jc01gpu49d13a90546ghs5g7.apps.googleusercontent.com' // Replace with your Google Client ID
-        ]);
-
-        try {
-            // Verify the ID token with Google
-            $payload = $client->verifyIdToken($id_token);
-
-            if ($payload) {
-                // Extract Google user details from the payload
-                $googleID = $payload['sub'];
-                $userEmail = $payload['email'];
-                $firstname = $payload['given_name'] ?? 'Lebron';
-                $lastname = $payload['family_name'] ?? 'James';
-                $profilePic = $payload['picture'];
-
-                // Prepare user data to insert or update
-                $userData = [
-                    'email' => $userEmail,
-                    'profilePic' => $profilePic,
-                    'firstname' => $firstname,
-                    'lastname' => $lastname,
-                    'position' => 'Member',
-                    'status' => 'Pending',
-                ];
-
-                // Check if the user already exists in the database
-                $registeredUser = $users->where('is_deleted', false)
-                    ->where('email', $userEmail)
-                    ->first();
-
-                // If user doesn't exist, insert new user data
-                if (!$registeredUser) {
-                    $users->insert($userData);
-                    $registeredUser = $users->where('is_deleted', false)
-                        ->where('email', $userEmail)
-                        ->first();
-                }
-
-                // Generate authentication token
-                $token = $tokenHelper->generateToken($registeredUser['ID']);
-
-                // Set session data
-                $session->set([
-                    'ID' => $registeredUser['ID'],
-                    'email' => $registeredUser['email'],
-                    'profilePic' => $registeredUser['profilePic'],
-                    'firstname' => $registeredUser['firstname'],
-                    'lastname' => $registeredUser['lastname'],
-                    'position' => $registeredUser['position'],
-                    'status' => $registeredUser['status']
-                ]);
-
-                error_log('Profile Picture URL: ' . $profilePic);
-
-                // Return success response with token
-                return $this->jsonResponse(true, 'Successfully signed in!', $token);
-            } else {
-                // Invalid ID token
-                return $this->jsonResponse(false, 'Invalid ID token', '');
-            }
-        } catch (\Exception $e) {
-            // Catch any exceptions and return error
-            log_message('error', 'Error verifying Google ID token: ' . $e->getMessage());
-            return $this->jsonResponse(false, 'Error verifying token', '');
-        }
+        return view('errors/html/unauthorized');
     }
 }

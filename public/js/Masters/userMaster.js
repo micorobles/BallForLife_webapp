@@ -127,7 +127,7 @@ import { getProfileData } from "../Profile/profile.js";
                         // console.log('Selected ID:', row.id); // Outputs the ID if "id" is part of the data
                     });
 
-                    console.log(self.isSingleSelection);
+                    // console.log(self.isSingleSelection);
                     if (self.isSingleSelection) {
                         self.selectedRowID = self.rowIDs[0];
                         $('.crud-buttons').prop('disabled', false);
@@ -179,7 +179,7 @@ import { getProfileData } from "../Profile/profile.js";
             // $('#frmUserProfile input:disabled').prop('disabled', false);
 
             let formData = new FormData($('#frmUserProfile')[0]);
-
+            
             // for (let [key, value] of formData.entries()) {
             //     console.log(key + ': ' + value);
             // }
@@ -217,24 +217,6 @@ import { getProfileData } from "../Profile/profile.js";
             showQuestionToast({
                 message: deleteMessage,
                 onYes: async function (instance, toast) {
-
-
-                    // for (const userID of self.rowIDs) {
-                    //     const deleteURL = baseURL + `deleteUser/${userID}`;
-
-                    //     try {
-                    //         const deleteUser = await ajaxRequest('POST', deleteURL, '');
-    
-                    //         if (!deleteUser) {
-                    //             showToast('error', 'Error: ', deleteUser.message);
-                    //         }
-    
-                    //         showToast('success', '', deleteUser.message);
-                    //     } catch (error) {
-                    //         showToast('error', 'Error: ', error.message);
-                    //     }
-                    // }
-                    // self.$tblUser.ajax.reload();
 
                     try {
                         // Loop through selected IDs, handling both single and multiple deletions
@@ -283,6 +265,7 @@ import { getProfileData } from "../Profile/profile.js";
                     element: $input
                 });
             });
+            // console.log(formInputs);
 
             // console.log('FORM INPUTS: ', formInputs);
             $.each(userDetails, function (key, value) {
@@ -303,6 +286,14 @@ import { getProfileData } from "../Profile/profile.js";
                                 $(this).prop('checked', true);
                             }
                         });
+                    }
+                    if (formInput.name === 'modal-role' ) {
+                        formInput.element.empty();
+                        const roles = ['Admin', 'User'];
+                         roles.forEach(role => {
+                            const selected = value === role ? 'selected' : '';
+                            formInput.element.append(`<option value="${role}" ${selected}>${role}</option>`)
+                         });
                     }
                 }
             });
