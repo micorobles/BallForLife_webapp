@@ -1,8 +1,8 @@
 <!-- Sidebar -->
 <nav id="sidebar" class="text-white sidebar">
-    <div class="sidebar-heading py-3">
+    <div class="sidebar-heading py-3" style="background-image: url('<?= session()->get('coverPhoto') ? base_url(session()->get('coverPhoto')) : base_url('images/uploads/cover-photo.jpg') ?>');">
         <div id='sidebar-profile' class="sidebar-profile p-0 ps-4 rounded d-flex align-items-center">
-            <img id="sidebar-profilePic" src="" alt="" data-src="<?=  session()->get('profilePic') ?>">
+            <img id="sidebar-profilePic" src="<?= session()->get('profilePic') ?>" alt="">
             <ul class="ms-1" style="list-style-type:none; padding:0; margin:0;">
                 <li>
                     <span id='username' class="ms-2 medium-text font-sm semi-bold-text">
@@ -64,9 +64,9 @@
                 <span>Maintenance</span>
             </a>
             <ul class="sub-menu">
-                <li><a href="<?= base_url('userMaster') ?>">Users Master</a></li>
+                <li><a href="<?= base_url('userMaster') ?>">User Master</a></li>
                 <!-- <li><a href="javascript:;">Menu 2.2</a></li> -->
-                <li><a href="javascript:;">Schedules Master</a></li>
+                <li><a href="<?= base_url('scheduleMaster') ?>">Schedule Master</a></li>
             </ul>
         </li>
         

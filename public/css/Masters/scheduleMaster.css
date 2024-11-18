@@ -1,0 +1,72 @@
+
+/* DATE TIME PICKER CUSTOM STYLE */
+
+.tempus-dominus-widget .date-container {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.tempus-dominus-widget .calendar-header .picker-switch, .next, .previous {
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.tempus-dominus-widget .calendar-header .picker-switch {
+    width: 100%;
+}
+
+.tempus-dominus-widget .calendar-header .next, 
+.tempus-dominus-widget .calendar-header .previous {
+    padding: 0;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tempus-dominus-widget .calendar-header .picker-switch:hover, .next:hover, .previous:hover {
+    background-color: #e9ecef;
+    
+}
+
+.tempus-dominus-widget .date-container-days .day {
+    border-radius: 3px !important;
+    padding: 3px !important;
+}
+
+.tempus-dominus-widget div {
+    border-radius: 3px !important;
+}
+
+.tempus-dominus-widget.light button {
+    background-color: #800000;
+    border-color: #800000bb;
+    color: var(--td-active-color);
+    font-size: 13px !important;
+}
+
+.tempus-dominus-widget .active {
+    background-color: #800000 !important;
+    border-color: #800000bb !important;
+    color: var(--td-active-color);
+}
+
+.tempus-dominus-widget .today::before {
+    border-bottom-color: #800000 !important;
+}
+
+/* CALENDAR CUSTOM STYLES */
+
+.fc-toolbar-title {
+    font-weight: 500;
+}
+
+#calendar a {
+    text-decoration: none;
+    color: black !important;
+    font-weight: 400;
+}
+
+.fc-col-header-cell {
+    background-color: #f2f4f5 !important;
+}

@@ -7,8 +7,9 @@ $(function () {
         
     }
     Sidebar.prototype = {
-        highlightActiveLink: function (url) {
+        renderActiveLinkAndSidebarPhoto: function (url) {
             var self = this;
+
             $('.sidebar .nav > li > a, .sidebar .nav .sub-menu > li > a').each(function () {
                 if (this.href === url) {
                     $(this).parent('li').addClass('active');
@@ -111,7 +112,7 @@ $(function () {
         const currentUrl = window.location.href;
 
         // Highlight the active link in the sidebar
-        _S.highlightActiveLink(currentUrl);
+        _S.renderActiveLinkAndSidebarPhoto(currentUrl);
 
         // Handle submenu toggling
         $('.sidebar .nav > li > a').on('click', function(e) {
@@ -127,7 +128,7 @@ $(function () {
         $('.breadcrumb-item a').on('click', function (e) {
             e.preventDefault(); // Prevent default anchor behavior
             const breadcrumbUrl = this.href; // Get the URL from the clicked breadcrumb
-            _S.highlightActiveLink(breadcrumbUrl); // Highlight the corresponding sidebar link
+            _S.renderActiveLinkAndSidebarPhoto(breadcrumbUrl); // Highlight the corresponding sidebar link
             window.location.href = breadcrumbUrl; // Redirect to the clicked breadcrumb URL
         });
 

@@ -106,13 +106,14 @@ class AccountController extends BaseController
             $userEmail = $payload['email'];
             $firstname = $payload['given_name'] ?? '';
             $lastname = $payload['family_name'] ?? '';
-            $profilePic = $payload['picture'];
+            // $profilePic = $payload['picture'];
 
             // Prepare user data to insert or update
             $userData = [
                 'role' => 'User',
                 'email' => $userEmail,
-                'profilePic' => $profilePic,
+                'profilePic' => 'images/uploads/user.png',
+                'coverPhoto' => 'images/uploads/cover-photo.jpg',
                 'firstname' => $firstname,
                 'lastname' => $lastname,
                 'position' => 'Member',
@@ -171,6 +172,7 @@ class AccountController extends BaseController
             $userData = [
                 'role' => 'User',
                 'profilePic' => 'images/uploads/user.png',
+                'coverPhoto' => 'images/uploads/cover-photo.png',
                 'email' => $email,
                 'firstname' => $firstname,
                 'lastname' => $lastname,
@@ -327,6 +329,7 @@ class AccountController extends BaseController
         $this->session->set(array_intersect_key($user, array_flip([
             'ID',
             'profilePic',
+            'coverPhoto',
             'firstname',
             'lastname',
             'position',
@@ -334,6 +337,8 @@ class AccountController extends BaseController
             'email',
             'status',
         ])));
+
+        // error_log('SESSIONS: ' . print_r(session()->get(), true));
     }
     private function generateAuthToken($userId, $userRole)
     {

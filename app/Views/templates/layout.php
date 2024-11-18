@@ -133,6 +133,7 @@
         const getUserURL = '<?= base_url('getUser/') ?>'
         const baseURL = '<?= base_url(); ?>';
     </script>
+
     <?= load_bundle_js() ?>
     <?= $this->renderSection('js') ?>
 </body>

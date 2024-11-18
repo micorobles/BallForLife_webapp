@@ -1,5 +1,5 @@
 import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } from "../global/global-functions.js";
-import { getProfileData } from "../Profile/profile.js";
+// import { getProfileData } from "../Profile/profile.js";
 
 "use strict";
 (function () {
@@ -349,12 +349,11 @@ import { getProfileData } from "../Profile/profile.js";
         }
     }
 
-
-
     UserMaster.init.prototype = UserMaster.prototype;
 
     $(document).ready(function () {
         var _U = UserMaster();
+
         _U.drawDataTables();
 
         ////////////////////////////////////////////////////////////////
@@ -424,10 +423,13 @@ import { getProfileData } from "../Profile/profile.js";
             $('.crud-buttons').prop('disabled', true);
         }
 
-        function profileAction() {
+        async function profileAction() {
             const rowID = _U.selectedRowID ?? 0;
             // $('#viewProfileModal').modal('show');
-            getProfileData(rowID);
+            // window.Profile.getProfileData(rowID);
+            var _Profile = new Profile();
+            await _Profile.getProfileData(rowID);
+
         }
     });
 

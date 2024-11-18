@@ -4,29 +4,29 @@ $(function () {
         return new Header.init();
     }
     Header.init = function () {
-        this.profilePicIds = [
-            { id: '#header-profilePic', name: 'header' },
-            { id: '#sidebar-profilePic', name: 'sidebar' },
-        ];
+        // this.profilePicIds = [
+        //     { id: '#header-profilePic', name: 'header' },
+        //     { id: '#sidebar-profilePic', name: 'sidebar' },
+        // ];
     }
     Header.prototype = {
-        renderProfilePictures: function () {
-            var self = this;
+        // renderProfilePictures: function () {
+        //     var self = this;
 
-            $.each(self.profilePicIds, function (index, image) {
-                let imgSrc = $(image.id).attr('data-src');
+        //     $.each(self.profilePicIds, function (index, image) {
+        //         let imgSrc = $(image.id).attr('data-src');
 
-                if (imgSrc && !/^https?:\/\//i.test(imgSrc)) {
-                    // If it's a relative URL, prepend the baseURL
-                    imgSrc = baseURL + imgSrc;
-                }
+        //         if (imgSrc && !/^https?:\/\//i.test(imgSrc)) {
+        //             // If it's a relative URL, prepend the baseURL
+        //             imgSrc = baseURL + imgSrc;
+        //         }
 
-                $(image.id).attr('src', imgSrc);
-                // console.log(`${image.name}: `, imgSrc);
-            });
+        //         $(image.id).attr('src', imgSrc);
+        //         // console.log(`${image.name}: `, imgSrc);
+        //     });
 
-            return this;
-        },
+        //     return this;
+        // },
         handleLogout: function () {
             // Set the cookie's expiration date to a time in the past to expire
             document.cookie = `authToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;`;
@@ -42,7 +42,7 @@ $(function () {
     $(document).ready(function () {
         var _Header = Header();
 
-        _Header.renderProfilePictures();
+        // _Header.renderProfilePictures();
 
         // Bind logout
         $('#btnLogout').on('click', _Header.handleLogout);

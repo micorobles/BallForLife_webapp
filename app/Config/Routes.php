@@ -24,14 +24,16 @@ $routes->post('getUserList', 'UserMasterController::getUserList', ['filter' => '
 $routes->post('modifyUser/(:num)', 'UserMasterController::modifyUserStatusOrPassword/$1', ['filter' => 'auth:Admin']);
 $routes->post('deleteUser/(:num)', 'UserMasterController::deleteUser/$1', ['filter' => 'auth:Admin']);
 
-
+$routes->get('scheduleMaster', 'ScheduleMasterController::index', ['filter' => 'auth:Admin']);
+$routes->post('createSchedule', 'ScheduleMasterController::createSchedule', ['filter' => 'auth:Admin']);
+$routes->get('getAllSchedule', 'ScheduleMasterController::getAllSchedule', ['filter' => 'auth:Admin']);
 // $routes->get('profile', 'AccountController::profile');
 
 $routes->get('homepage', 'HomepageController::index', ['filter' => 'auth:Admin,User']);
 $routes->get('logout', 'HomepageController::logout', ['filter' => 'auth:Admin,User']); 
 // $routes->post('homepage', 'HomepageController::register');
 
-$routes->get('schedule', 'ScheduleController::index', ['filter' => 'auth:Admin']);
+// $routes->get('schedule', 'ScheduleController::index', ['filter' => 'auth:Admin']);
 
 $routes->get('unauthorized', 'AccountController::unauthorized');
 // $routes->get('/pages', 'Pages::index'); 
