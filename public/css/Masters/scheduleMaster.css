@@ -1,12 +1,24 @@
-
 /* DATE TIME PICKER CUSTOM STYLE */
+.tempus-dominus-widget {
+    max-width: 100%;
+}
+
+.calendar-container {
+    z-index: 1050;
+}
+
+.fc {
+    z-index: 10;
+}
 
 .tempus-dominus-widget .date-container {
     font-size: 14px;
     font-weight: 400;
 }
 
-.tempus-dominus-widget .calendar-header .picker-switch, .next, .previous {
+.tempus-dominus-widget .calendar-header .picker-switch,
+.next,
+.previous {
     padding: 5px;
     border-radius: 3px;
 }
@@ -15,7 +27,7 @@
     width: 100%;
 }
 
-.tempus-dominus-widget .calendar-header .next, 
+.tempus-dominus-widget .calendar-header .next,
 .tempus-dominus-widget .calendar-header .previous {
     padding: 0;
     font-size: 12px;
@@ -24,9 +36,11 @@
     align-items: center;
 }
 
-.tempus-dominus-widget .calendar-header .picker-switch:hover, .next:hover, .previous:hover {
+.tempus-dominus-widget .calendar-header .picker-switch:hover,
+.next:hover,
+.previous:hover {
     background-color: #e9ecef;
-    
+
 }
 
 .tempus-dominus-widget .date-container-days .day {
@@ -69,4 +83,44 @@
 
 .fc-col-header-cell {
     background-color: #f2f4f5 !important;
+}
+
+/* General styling for the toolbar */
+.fc-header-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Adjust spacing between chunks */
+    align-items: center;
+    gap: 10px;
+}
+
+/* Mobile-specific styling */
+@media (max-width: 768px) {
+
+    .fc-header-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Adjust spacing between chunks */
+        align-items: center;
+        gap: 10px;
+    }
+
+    .fc-left {
+        order: 1; /* Place on the left */
+        flex: 1; /* Allow space for alignment */
+        text-align: left;
+    }
+    
+    .fc-right {
+        order: 2; /* Place on the right */
+        flex: 1; /* Allow space for alignment */
+        text-align: right;
+    }
+    
+    .fc-center {
+        order: 3; /* Place below */
+        width: 100%; /* Make it take the full width */
+        text-align: center;
+        margin-top: 10px; /* Add spacing if needed */
+    }
 }

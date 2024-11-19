@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Schedule;
 use App\Libraries\TokenHelper;
+use DateTime;
 
 class ScheduleMasterController extends BaseController
 {
@@ -43,6 +44,7 @@ class ScheduleMasterController extends BaseController
     }
 
     public function getAllSchedule() {
+        
         $schedules = $this->schedules->findAll();
 
         if (!$schedules) {
@@ -50,16 +52,60 @@ class ScheduleMasterController extends BaseController
         }
 
         $formattedSchedules = [];
+
         foreach ($schedules as $schedule) {
+
+            // $isoStartDate = new DateTime($schedule['startDate']->format('Y-m-d\TH:i:s'));
+            $startDate = new DateTime($schedule['startDate']);
+            $endDate = new DateTime($schedule['endDate']);
+
             $formattedSchedules[] = [
+                'id' => $schedule['ID'],
                 'title' => $schedule['title'],
-                'start' => $schedule['startDate'],
-                'end' => $schedule['endDate'],
-                'description' => $schedule['description'] ?? '',
+                'start' => $startDate->format('Y-m-d\TH:i:s'),
+                'end' => $endDate->format('Y-m-d\TH:i:s'),
+                'color' => '#800000',
+                'textColor' => 'white',
+                'allDay' => false,
             ];
         }
         
         return $this->jsonResponse(true, 'Fetched all schedules', $formattedSchedules);
+    }
+
+    public function getSingleSchedule($scheduleID) {
+
+        $scheduleFound = $this->schedules->find($scheduleID);
+
+        if (!$scheduleFound) {
+            return $this->jsonResponse(false, 'Error fetching schedule', $scheduleFound);
+        }
+
+        return $this->jsonResponse(true, 'Schedule fetched.', $scheduleFound);
+    }
+
+    public function editSchedule($scheduleID) {
+
+        $postData = $this->request->getPost();
+        error_log('POST DATA: ' . print_r($postData, true));
+        $scheduleChanges = [];
+
+        foreach ($postData as $key => $value) {
+
+            if (strpos($key, 'modal-sched') === 0) {
+                $scheduleChanges[lcfirst(str_replace('modal-sched', '', $key))] = $value;
+            }
+        }
+
+        $editSchedule = $this->schedules->update($scheduleID, $scheduleChanges);
+
+        error_log('SCHED ID: ' . $scheduleID);
+        error_log('SCHED CHANGES: ' . print_r($scheduleChanges, true));
+        if (!$editSchedule) {
+            return $this->jsonResponse(false, 'Error updating schedule', $editSchedule);
+        }
+
+        return $this->jsonResponse(true, 'Schedule updated!', $editSchedule);
     }
    
 }

@@ -17,22 +17,22 @@
 
 <div id="calendar"></div>
 
-<!-- Modal -->
-<div class="modal fade" id="createSchedModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createSchedModalLabel" aria-hidden="true">
+<!-- Create Schedule Modal -->
+<div class="modal fade" id="scheduleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title medium-text" id="createSchedModalLabel">Create Schedule</h3>
+                <h3 class="modal-title medium-text" id="scheduleModalLabel"></h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id='frmCreateSchedule' action="<?= base_url('createSchedule') ?>">
+                <form id='frmSchedule' action="<?= base_url('createSchedule') ?>">
                     <div class="row">
                         <div class="col-12 col-md-6 col-xl-6 d-flex flex-column">
                             <label>Schedule Title</label>
                             <input type="text" id="modal-schedTitle" class="form-control" name="modal-schedTitle" required>
                         </div>
-                        <div class="col-12 col-md-6 col-xl-6  d-flex flex-column">
+                        <div class="col-12 col-md-6 col-xl-6 mt-3 mt-md-0 d-flex flex-column">
                             <label>Venue</label>
                             <input type="text" id="modal-schedVenue" class="form-control" name="modal-schedVenue" required>
                         </div>
@@ -69,12 +69,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id='btnCreateSchedule' type="submit" class="btn btn-primary">Create</button>
+                <button id='btnCreateSchedule' type="submit" class="btn btn-success">Create</button>
+                <button id='btnEditSchedule' type="button" class="btn btn-primary">Edit</button>
+                <button id='btnSaveSchedule' type="button" class="btn btn-success">Save</button>
             </div>
         </div>
     </div>
 </div>
-
 
 <?= $this->endSection(); ?>
 

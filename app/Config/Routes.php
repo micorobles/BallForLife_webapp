@@ -27,6 +27,8 @@ $routes->post('deleteUser/(:num)', 'UserMasterController::deleteUser/$1', ['filt
 $routes->get('scheduleMaster', 'ScheduleMasterController::index', ['filter' => 'auth:Admin']);
 $routes->post('createSchedule', 'ScheduleMasterController::createSchedule', ['filter' => 'auth:Admin']);
 $routes->get('getAllSchedule', 'ScheduleMasterController::getAllSchedule', ['filter' => 'auth:Admin']);
+$routes->get('getSingleSchedule/(:num)', 'ScheduleMasterController::getSingleSchedule/$1', ['filter' => 'auth:Admin']);
+$routes->post('editSchedule/(:num)', 'ScheduleMasterController::editSchedule/$1', ['filter' => 'auth:Admin']);
 // $routes->get('profile', 'AccountController::profile');
 
 $routes->get('homepage', 'HomepageController::index', ['filter' => 'auth:Admin,User']);
