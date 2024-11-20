@@ -17,7 +17,7 @@ class ScheduleMasterController extends BaseController
     }
     public function index()
     {    
-        $data['title'] = "Schedule";
+        $data['title'] = "Schedule Master";
         // $data['message'] = "HI!";
         return view('Masters/scheduleMaster', $data);
     }

@@ -43,9 +43,9 @@
             </a>
         </li>
         <li>
-            <a href="<?= base_url('schedule') ?>">
+            <a href="<?= base_url('schedules') ?>">
                 <i class="fas fa-calendar-days fa-1x"></i>
-                <span>Schedule</span>
+                <span>Game Schedules</span>
             </a>
         </li>
         <li>

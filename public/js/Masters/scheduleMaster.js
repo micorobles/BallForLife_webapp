@@ -173,6 +173,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     const startDate = moment(arg.event.startStr);
                     const endDate = moment(arg.event.endStr);
 
+                    console.log(today);
 
                     // Check if the event's start and end dates are valid
                     if (!startDate.isValid() || !endDate.isValid()) {
@@ -181,8 +182,10 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     }
                     // Initialize event status properties
                     arg.isFuture = startDate.isAfter(today, 'day');
-                    arg.isToday = startDate.isSame(today, 'day');
-                    arg.isStart = arg.isToday && startDate.isSameOrBefore(today, 'minute');
+                    // arg.isToday = startDate.isSame(today, 'day') || endDate.isSame(today, 'day');
+                    arg.isToday = today.isBetween(startDate, endDate, 'day', '[]');
+                    // arg.isStart = arg.isToday && startDate.isSameOrBefore(today, 'minute');
+                    arg.isStart = arg.isToday && today.isBetween(startDate, endDate, 'minute', '[]');
                     arg.isEnd = arg.isToday && endDate.isSameOrBefore(today, 'minute');
                     arg.isPast = !arg.isToday && !arg.isFuture && endDate.isBefore(today);
 
