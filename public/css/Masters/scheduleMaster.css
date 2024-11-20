@@ -71,6 +71,15 @@
 
 /* CALENDAR CUSTOM STYLES */
 
+#external-events .fc-event {
+    z-index: 9999; /* Ensure that the draggable event is on top of other elements */
+    pointer-events: auto;
+}
+
+#calendar {
+    position: relative; /* Make sure calendar container is positioned */
+}
+
 .fc-toolbar-title {
     font-weight: 500;
 }
@@ -92,6 +101,39 @@
     justify-content: space-between; /* Adjust spacing between chunks */
     align-items: center;
     gap: 10px;
+}
+
+.colorPreview { 
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    /* height: 50px; */
+}
+
+#external-events {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    background: #f7f7f7;
+    margin-bottom: 20px;
+}
+.fc-event {
+    margin: 10px 0;
+    padding: 5px;
+    /* background: #007bff; */
+    /* color: #fff; */
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.event-ended, .event-past {
+    opacity: 0.5;
+    pointer-events: none; 
+}
+
+.event-ended span,
+.event-past span {
+    text-decoration: line-through;
 }
 
 /* Mobile-specific styling */

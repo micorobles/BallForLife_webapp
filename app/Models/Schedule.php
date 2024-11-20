@@ -14,6 +14,8 @@ class Schedule extends Model
         'venue',
         'startDate',
         'endDate',
+        'color',
+        'textColor',
         'maxPlayer',
         'notes',
         'is_deleted',

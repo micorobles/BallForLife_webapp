@@ -367,12 +367,12 @@ ul {
     .sidebar {
         /* display: none; */
         padding-top: 0;
-        left: -250px;
+        left: -250px !important;
         z-index: 999;
     }
 
     .sidebar.show {
-        left: 0;
+        left: 0 !important;
         z-index: 999;
         padding-top: 0;
     }
