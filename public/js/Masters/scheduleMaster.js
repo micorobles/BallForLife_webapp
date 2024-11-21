@@ -426,18 +426,18 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
     ScheduleMaster.init.prototype = ScheduleMaster.prototype;
 
     $(document).ready(function () {
-        var _Schedule = ScheduleMaster();
+        var _S = ScheduleMaster();
 
-        _Schedule.drawCalendar();
+        _S.drawCalendar();
 
         $('#btnCreateSchedule').click(function (e) {
             e.preventDefault();
-            _Schedule.createSchedule();
+            _S.createSchedule();
         });
 
         $('#btnDeleteSchedule').click(function (e) {
             e.preventDefault();
-            _Schedule.deleteSchedule();
+            _S.deleteSchedule();
         });
 
         $('#btnEditSchedule').click(function (e) {
@@ -446,7 +446,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             $('#btnDeleteSchedule').hide();
             $('#btnSaveSchedule').show();
             $('[id*="modal-sched"]').prop('disabled', false);
-            _Schedule.renderColorPicker('#colorPicker', '#modal-schedColor', '#modal-schedTextColor');
+            _S.renderColorPicker('#colorPicker', '#modal-schedColor', '#modal-schedTextColor');
             $('#scheduleModalLabel').text('Edit Schedule');
         });
 
@@ -459,7 +459,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
         $('#btnSaveSchedule').click(function (e) {
             e.preventDefault();
-            _Schedule.saveScheduleChanges();
+            _S.saveScheduleChanges();
         });
 
         $('#scheduleModal').on('shown.bs.modal', function () {

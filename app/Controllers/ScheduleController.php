@@ -19,6 +19,6 @@ class ScheduleController extends BaseController
     {    
         $data['title'] = "Game Schedules";
         // $data['message'] = "HI!";
-        return view('Schedule/schedules', $data);
+        return view('Schedules/schedules', $data);
     }
 }

@@ -106,42 +106,42 @@ $(function () {
     Sidebar.init.prototype = Sidebar.prototype;
 
     $(document).ready(function () {
-        var _S = Sidebar();
+        var _Sidebar = Sidebar();
         
         // Get the current page URL
         const currentUrl = window.location.href;
 
         // Highlight the active link in the sidebar
-        _S.renderActiveLinkAndSidebarPhoto(currentUrl);
+        _Sidebar.renderActiveLinkAndSidebarPhoto(currentUrl);
 
         // Handle submenu toggling
         $('.sidebar .nav > li > a').on('click', function(e) {
             // e.preventDefault();
-            _S.handleMenuClick(this);
+            _Sidebar.handleMenuClick(this);
             
         });
 
         // Handle sidebar minify button click
-        $('.sidebar-minify-btn').on('click', _S.toggleSidebarMinify);
+        $('.sidebar-minify-btn').on('click', _Sidebar.toggleSidebarMinify);
 
         // Handle breadcrumb clicks
         $('.breadcrumb-item a').on('click', function (e) {
             e.preventDefault(); // Prevent default anchor behavior
             const breadcrumbUrl = this.href; // Get the URL from the clicked breadcrumb
-            _S.renderActiveLinkAndSidebarPhoto(breadcrumbUrl); // Highlight the corresponding sidebar link
+            _Sidebar.renderActiveLinkAndSidebarPhoto(breadcrumbUrl); // Highlight the corresponding sidebar link
             window.location.href = breadcrumbUrl; // Redirect to the clicked breadcrumb URL
         });
 
         $('.sidebar .nav > li > a').on('click', function () {
             if (!$(this).parent('li').hasClass('has-sub')) {
-                _S.closeAllSubMenus();
+                _Sidebar.closeAllSubMenus();
             }
         });
 
         // Close sidebar if clicked outside
         $(document).on('click', function(e) {
             // e.preventDefault();
-            _S.handleClickOutside(e);
+            _Sidebar.handleClickOutside(e);
         });
     });
 });
