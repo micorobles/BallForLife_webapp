@@ -21,4 +21,15 @@ class ScheduleController extends BaseController
         // $data['message'] = "HI!";
         return view('Schedules/schedules', $data);
     }
+
+    public function getAllScheduleToUsers() 
+    {
+        $getAllSchedules = $this->schedules->where('is_deleted', false)->findAll();
+
+        if (!$getAllSchedules) {
+            return $this->jsonResponse(false, 'Error fetching schedules to users.');
+        }
+
+        return $this->jsonResponse(true, 'Schedules for users fetched.', $getAllSchedules);
+    }
 }

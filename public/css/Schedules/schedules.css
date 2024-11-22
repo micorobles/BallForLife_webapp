@@ -1,10 +1,15 @@
 .card {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    border-top: 3px solid #00ff00;
+    height: 315.188px;
+    /* border-top: 3px solid #00ff00; */
 }
 
 .card:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+}
+
+.card-body {
+    position: relative;
 }
 
 .card-heading {
@@ -12,5 +17,14 @@
 }
 
 .card-footerr {
-    padding: 12px 0px 5px 0px;
+    position: absolute;
+    padding: .75rem 1rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.card-timer {
+    position: absolute;
+    top: -20px;
 }

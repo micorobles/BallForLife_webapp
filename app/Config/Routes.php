@@ -32,6 +32,7 @@ $routes->post('editSchedule/(:num)', 'ScheduleMasterController::editSchedule/$1'
 $routes->post('deleteSchedule/(:num)', 'ScheduleMasterController::deleteSchedule/$1', ['filter' => 'auth:Admin']);
 
 $routes->get('schedules', 'ScheduleController::index', ['filter' => 'auth:Admin,User']);
+$routes->get('getAllScheduleToUsers', 'ScheduleController::getAllScheduleToUsers', ['filter' => 'auth:Admin,User']);
 
 $routes->get('homepage', 'HomepageController::index', ['filter' => 'auth:Admin,User']);
 $routes->get('logout', 'HomepageController::logout', ['filter' => 'auth:Admin,User']); 
