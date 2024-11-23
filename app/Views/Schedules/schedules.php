@@ -72,8 +72,9 @@
 </div>
 
 <!-- Schedule Modal -->
- <!-- Create Schedule Modal -->
-<div class="modal fade" id="previewScheduleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="previewScheduleModalLabel">
+<!-- Create Schedule Modal -->
+<div class="modal fade" id="previewScheduleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="previewScheduleModalLabel">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -81,7 +82,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id='frmSchedule' action="<?= base_url('createSchedule') ?>">
+
+                
+
+                <!-- <form id='frmSchedule' action="<?= base_url('createSchedule') ?>">
                     <div class="row">
                         <div class="col-12 col-md-6 col-xl-6 d-flex flex-column">
                             <label>Schedule Title</label>
@@ -126,11 +130,12 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </form> -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button id="btnJoinSchedule" class="btn btn-custom-color text-white"> Join <i class="fa-solid fa-user-plus ms-1 fa-1x"></i></button>
+                <button id="btnSendRequest" class="btn btn-success text-white"> Send <i class="fa-regular fa-paper-plane fa-1x"></i></button>
             </div>
         </div>
     </div>

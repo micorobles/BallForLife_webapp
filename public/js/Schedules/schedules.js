@@ -7,9 +7,10 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
     }
     Schedules.init = function () {
         this.schedule = {
-            id: '', title: '', venue: '', maxPlayer: '', date: '', time: '',
-            description: '', notes: '', btnJoin: '', btnPreview: '', color: '',
+            // id: '', title: '', venue: '', maxPlayer: '', date: '', time: '',
+            // description: '', notes: '', btnJoin: '', btnPreview: '', color: '',
         }
+        this.modal = '';
     }
     Schedules.prototype = {
         renderSchedules: async function () {
@@ -29,6 +30,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         renderScheduleCard: function (schedules) {
             var self = this;
 
+            self.schedule = schedules;
+
             var html = '';
 
             $.each(schedules, function (i, schedule) {
@@ -42,11 +45,22 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 let hourDuration = Math.floor(eventDuration.asHours());
                 let minuteDuration = eventDuration.minutes();
 
+                schedule.eventDuration = {
+                    hours: hourDuration,
+                    minutes: minuteDuration
+                };
+
                 // Time left from today 
                 let durationToStart = moment.duration(startDate.diff(today));
                 let daysToStart = Math.floor(durationToStart.asDays());
                 let hoursToStart = durationToStart.hours();
                 let minutesToStart = durationToStart.minutes();
+
+                schedule.timeLeftToStart = {
+                    days: daysToStart,
+                    hours: hoursToStart,
+                    minutes: minutesToStart
+                };
 
                 if (today.isBetween(startDate, endDate, 'hour', []) || startDate.isBefore(today, 'day')) {
                     return;
@@ -114,7 +128,150 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             return this;
         },
-        
+        renderModal: function (scheduleID) {
+            var self = this;
+
+            // AYUSIN DAPAT ANG IAASSIGN SA SELF.SCHEDULE AY YUNG SPECIFIC SCHEDULE NALANG
+
+            self.modal = $('#previewScheduleModal');
+            $('#previewScheduleModal .modal-body').empty();
+
+            var html = '';
+
+            console.log(self.schedule);
+
+            var schedule = self.schedule.find(function (schedule) {
+                return String(schedule.ID) === String(scheduleID); // Convert both to strings
+            });
+
+            let startDate = moment(schedule.startDate);
+            let endDate = moment(schedule.endDate);
+
+            let displayDate = startDate.isSame(endDate, 'day') ? startDate.format('MMMM D, YYYY')
+                : `${startDate.format('MMMM D, YYYY')} - ${endDate.format('MMMM D, YYYY')}`;
+
+            let displayTime = `${startDate.format('h:mm A')} - ${endDate.format('h:mm A')}`;
+
+            html = `
+                    <div class="card-heading border-bottom pb-2">
+                        <div class="row">
+                            <div class="col-10">
+                                <span id="schedID" class="d-none">${schedule.ID}</span>
+                                <h3 id='schedTitle' class="card-title mb-0 text-nowrap text-truncate">
+                                    ${schedule.title}</h3>
+                            </div>
+                            <div class="col-2 p-0 d-flex justify-content-end">
+                                <span id='schedMaxPlayer'
+                                    class="max-players font-xs text-muted regular-text me-2"><span class="semi-bold-text">Max Player: </span> ${schedule.maxPlayer}
+                                    <i class="fa-solid fa-people-group fa-1x text-muted"></i></span>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="row ">
+                         <div class="col-12 d-flex align-items-center mt-1">
+                                <i class="fa-solid fa-location-dot fa-1x text-muted font-xs me-2"></i>
+                                <span id='schedVenue'class="card-venue regular-text text-muted font-sm"><span class="semi-bold-text">Venue: </span>${schedule.venue}</span>
+                            </div>
+                            <div class="col-12 mt-3 d-flex align-items-center">
+                                <i class="fa-solid fa-calendar-day text-muted me-2"></i>
+                                <span id='schedDate' class="card-venue regular-text text-muted"><span class="semi-bold-text">Date: </span>${displayDate}</span>
+                            </div>
+                            <div class="col-12 mt-3 d-flex align-items-center">
+                                <i class="fa-solid fa-clock text-muted me-2"></i>   
+                                <span id="schedTime" class="card-venue regular-text text-muted"><span class="semi-bold-text">Time: </span>${displayTime}
+                                    <span class='semi-bold-text font-xs'>(${schedule.eventDuration.hours} hr/s and
+                                        ${schedule.eventDuration.minutes} min/s)</span></span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col d-flex">
+                                <i class="fa-solid fa-align-left fa-1x text-muted me-2" style="margin-top: 5px;"></i>
+                                
+                                <span id="schedDescription"
+                                    class="card-description regular-text text-muted font-sm"><span class="semi-bold-text">Description: </span> ${schedule.description}</span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col d-flex">
+                                <i class="fa-solid fa-comment-dots fa-1x text-muted me-2" style="margin-top: 5px;"></i>
+                                <p id="schedNotes" class="card-note regular-text text-muted"><span class="semi-bold-text">Notes: </span>
+                                    ${schedule.notes}</p>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+
+            $('#previewScheduleModal .modal-body').append(html);
+
+            return self.modal.modal('show');
+        },
+        joinSchedule: function () {
+            var self = this;
+
+            var html = '';
+
+            html = `
+                <form id='frmSchedule' class="mt-3" action="<?= base_url('createSchedule') ?>">
+                    <input type="text" id="modal-schedID" name="modal-schedID" value="${$('#schedID').text()}" hidden>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-xl-6 d-flex flex-column">
+                            <label>Schedule Title</label>
+                            <input type="text" id="modal-schedTitle" class="form-control" name="modal-schedTitle" required>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-6 mt-3 mt-md-0 d-flex flex-column">
+                            <label>Venue</label>
+                            <input type="text" id="modal-schedVenue" class="form-control" name="modal-schedVenue" required>
+                        </div>
+                        <div class="col-12 col-md-12 col-xl-12 mt-3 d-flex flex-column">
+                            <label>Description</label>
+                            <input type="text" id="modal-schedDescription" class="form-control" name="modal-schedDescription">
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
+                            <label>Start Date</label>
+                            <div class="input-group">
+                                <input type="text" id="modal-schedStartDate" class="form-control datetimepicker" name="modal-schedStartDate" required>
+                                <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
+                            <label>End Date</label>
+                            <div class="input-group">
+                                <input type="text" id="modal-schedEndDate" class="form-control datetimepicker" name="modal-schedEndDate" required>
+                                <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-6 d-flex flex-column mt-3">
+                            <label>Event Color</label>
+                            <div id="colorPicker" class="colorPreview border form-control"></div>
+                            <input type="text" class="form-control" id="modal-schedColor" name="modal-schedColor" hidden>
+                            <input type="text" class="form-control" id="modal-schedTextColor" name="modal-schedTextColor" hidden>
+                        </div>
+                        <div class="col-6 col-md-6 col-xl-6 mt-3 d-flex flex-column">
+                            <label>Max Players</label>
+                            <input type="number" id="modal-schedMaxPlayer" class="form-control" name="modal-schedMaxPlayer" required>
+                        </div>
+                        <div class="col-12 d-flex flex-column mt-4">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Leave a comment here" id="modal-schedNotes" name="modal-schedNotes" style="height: 100px"></textarea>
+                                <label for="modal-schedNotes">Notes</label>
+                            </div>
+                        </div>
+                    </div>
+                </form> 
+            `;
+
+            $('#previewScheduleModal .modal-body').append(html);
+
+            // $('#previewScheduleModal .modal-body #frmSchedule').addClass('show');
+            setTimeout(function () {
+                // Trigger the fade-in by adding the 'show' class
+                $('#previewScheduleModal .modal-body #frmSchedule').addClass('show');
+            }, 10); 
+
+            return this;
+        },
     }
 
     Schedules.init.prototype = Schedules.prototype;
@@ -126,11 +283,17 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
         $('.schedules-body').on('click', '#btnPreviewSchedule', function (e) {
             e.preventDefault();
-            // Log the schedule ID for debugging
-            console.log('Button clicked:', $(this).data('id'));
-            // Show the modal
-            $('#previewScheduleModal').modal('show');
+            $('#btnSendRequest').hide();
+            _Schedules.renderModal($(this).data('id'));
         });
+        
+        $('#btnJoinSchedule').on('click', function (e) {
+            e.preventDefault();
+            $('#btnSendRequest').show();
+            $(this).hide();
+            _Schedules.joinSchedule();
+        });
+
     });
 
 })();

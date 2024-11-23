@@ -28,3 +28,15 @@
     position: absolute;
     top: -20px;
 }
+
+#frmSchedule {
+    /* opacity: 0; 
+    transition: opacity 0.5s ease-in-out;  */
+    transform: translateY(-20px); /* Start 20px above the view */
+    opacity: 0; /* Initially hidden */
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+#frmSchedule.show {
+    transform: translateY(0); /* Slide into normal position */
+    opacity: 1; /* Fade in the modal body */
+}
