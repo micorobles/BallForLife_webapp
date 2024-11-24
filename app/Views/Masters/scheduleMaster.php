@@ -55,15 +55,22 @@
                                 <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
                             </div>
                         </div>
-                        <div class="col-6 d-flex flex-column mt-3">
+                        <div class="col-6 col-md-4 d-flex flex-column mt-3">
                             <label>Event Color</label>
                             <div id="colorPicker" class="colorPreview border form-control"></div>
                             <input type="text" class="form-control" id="modal-schedColor" name="modal-schedColor" hidden>
                             <input type="text" class="form-control" id="modal-schedTextColor" name="modal-schedTextColor" hidden>
                         </div>
-                        <div class="col-6 col-md-6 col-xl-6 mt-3 d-flex flex-column">
+                        <div class="col-6 col-md-4 col-xl-4 mt-3 d-flex flex-column">
                             <label>Max Players</label>
                             <input type="number" id="modal-schedMaxPlayer" class="form-control" name="modal-schedMaxPlayer" required>
+                        </div>
+                        <div class="col-6 col-md-4 col-xl-4 mt-3 d-flex flex-column">
+                            <label>Game Fee</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-peso-sign"></i></span>
+                                <input type="number" id="modal-schedGameFee" class="form-control" name="modal-schedGameFee" required>
+                            </div>
                         </div>
                         <div class="col-12 d-flex flex-column mt-4">
                             <div class="form-floating">

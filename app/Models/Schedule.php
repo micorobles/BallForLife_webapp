@@ -17,6 +17,7 @@ class Schedule extends Model
         'color',
         'textColor',
         'maxPlayer',
+        'gameFee',
         'notes',
         'is_deleted',
     ];

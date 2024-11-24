@@ -92,6 +92,10 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                                     <div class="card-content">
                                         <div class="row ">
                                             <div class="col-12 mt-2 d-flex align-items-center">
+                                                <i class="fa-solid fa-peso-sign text-muted me-2"></i>
+                                                <span id='schedDate' class="card-venue regular-text text-muted">${schedule.gameFee}</span>
+                                            </div>
+                                            <div class="col-12 mt-2 d-flex align-items-center">
                                                 <i class="fa-solid fa-calendar-day text-muted me-2"></i>
                                                 <span id='schedDate' class="card-venue regular-text text-muted">${displayDate}</span>
                                             </div>
@@ -170,7 +174,11 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     </div>
                     <div class="card-content">
                         <div class="row ">
-                         <div class="col-12 d-flex align-items-center mt-1">
+                            <div class="col-12 d-flex align-items-center mt-1">
+                                <i class="fa-solid fa-peso-sign fa-1x text-muted font-xs me-2"></i>
+                                <span id='schedGameFee'class="card-venue regular-text text-muted font-sm"><span class="semi-bold-text">Game Fee: </span>${schedule.gameFee}</span>
+                            </div>
+                            <div class="col-12 d-flex align-items-center mt-3">
                                 <i class="fa-solid fa-location-dot fa-1x text-muted font-xs me-2"></i>
                                 <span id='schedVenue'class="card-venue regular-text text-muted font-sm"><span class="semi-bold-text">Venue: </span>${schedule.venue}</span>
                             </div>
@@ -283,6 +291,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
         $('.schedules-body').on('click', '#btnPreviewSchedule', function (e) {
             e.preventDefault();
+            $('#btnJoinSchedule').show();
             $('#btnSendRequest').hide();
             _Schedules.renderModal($(this).data('id'));
         });
