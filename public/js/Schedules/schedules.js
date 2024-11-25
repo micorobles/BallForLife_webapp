@@ -31,6 +31,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         renderScheduleCard: function (schedules) {
             var self = this;
 
+            console.log(schedules);
+
             self.schedule = schedules;
 
             var html = '';
@@ -71,6 +73,27 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     : `${startDate.format('MMMM D, YYYY')} - ${endDate.format('MMMM D, YYYY')}`;
 
                 let displayTime = `${startDate.format('h:mm A')} - ${endDate.format('h:mm A')}`;
+
+                let bookingStatus = schedule.bookingStatus ?? '';
+
+                let statusClass = '';
+                let statusIconClass = '';
+
+                switch (bookingStatus) {
+                    case 'Pending':
+                        statusClass = 'text-black border-dark';
+                        statusIconClass = 'fa-hourglass-half';
+                        break;
+                    case 'Joined':
+                        statusClass = 'text-success border-success';
+                        statusIconClass = 'fa-person-circle-check';
+                        break;
+                    case 'Rejected':
+                        statusClass = 'text-danger border-danger';
+                        statusIconClass = 'fa-xmark-circle';
+                        break;
+                }
+                // let displayStatus = `${schedule.bookingStatus}` 
 
                 html = `
                         <div class="col-12 mt-4 col-lg-6 col-xxl-4">
@@ -120,7 +143,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                                     </div>
                                     <div class="card-footerr border-top d-flex justify-content-center gap-2">
                                     <span class='card-timer semi-bold-text font-xs'>${daysToStart} day/s and ${hoursToStart} hr/s and ${minutesToStart} min/s remaining</span>
-                                        <button id="btnPreviewSchedule" class="btn btn-md btn-custom-color w-100 text-white font-sm light-text" data-id="${schedule.ID}"> Preview <i class="fa-solid fa-arrow-right-to-bracket ms-1 fa-1x"></i></button>
+                                        <div id="bookingStatus" class="w-100 font-sm regular-text ${statusClass}"> ${bookingStatus} <i id="bookingStatusIcon" class="fa-solid ${statusIconClass} ms-1 fa-1x"></i></div>
                                         <button id="btnPreviewSchedule" class="btn btn-md btn-custom-color w-100 text-white font-sm light-text" data-id="${schedule.ID}"> Preview <i class="fa-solid fa-arrow-right-to-bracket ms-1 fa-1x"></i></button>
                                     </div>
                                 </div>
@@ -209,7 +232,17 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                                 <p id="schedNotes" class="card-note regular-text text-muted"><span class="semi-bold-text">Notes: </span>
                                     ${schedule.notes}</p>
                             </div>
-                        </div>
+                        </div>`;
+
+            if (schedule.bookingID > 0) {
+
+                html += `    
+                        <label class="font-md text-muted mt-3" >Payment Receipt</label>
+                        <img class="mt-3" src="${baseURL + schedule.bookingReceipt}" alt="" style="width: 100px; height: 100px;">
+                        `;
+            }
+
+            html += `
                     </div>
                     `;
 
@@ -233,6 +266,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             $('#previewScheduleModal .modal-body').append(html);
             self.renderDropZone();
+
             // $('#previewScheduleModal .modal-body #frmSchedule').addClass('show');
             setTimeout(function () {
                 // Trigger the fade-in by adding the 'show' class
@@ -261,11 +295,11 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             self.dropZone.on('addedfile', function (file) {
                 console.log('FILE: ', file);
                 $('#uploadIcon').hide();
-                setTimeout(function() {
+                setTimeout(function () {
                     // Simulate file upload completion (this won't actually upload)
                     file.status = Dropzone.SUCCESS;
                     self.dropZone.emit("complete", file); // Manually trigger the complete event
-                }, 1000); 
+                }, 1000);
             });
 
             self.dropZone.on('removedfile', function (file) {
@@ -315,7 +349,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             //     console.log(key + ': ' + value);
             // }
 
-            const bookSchedule = await ajaxRequest('POST', baseURL + '/bookSchedule', formData , {
+            const bookSchedule = await ajaxRequest('POST', baseURL + '/bookSchedule', formData, {
                 contentType: false,
                 processData: false,
             }).catch(function (error) {
@@ -328,6 +362,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             }
 
             showToast('success', 'Success: ', bookSchedule.message);
+            self.renderSchedules();
             self.modal.modal('hide');
 
             return this;

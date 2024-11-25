@@ -29,6 +29,16 @@
     top: -20px;
 }
 
+#bookingStatus {
+    border-radius: .25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #800000;
+    color: black;
+    background-color: #f8f1f1f5;
+}
+
 #frmSchedule {
     /* opacity: 0; 
     transition: opacity 0.5s ease-in-out;  */

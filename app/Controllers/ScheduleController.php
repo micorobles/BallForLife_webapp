@@ -30,7 +30,13 @@ class ScheduleController extends BaseController
 
     public function getAllScheduleToUsers() 
     {
-        $getAllSchedules = $this->schedules->where('is_deleted', false)->findAll();
+        // $getAllSchedules = $this->schedules->where('is_deleted', false)->findAll();
+        $getAllSchedules = $this->schedules
+                                ->select('schedules.*, sa.ID as bookingID, sa.schedID, sa.userID as userID, sa.status as bookingStatus, sa.receipt as bookingReceipt')
+                                ->join('schedules-appointment sa', 'schedules.ID = sa.schedID AND sa.userID = ' . $this->session->get('ID') . ' ', 'left')
+                                // ->where('sa.is_deleted', false)
+                                ->where('schedules.is_deleted', false)
+                                ->findAll();
 
         if (!$getAllSchedules) {
             return $this->jsonResponse(false, 'Error fetching schedules to users.');
