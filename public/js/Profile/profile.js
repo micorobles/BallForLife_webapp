@@ -168,9 +168,9 @@ $(function () {
             // console.log(formData);
 
             // Log the form data for debugging
-            // for (let [key, value] of formData.entries()) {
-            //     console.log(key, value);
-            // }
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
 
             const url = $('#frmProfile').attr('action');
             const editUser = await ajaxRequest('POST', url, formData, {

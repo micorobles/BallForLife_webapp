@@ -3,17 +3,23 @@
 namespace App\Controllers;
 
 use App\Models\Schedule;
+use App\Models\ScheduleAppointment;
+use Config\Services;
 use App\Libraries\TokenHelper;
 use DateTime;
 
 class ScheduleController extends BaseController
 {
     protected $schedules;
+    protected $schedulesAppointment;
     protected $session;
+    protected $fileUploadService;
     public function __construct()
     {
-        $this->schedules = model(Schedule::class);  // Inject the User model into the controller
-        $this->session = \Config\Services::session();
+        $this->schedules = model(Schedule::class); 
+        $this->schedulesAppointment = model(ScheduleAppointment::class); 
+        $this->session = Services::session();
+        $this->fileUploadService = Services::fileUploadService();
     }
     public function index()
     {    
@@ -31,5 +37,40 @@ class ScheduleController extends BaseController
         }
 
         return $this->jsonResponse(true, 'Schedules for users fetched.', $getAllSchedules);
+    }
+
+    public function bookSchedule()
+    {
+        $schedID = $this->request->getPost('booking-schedID');
+        $userID = $this->session->get('ID');
+
+        error_log('POST DATA: ' . print_r($schedID, true));
+
+        if (empty($schedID)) {
+            return $this->jsonResponse(false, 'No schedule provided for booking.');
+        }
+
+        $bookingDetails = [
+            'userID' => $userID,
+            'schedID' => $schedID,
+            'status' => 'Pending',
+        ];
+
+        $receipt = $this->request->getFile('booking-receipt');
+
+        error_log(print_r($this->schedulesAppointment, true));
+
+        $this->fileUploadService->handleFileUpload($receipt, 'receipts', $userID, $bookingDetails, 'receipt');
+
+        error_log('BOOKING: ' . print_r($bookingDetails, true));
+
+        $insertDetails = $this->schedulesAppointment->insert($bookingDetails);
+
+        if (!$insertDetails) {
+            return $this->jsonResponse(false, 'Error inserting booking details.');
+        }
+
+        return $this->jsonResponse(true, 'Booked successfully!', $bookingDetails);
+        
     }
 }

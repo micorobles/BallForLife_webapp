@@ -5,6 +5,7 @@
 <?= $this->section('css'); ?>
 
 <?= load_css('global/global-styles.css'); ?>
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 <?= load_css('Schedules/schedules.css'); ?>
 
 <?= $this->endSection(); ?>
@@ -149,6 +150,7 @@
 
 <script src="<?= base_url('js/global/moment.min.js') ?>"></script>
 <?= load_js('global/global-functions.js'); ?>
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 <?= load_js('Schedules/schedules.js'); ?>
 
 <?= $this->endSection(); ?>

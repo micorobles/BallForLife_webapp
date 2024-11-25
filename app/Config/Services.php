@@ -3,7 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseService;
-
+use App\Services\FileUploadService;
 /**
  * Services Configuration file.
  *
@@ -29,4 +29,14 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+     public static function fileUploadService($getShared = true)
+     {
+        if ($getShared) {
+            return Static::getSharedInstance('fileUploadService');
+        }
+
+        return new FileUploadService();
+     }
+
 }

@@ -9,8 +9,9 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         this.schedule = {
             // id: '', title: '', venue: '', maxPlayer: '', date: '', time: '',
             // description: '', notes: '', btnJoin: '', btnPreview: '', color: '',
-        }
+        };
         this.modal = '';
+        this.dropZone = '';
     }
     Schedules.prototype = {
         renderSchedules: async function () {
@@ -120,6 +121,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                                     <div class="card-footerr border-top d-flex justify-content-center gap-2">
                                     <span class='card-timer semi-bold-text font-xs'>${daysToStart} day/s and ${hoursToStart} hr/s and ${minutesToStart} min/s remaining</span>
                                         <button id="btnPreviewSchedule" class="btn btn-md btn-custom-color w-100 text-white font-sm light-text" data-id="${schedule.ID}"> Preview <i class="fa-solid fa-arrow-right-to-bracket ms-1 fa-1x"></i></button>
+                                        <button id="btnPreviewSchedule" class="btn btn-md btn-custom-color w-100 text-white font-sm light-text" data-id="${schedule.ID}"> Preview <i class="fa-solid fa-arrow-right-to-bracket ms-1 fa-1x"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -221,65 +223,115 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             var html = '';
 
             html = `
-                <form id='frmSchedule' class="mt-3" action="<?= base_url('createSchedule') ?>">
-                    <input type="text" id="modal-schedID" name="modal-schedID" value="${$('#schedID').text()}" hidden>
-                    <div class="row">
-                        <div class="col-12 col-md-6 col-xl-6 d-flex flex-column">
-                            <label>Schedule Title</label>
-                            <input type="text" id="modal-schedTitle" class="form-control" name="modal-schedTitle" required>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-6 mt-3 mt-md-0 d-flex flex-column">
-                            <label>Venue</label>
-                            <input type="text" id="modal-schedVenue" class="form-control" name="modal-schedVenue" required>
-                        </div>
-                        <div class="col-12 col-md-12 col-xl-12 mt-3 d-flex flex-column">
-                            <label>Description</label>
-                            <input type="text" id="modal-schedDescription" class="form-control" name="modal-schedDescription">
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
-                            <label>Start Date</label>
-                            <div class="input-group">
-                                <input type="text" id="modal-schedStartDate" class="form-control datetimepicker" name="modal-schedStartDate" required>
-                                <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
-                            <label>End Date</label>
-                            <div class="input-group">
-                                <input type="text" id="modal-schedEndDate" class="form-control datetimepicker" name="modal-schedEndDate" required>
-                                <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
-                            </div>
-                        </div>
-                        <div class="col-6 d-flex flex-column mt-3">
-                            <label>Event Color</label>
-                            <div id="colorPicker" class="colorPreview border form-control"></div>
-                            <input type="text" class="form-control" id="modal-schedColor" name="modal-schedColor" hidden>
-                            <input type="text" class="form-control" id="modal-schedTextColor" name="modal-schedTextColor" hidden>
-                        </div>
-                        <div class="col-6 col-md-6 col-xl-6 mt-3 d-flex flex-column">
-                            <label>Max Players</label>
-                            <input type="number" id="modal-schedMaxPlayer" class="form-control" name="modal-schedMaxPlayer" required>
-                        </div>
-                        <div class="col-12 d-flex flex-column mt-4">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a comment here" id="modal-schedNotes" name="modal-schedNotes" style="height: 100px"></textarea>
-                                <label for="modal-schedNotes">Notes</label>
-                            </div>
-                        </div>
-                    </div>
+                <label class="font-md text-muted mt-3" >Payment Receipt</label>
+                <form id='frmBookSchedule' class="mt-3 dropzone" action="<?= base_url('') ?> ">
+                    <i id="uploadIcon" class="fa-solid fa-circle-plus fa-3x"></i>
+                    <input type="text" id="booking-schedID" name="booking-schedID" value="${$('#schedID').text()}" hidden>
+                    <div id="preview-container"></div>
                 </form> 
-            `;
+                `;
 
             $('#previewScheduleModal .modal-body').append(html);
-
+            self.renderDropZone();
             // $('#previewScheduleModal .modal-body #frmSchedule').addClass('show');
             setTimeout(function () {
                 // Trigger the fade-in by adding the 'show' class
                 $('#previewScheduleModal .modal-body #frmSchedule').addClass('show');
-            }, 10); 
+            }, 10);
 
             return this;
         },
+        renderDropZone: function () {
+            var self = this;
+
+            Dropzone.autoDiscover = false;
+            self.dropZone = new Dropzone("#frmBookSchedule", {
+                url: "/upload", // Backend URL for file upload
+                maxFiles: 1, // Maximum number of files
+                maxFilesize: 2, // Maximum file size in MB
+                acceptedFiles: ".jpg,.jpeg,.png,.gif", // Accepted file types
+                uploadMultiple: false,
+                autoProcessQueue: false,
+                addRemoveLinks: true, // Add links to remove uploaded files
+                dictRemoveFile: '<i class="fa-solid fa-circle-minus fa-2x mt-2"></i>',
+                dictDefaultMessage: "Drag and drop receipt here or click to upload", // Custom message
+                previewsContainer: "#preview-container",
+            });
+
+            self.dropZone.on('addedfile', function (file) {
+                console.log('FILE: ', file);
+                $('#uploadIcon').hide();
+                setTimeout(function() {
+                    // Simulate file upload completion (this won't actually upload)
+                    file.status = Dropzone.SUCCESS;
+                    self.dropZone.emit("complete", file); // Manually trigger the complete event
+                }, 1000); 
+            });
+
+            self.dropZone.on('removedfile', function (file) {
+                if (self.dropZone.files.length === 0) {
+                    // Show the icon when no files are present
+                    $("#uploadIcon").show();
+                }
+            });
+
+            // self.dropZone.on("queuecomplete", function() {
+            //     console.log("All files have been uploaded.");
+            // });
+
+            self.dropZone.on("maxfilesexceeded", function (file) {
+                // alert("You can only upload one file!");
+                showToast('warning', 'Warning: ', 'You can only upload one file!');
+                self.dropZone.removeFile(file); // Automatically remove the new file
+            });
+
+            console.log(self.dropZone);
+
+            return this;
+        },
+        bookSchedule: async function () {
+            var self = this;
+
+            let dropZone = self.dropZone;
+            let schedID = $('#schedID').text().trim() ?? 0;
+
+            if (dropZone.files.length === 0) {
+                showToast('error', 'Error: ', 'Please upload a file before submitting');
+                return;
+            }
+
+            dropZone = dropZone.files[0];
+
+            if (dropZone.status !== Dropzone.SUCCESS) {
+                showToast('warning', 'Warning: ', 'Please wait for the file to complete uploading');
+                return;
+            }
+
+
+            var formData = new FormData($('#frmBookSchedule')[0]);
+            formData.append('booking-receipt', dropZone);
+
+            // for (let [key, value] of formData.entries()) {
+            //     console.log(key + ': ' + value);
+            // }
+
+            const bookSchedule = await ajaxRequest('POST', baseURL + '/bookSchedule', formData , {
+                contentType: false,
+                processData: false,
+            }).catch(function (error) {
+                console.error("AJAX error response:", error.responseText);
+                throw error;
+            });
+
+            if (!bookSchedule.success) {
+                showToast('error', 'Error: ', bookSchedule.message);
+            }
+
+            showToast('success', 'Success: ', bookSchedule.message);
+            self.modal.modal('hide');
+
+            return this;
+        }
     }
 
     Schedules.init.prototype = Schedules.prototype;
@@ -295,12 +347,17 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             $('#btnSendRequest').hide();
             _Schedules.renderModal($(this).data('id'));
         });
-        
+
         $('#btnJoinSchedule').on('click', function (e) {
             e.preventDefault();
             $('#btnSendRequest').show();
             $(this).hide();
             _Schedules.joinSchedule();
+        });
+
+        $('#btnSendRequest').on('click', function (e) {
+            e.preventDefault();
+            _Schedules.bookSchedule();
         });
 
     });

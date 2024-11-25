@@ -40,3 +40,38 @@
     transform: translateY(0); /* Slide into normal position */
     opacity: 1; /* Fade in the modal body */
 }
+
+/* DROPZONE */
+
+/* General Dropzone Styling */
+.dropzone {
+    border: 2px dashed #007bff; /* Elegant blue border */
+    border-radius: 10px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background */
+    padding: 20px; /* Add padding inside the Dropzone */
+    text-align: center; /* Center align text */
+    font-family: Arial, sans-serif; /* Elegant font */
+    color: #333; /* Neutral text color */
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions */
+}
+
+.dropzone:hover {
+    background-color: #e9f5ff; /* Light blue background on hover */
+    border-color: #0056b3; /* Darker border on hover */
+}
+
+.dz-remove {
+    color: #dc3545;
+}
+
+.dz-remove i::before {
+    cursor: pointer;
+}
+
+.dz-remove:hover {
+    color: #dc3545;
+}
+
+.dz-progress {
+    background: #6c757d !important;
+}

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Libraries\TokenHelper;
+use Config\Services;
 use Google_Client;
 use Google_Service_Oauth2;
 use CodeIgniter\Controller;
@@ -16,12 +17,14 @@ class AccountController extends BaseController
     protected $users;
     protected $session;
     protected $tokenHelper;
+    protected $fileUploadService;
 
     public function __construct()
     {
         $this->users = model(User::class);  // Inject the User model into the controller
-        $this->session = \Config\Services::session();
+        $this->session = Services::session();
         $this->tokenHelper = new TokenHelper();
+        $this->fileUploadService = Services::fileUploadService();
     }
 
     public function index()
@@ -252,8 +255,8 @@ class AccountController extends BaseController
             // $profileData['skills'] = json_encode($this->request->getPost('skills')); // Convert array to JSON
 
             // Handle file uploads
-            $this->handleFileUpload($this->request->getFile('pictureFile'), 'profiles', $userID, $profileData, 'profilePic');
-            $this->handleFileUpload($this->request->getFile('coverPhotoFile'), 'cover-photos', $userID, $profileData, 'coverPhoto');
+            $this->fileUploadService->handleFileUpload($this->request->getFile('pictureFile'), 'profiles', $userID, $profileData, 'profilePic');
+            $this->fileUploadService->handleFileUpload($this->request->getFile('coverPhotoFile'), 'cover-photos', $userID, $profileData, 'coverPhoto');
 
             // Update user profile in the database
             $updateUser = $this->users->update($userID, $profileData);
@@ -344,33 +347,33 @@ class AccountController extends BaseController
     {
         return $this->tokenHelper->generateToken($userId, $userRole);
     }
-    /**
-     * Handle file upload and move to public directory.
-     *
-     * @param \CodeIgniter\HTTP\Files\UploadedFile $file The file to be uploaded.
-     * @param string $folder The folder where the file will be stored.
-     * @param string $userID The user ID to create a unique file name.
-     * @param array $profileData The array where the image path will be added.
-     * @param string $key The key under which the image path will be stored in profileData.
-     * @return void
-     */
-    private function handleFileUpload(\CodeIgniter\HTTP\Files\UploadedFile $file, $folder, $userID, &$profileData, $key)
-    {
-        if ($file && $file->isValid() && !$file->hasMoved()) {
-            // Define a new name for the uploaded file
-            $newFileName = $userID . '_' . $file->getName();
-            $uploadPath = WRITEPATH . 'images/uploads/' . $folder . '/'; // Change this to your upload directory
+    // /**
+    //  * Handle file upload and move to public directory.
+    //  *
+    //  * @param \CodeIgniter\HTTP\Files\UploadedFile $file The file to be uploaded.
+    //  * @param string $folder The folder where the file will be stored.
+    //  * @param string $userID The user ID to create a unique file name.
+    //  * @param array $profileData The array where the image path will be added.
+    //  * @param string $key The key under which the image path will be stored in profileData.
+    //  * @return void
+    //  */
+    // private function handleFileUpload(\CodeIgniter\HTTP\Files\UploadedFile $file, $folder, $userID, &$profileData, $key)
+    // {
+    //     if ($file && $file->isValid() && !$file->hasMoved()) {
+    //         // Define a new name for the uploaded file
+    //         $newFileName = $userID . '_' . $file->getName();
+    //         $uploadPath = WRITEPATH . 'images/uploads/' . $folder . '/'; // Change this to your upload directory
 
-            // Move the file to the writable directory
-            $file->move($uploadPath, $newFileName);
+    //         // Move the file to the writable directory
+    //         $file->move($uploadPath, $newFileName);
 
-            // Move to public folder
-            copy($uploadPath . $newFileName, 'images/uploads/' . $folder . '/' . $newFileName);
+    //         // Move to public folder
+    //         copy($uploadPath . $newFileName, 'images/uploads/' . $folder . '/' . $newFileName);
 
-            // Add the image path to the profile data
-            $profileData[$key] = 'images/uploads/' . $folder . '/' . $newFileName; // Store the path relative to your public directory
-        }
-    }
+    //         // Add the image path to the profile data
+    //         $profileData[$key] = 'images/uploads/' . $folder . '/' . $newFileName; // Store the path relative to your public directory
+    //     }
+    // }
     public function unauthorized()
     {
         return view('errors/html/unauthorized');

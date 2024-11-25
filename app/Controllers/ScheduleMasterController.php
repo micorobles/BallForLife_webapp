@@ -99,7 +99,6 @@ class ScheduleMasterController extends BaseController
             } else {
                 $scheduleChanges[$key] = $value;
             }
-
         }
 
         if (empty($scheduleChanges)) {
