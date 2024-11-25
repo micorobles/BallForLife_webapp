@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2024 at 12:07 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Nov 25, 2024 at 03:14 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,7 +42,7 @@ CREATE TABLE `schedules` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `schedules`
@@ -52,10 +52,10 @@ INSERT INTO `schedules` (`ID`, `title`, `description`, `venue`, `startDate`, `en
 (28, '1st Event', '1st Description', '1st Venue', '2024-11-20 17:00:00', '2024-11-22 19:00:00', '#000000', '#ffffff', 5, '', '1st Notes', '2024-11-20 19:41:29', 0, '2024-11-21 04:15:47'),
 (29, '2nd Event', '2nd Description', '2nd Venue', '2024-11-21 08:00:00', '2024-11-21 10:10:00', '#800000', '#ffffff', 10, '', '2nd Notes', '2024-11-20 19:43:21', 0, '2024-11-21 04:14:19'),
 (30, '3rd Event', '3rd Description', '3rd Venue', '2024-11-20 18:00:00', '2024-11-20 19:00:00', '#0000ff', '#ffffff', 11, '', '3rd Notes', '2024-11-20 19:44:11', 0, '2024-11-20 19:44:11'),
-(31, '4th Event', '4th Description', '4th Venue', '2024-11-20 20:00:00', '2024-11-20 21:10:00', '#ffff00', '#000000', 20, '', '4th Notes', '2024-11-20 19:45:34', 0, '2024-11-20 21:09:06'),
+(31, '4th Event', '4th Description', '4th Venue', '2024-11-28 20:00:00', '2024-11-29 21:10:00', '#ffff00', '#000000', 20, '', '4th Notes', '2024-11-28 19:45:34', 0, '2024-11-25 21:20:28'),
 (32, '5th Title', '5th Description', '5th Venue', '2024-11-12 20:05:00', '2024-11-15 10:10:00', '#00ff00', '#000000', 30, '', '5th Notes', '2024-11-20 20:04:34', 0, '2024-11-22 12:48:20'),
 (33, '6th Title', 'Lorem ipsum odor amet, consectetuer adipiscing elit. Quam nostra sociosqu diam lacus praesent praesent dignissim. Dictum orci cras felis vivamus vehicula nisi pharetra cubilia. Ultrices vestibulum auctor dignissim mattis blandit aliquam augue iaculis soda', '6th Venue', '2024-11-23 10:15:00', '2024-11-23 22:00:00', '#ff00ff', '#ffffff', 30, '', 'Sociosqu dictum cras faucibus dolor; praesent habitant. Arcu tellus feugiat turpis sociosqu risus feugiat ac. Ligula nec metus praesent amet ac vivamus himenaeos tortor. Risus ullamcorper quis egestas mauris urna dolor. Hac nibh adipiscing sed curae imper', '2024-11-22 12:50:15', 0, '2024-11-22 16:44:23'),
-(34, 'Papawis ni Renato', 'Sociosqu dictum cras faucibus dolor; praesent habitant. Arcu tellus feugiat turpis sociosqu risus feugiat ac. Ligula nec metus praesent amet ac vivamus himenaeos tortor. Risus ullamcorper quis egestas mauris urna dolor. Hac nibh adipiscing sed curae imper', 'Avida Settings Covered Court', '2024-11-24 17:00:00', '2024-11-28 22:00:00', '#704172', '#ffffff', 59, '500', 'Vehicula natoque platea faucibus parturient vivamus quam conubia lobortis. Lectus integer enim litora imperdiet, primis senectus. Posuere semper suspendisse mauris rutrum neque mus velit. Mattis praesent posuere mollis arcu hac eget sagittis ridiculus por', '2024-11-22 14:04:59', 0, '2024-11-24 12:41:43'),
+(34, 'Papawis ni Renato', 'Sociosqu dictum cras faucibus dolor; praesent habitant. Arcu tellus feugiat turpis sociosqu risus feugiat ac. Ligula nec metus praesent amet ac vivamus himenaeos tortor. Risus ullamcorper quis egestas mauris urna dolor. Hac nibh adipiscing sed curae imper', 'Avida Settings Covered Court', '2024-11-26 17:00:00', '2024-11-30 22:00:00', '#704172', '#ffffff', 59, '500', 'Vehicula natoque platea faucibus parturient vivamus quam conubia lobortis. Lectus integer enim litora imperdiet, primis senectus. Posuere semper suspendisse mauris rutrum neque mus velit. Mattis praesent posuere mollis arcu hac eget sagittis ridiculus por', '2024-11-22 14:04:59', 0, '2024-11-25 20:35:54'),
 (35, 'example', 'example', 'example', '2024-11-26 15:00:00', '2024-11-27 15:30:00', '#00ffff', '#000000', 50, '150', 'example', '2024-11-22 14:41:44', 0, '2024-11-25 14:56:45');
 
 -- --------------------------------------------------------
@@ -74,17 +74,16 @@ CREATE TABLE `schedules-appointment` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `schedules-appointment`
 --
 
 INSERT INTO `schedules-appointment` (`ID`, `userID`, `schedID`, `receipt`, `status`, `remarks`, `created_at`, `is_deleted`, `updated_at`) VALUES
-(1, 10, 35, 'images/uploads/receipts/10_WIN_20240619_18_34_46_Pro.jpg', 'Pending', NULL, '2024-11-25 18:17:35', 0, '2024-11-25 18:17:35'),
-(2, 10, 35, 'images/uploads/receipts/10_ROBLES.jpg', 'Pending', NULL, '2024-11-25 18:20:12', 0, '2024-11-25 18:20:12'),
-(3, 10, 35, 'images/uploads/receipts/10_ROBLES.jpg', 'Pending', NULL, '2024-11-25 18:20:57', 0, '2024-11-25 18:20:57'),
-(4, 10, 35, 'images/uploads/receipts/10_School ID(1).jpg', 'Pending', NULL, '2024-11-25 18:22:49', 0, '2024-11-25 18:22:49');
+(1, 10, 35, 'images/uploads/receipts/10_WIN_20240619_18_34_46_Pro.jpg', 'Joined', NULL, '2024-11-25 18:17:35', 0, '2024-11-25 21:44:03'),
+(5, 10, 34, 'images/uploads/receipts/10_sidebar-popup-logo.png', 'Rejected', NULL, '2024-11-25 20:37:17', 0, '2024-11-25 21:49:50'),
+(6, 57, 35, 'images/uploads/receipts/57_note.png', 'Pending', NULL, '2024-11-25 20:50:59', 0, '2024-11-25 20:50:59');
 
 -- --------------------------------------------------------
 
@@ -111,7 +110,7 @@ CREATE TABLE `user` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
@@ -163,7 +162,7 @@ ALTER TABLE `schedules`
 -- AUTO_INCREMENT for table `schedules-appointment`
 --
 ALTER TABLE `schedules-appointment`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `user`
