@@ -136,6 +136,53 @@
     text-decoration: line-through;
 }
 
+.appointments-container {
+    transform: translateY(-20px); /* Start 20px above the view */
+    opacity: 0; /* Initially hidden */
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+.appointments-container.show {
+    transform: translateY(0); /* Slide into normal position */
+    opacity: 1; /* Fade in the modal body */
+}
+
+.appointments {
+    max-height: 500px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#tblAppointments tbody tr {
+    height: 80px; /* Adjust row height */
+}
+
+#tblAppointments th,
+#tblAppointments td {
+    vertical-align: middle; /* Vertically center content */
+}
+
+#tblAppointments .imgReceipt {
+    width: 50px;
+    height: 50px;
+}
+
+#tblAppointments .imgUser {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+#tblAppointments .iconReceipt {
+    cursor: pointer;
+}
+
+/* 
+[id*="btn"] {
+
+} */
+
 /* Mobile-specific styling */
 @media (max-width: 768px) {
 

@@ -318,62 +318,74 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         viewAppointments: function () {
             var self = this;
 
-            // $('#scheduleModal .modal-body').html('');
+            console.log(self.eventID);
+            var html = '';
 
-            let html = `
-                    <div class="row">
-                        <div class="col-12 col-md-6 col-xl-6 d-flex flex-column">
-                            <label>Schedule Title</label>
-                            <input type="text" id="modal-schedTitle" class="form-control" name="modal-schedTitle" required>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-6 mt-3 mt-md-0 d-flex flex-column">
-                            <label>Venue</label>
-                            <input type="text" id="modal-schedVenue" class="form-control" name="modal-schedVenue" required>
-                        </div>
-                        <div class="col-12 col-md-12 col-xl-12 mt-3 d-flex flex-column">
-                            <label>Description</label>
-                            <input type="text" id="modal-schedDescription" class="form-control" name="modal-schedDescription">
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
-                            <label>Start Date</label>
-                            <div class="input-group">
-                                <input type="text" id="modal-schedStartDate" class="form-control datetimepicker" name="modal-schedStartDate" required>
-                                <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
-                            <label>End Date</label>
-                            <div class="input-group">
-                                <input type="text" id="modal-schedEndDate" class="form-control datetimepicker" name="modal-schedEndDate" required>
-                                <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-4 d-flex flex-column mt-3">
-                            <label>Event Color</label>
-                            <div id="colorPicker" class="colorPreview border form-control"></div>
-                            <input type="text" class="form-control" id="modal-schedColor" name="modal-schedColor" hidden>
-                            <input type="text" class="form-control" id="modal-schedTextColor" name="modal-schedTextColor" hidden>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-4 mt-3 d-flex flex-column">
-                            <label>Max Players</label>
-                            <input type="number" id="modal-schedMaxPlayer" class="form-control" name="modal-schedMaxPlayer" required>
-                        </div>
-                        <div class="col-6 col-md-4 col-xl-4 mt-3 d-flex flex-column">
-                            <label>Game Fee</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fa-solid fa-peso-sign"></i></span>
-                                <input type="number" id="modal-schedGameFee" class="form-control" name="modal-schedGameFee" required>
-                            </div>
-                        </div>
-                        <div class="col-12 d-flex flex-column mt-4">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a comment here" id="modal-schedNotes" name="modal-schedNotes" style="height: 100px"></textarea>
-                                <label for="modal-schedNotes">Notes</label>
-                            </div>
+            /////////////////////////////// DESIGN TABLE DATA TABLE ////////////////////////////////////////
+            html = `
+                    <div class="appointments-container mt-4">
+                        <label class="font-md text-muted mb-2">Appointments</label>
+                        <div class="appointments rounded p-2">
+                            <table id="tblAppointments" class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col" hidden>ID</th>
+                                        <th scope="col">Fullname</th>
+                                        <th scope="col">Position</th>
+                                        <th scope="col" style="text-align: center;">Receipt</th>
+                                        <th scope="col" style="text-align: center;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td hidden>1</td>
+                                        <td>
+                                            <img class="imgUser border me-1" src="${baseURL + 'images/uploads/profiles/63_ROBLES.jpg'}">
+                                            Mico Robles
+                                        </td>
+                                        <td>Point Guard</td>
+                                        <td style="text-align: center;">
+                                            <i class="fa-solid fa-file-circle-question fa-2x iconReceipt"></i>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <button class="btn btn-sm btn-success me-1">Accept</button>
+                                            <button class="btn btn-sm btn-danger">Reject</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td hidden>2</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                        <td>Otto</td>
+                                         <td>
+                                            <button class="btn btn-sm btn-success me-1">Accept</button>
+                                            <button class="btn btn-sm btn-danger">Reject</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td hidden>3</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                        <td>Otto</td>
+                                         <td>
+                                            <button class="btn btn-sm btn-success me-1">Accept</button>
+                                            <button class="btn btn-sm btn-danger">Reject</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>`;
 
             $('#scheduleModal .modal-body').append(html);
+
+            setTimeout(function () {
+                $('#scheduleModal .modal-body .appointments-container').addClass('show');
+            }, 10);
 
             return this;
         },
@@ -481,6 +493,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             $('#colorPicker').spectrum('destroy');
             $('#scheduleModalLabel').text('');
             $('#btnSaveSchedule').attr('data-id');
+            $('#scheduleModal .modal-body .appointments-container').empty();
 
             return this;
         }
@@ -528,6 +541,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         $('#btnAppointments').on('click', function (e) {
             e.preventDefault();
             _S.viewAppointments();
+            $('#btnEditSchedule').fadeOut(300);
+            $('#btnDeleteSchedule').fadeOut(300);
         });
 
         $('#scheduleModal').on('shown.bs.modal', function () {

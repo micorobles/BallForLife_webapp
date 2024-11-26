@@ -18,6 +18,8 @@
 
 <div id="calendar"></div>
 
+
+
 <!-- Create Schedule Modal -->
 <div class="modal fade" id="scheduleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="scheduleModalLabel">
     <div class="modal-dialog modal-lg">

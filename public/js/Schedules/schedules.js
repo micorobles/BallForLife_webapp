@@ -181,7 +181,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             let displayTime = `${startDate.format('h:mm A')} - ${endDate.format('h:mm A')}`;
 
-            let receiptName = schedule.bookingReceipt.substring(schedule.bookingReceipt.lastIndexOf('/') + 1);
+            let bookingReceipt = schedule.bookingReceipt ?? '';
+            let receiptName = bookingReceipt.substring(bookingReceipt.lastIndexOf('/') + 1);
 
             html = `
                     <div class="card-heading border-bottom pb-2">
@@ -237,7 +238,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                         </div>`;
 
             if (schedule.bookingID > 0) {
-
+                $('#btnJoinSchedule').hide();
                 html += `
                         <div class="mt-3 d-flex flex-column">    
                             <label class="font-md text-muted " >Payment Receipt</label>
