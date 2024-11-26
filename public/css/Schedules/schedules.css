@@ -54,7 +54,7 @@
 /* DROPZONE */
 
 /* General Dropzone Styling */
-.dropzone {
+.dropzone, .imageReceipt {
     border: 2px dashed #007bff; /* Elegant blue border */
     border-radius: 10px; /* Rounded corners */
     background-color: #f9f9f9; /* Light background */
@@ -68,6 +68,18 @@
 .dropzone:hover {
     background-color: #e9f5ff; /* Light blue background on hover */
     border-color: #0056b3; /* Darker border on hover */
+}
+
+
+
+.imageReceipt img {
+    cursor: pointer;
+    border-radius: 3px !important;
+    transition: all 0.3s ease;
+}
+
+.imageReceipt img:hover {
+    transform: scale(1.05);
 }
 
 .dz-remove {

@@ -84,8 +84,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button id='btnCreateSchedule' type="submit" class="btn btn-success">Create</button>
-                <button id='btnEditSchedule' type="button" class="btn btn-primary">Edit</button>
+                <button id='btnEditSchedule' type="button" class="btn btn-primary">Edit</button>    
                 <button id='btnDeleteSchedule' type="submit" class="btn btn-danger">Delete</button>
+                <button id='btnAppointments' type="submit" class="btn btn-custom-color text-white">Appointments</button>
                 <button id='btnSaveSchedule' type="button" class="btn btn-success">Save</button>
             </div>
         </div>

@@ -114,6 +114,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     self.scheduleModal.modal('show');
                     $('#btnEditSchedule').show();
                     $('#btnDeleteSchedule').show();
+                    $('#btnAppointments').show();
                     $('#scheduleModalLabel').text('View Schedule');
                     // $('#btnSaveSchedule').attr('data-id', event.event.id);
 
@@ -314,6 +315,68 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             return this;
         },
+        viewAppointments: function () {
+            var self = this;
+
+            // $('#scheduleModal .modal-body').html('');
+
+            let html = `
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-xl-6 d-flex flex-column">
+                            <label>Schedule Title</label>
+                            <input type="text" id="modal-schedTitle" class="form-control" name="modal-schedTitle" required>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-6 mt-3 mt-md-0 d-flex flex-column">
+                            <label>Venue</label>
+                            <input type="text" id="modal-schedVenue" class="form-control" name="modal-schedVenue" required>
+                        </div>
+                        <div class="col-12 col-md-12 col-xl-12 mt-3 d-flex flex-column">
+                            <label>Description</label>
+                            <input type="text" id="modal-schedDescription" class="form-control" name="modal-schedDescription">
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
+                            <label>Start Date</label>
+                            <div class="input-group">
+                                <input type="text" id="modal-schedStartDate" class="form-control datetimepicker" name="modal-schedStartDate" required>
+                                <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
+                            <label>End Date</label>
+                            <div class="input-group">
+                                <input type="text" id="modal-schedEndDate" class="form-control datetimepicker" name="modal-schedEndDate" required>
+                                <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 d-flex flex-column mt-3">
+                            <label>Event Color</label>
+                            <div id="colorPicker" class="colorPreview border form-control"></div>
+                            <input type="text" class="form-control" id="modal-schedColor" name="modal-schedColor" hidden>
+                            <input type="text" class="form-control" id="modal-schedTextColor" name="modal-schedTextColor" hidden>
+                        </div>
+                        <div class="col-6 col-md-4 col-xl-4 mt-3 d-flex flex-column">
+                            <label>Max Players</label>
+                            <input type="number" id="modal-schedMaxPlayer" class="form-control" name="modal-schedMaxPlayer" required>
+                        </div>
+                        <div class="col-6 col-md-4 col-xl-4 mt-3 d-flex flex-column">
+                            <label>Game Fee</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-peso-sign"></i></span>
+                                <input type="number" id="modal-schedGameFee" class="form-control" name="modal-schedGameFee" required>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex flex-column mt-4">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Leave a comment here" id="modal-schedNotes" name="modal-schedNotes" style="height: 100px"></textarea>
+                                <label for="modal-schedNotes">Notes</label>
+                            </div>
+                        </div>
+                    </div>`;
+
+            $('#scheduleModal .modal-body').append(html);
+
+            return this;
+        },
         renderDateTimePicker: function (dateTime, selector) {
             var self = this;
 
@@ -460,6 +523,11 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         $('#btnSaveSchedule').click(function (e) {
             e.preventDefault();
             _S.saveScheduleChanges();
+        });
+
+        $('#btnAppointments').on('click', function (e) {
+            e.preventDefault();
+            _S.viewAppointments();
         });
 
         $('#scheduleModal').on('shown.bs.modal', function () {

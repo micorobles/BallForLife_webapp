@@ -181,6 +181,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             let displayTime = `${startDate.format('h:mm A')} - ${endDate.format('h:mm A')}`;
 
+            let receiptName = schedule.bookingReceipt.substring(schedule.bookingReceipt.lastIndexOf('/') + 1);
+
             html = `
                     <div class="card-heading border-bottom pb-2">
                         <div class="row">
@@ -236,9 +238,14 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             if (schedule.bookingID > 0) {
 
-                html += `    
-                        <label class="font-md text-muted mt-3" >Payment Receipt</label>
-                        <img class="mt-3" src="${baseURL + schedule.bookingReceipt}" alt="" style="width: 100px; height: 100px;">
+                html += `
+                        <div class="mt-3 d-flex flex-column">    
+                            <label class="font-md text-muted " >Payment Receipt</label>
+                            <div class="imageReceipt mt-3 d-flex flex-column align-items-center">
+                                <img id="imgReceipt" src="${baseURL + schedule.bookingReceipt}" alt="" style="width: 100px; height: 100px;">
+                                <span id="" class="ms-2 mt-2 font-sm">${receiptName}</span>
+                            </div>
+                        </div>
                         `;
             }
 
@@ -394,6 +401,20 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             e.preventDefault();
             _Schedules.bookSchedule();
         });
+
+       $(document).on('click', '#imgReceipt', function () {
+            console.log('clicked');
+            $(this).css('transform', 'scale(4)');
+       });
+
+       $(document).on('click', function (e) {
+        if (
+            !$(e.target).closest('#imgReceipt').length
+           
+        ) {
+            $('#imgReceipt').css('transform', 'scale(1)');
+        }
+    });
 
     });
 
