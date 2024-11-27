@@ -329,53 +329,16 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                             <table id="tblAppointments" class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col" hidden>ID</th>
+                                        <th scope="col">ID</th>
                                         <th scope="col">Fullname</th>
                                         <th scope="col">Position</th>
                                         <th scope="col" style="text-align: center;">Receipt</th>
-                                        <th scope="col" style="text-align: center;">Action</th>
+                                        <th scope="col" style="text-align: center;">Timestamp</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td hidden>1</td>
-                                        <td>
-                                            <img class="imgUser border me-1" src="${baseURL + 'images/uploads/profiles/63_ROBLES.jpg'}">
-                                            Mico Robles
-                                        </td>
-                                        <td>Point Guard</td>
-                                        <td style="text-align: center;">
-                                            <i class="fa-solid fa-file-circle-question fa-2x iconReceipt"></i>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <button class="btn btn-sm btn-success me-1">Accept</button>
-                                            <button class="btn btn-sm btn-danger">Reject</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td hidden>2</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>Otto</td>
-                                         <td>
-                                            <button class="btn btn-sm btn-success me-1">Accept</button>
-                                            <button class="btn btn-sm btn-danger">Reject</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td hidden>3</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>Otto</td>
-                                         <td>
-                                            <button class="btn btn-sm btn-success me-1">Accept</button>
-                                            <button class="btn btn-sm btn-danger">Reject</button>
-                                        </td>
-                                    </tr>
+                                    
+                                   
                                 </tbody>
                             </table>
                         </div>
@@ -385,7 +348,58 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             setTimeout(function () {
                 $('#scheduleModal .modal-body .appointments-container').addClass('show');
+
+                self.drawDataTable('#tblAppointments');
+                
             }, 10);
+
+
+            return this;
+        },
+        drawDataTable: function (tableID) {
+            var self = this;
+
+            if ($.fn.DataTable.isDataTable(tableID)) {
+                $(tableID).DataTable().destroy();
+            }
+
+            $(tableID).DataTable({
+                orderCellsTop: true, // Keeps the sorting on the first row, not the second
+                responsive: true,
+                select: true,
+                language: {
+                    lengthMenu: "_MENU_ Entries",
+                },
+                processing: true,
+                serverSide: true,
+                // order: [[4, "desc"]],
+                dataSrc: "data",
+                ajax: {
+                    url: baseURL + "getScheduleAppointments/" + self.eventID,
+                    type: "POST",
+                    datatype: "json",
+                    data: function (d) {
+                        console.log('Data: ', d);
+                        // d.draw = self.$tblAppointments ? self.$tblAppointments.settings()[0].iDraw : 1;
+
+                        // $('#tblUser thead tr:nth-child(2) th').each(function (index) {
+                        //     var searchValue = $(this).find('input').val(); 
+                        //     // d['columns[' + index + '][search][value]'] = searchValue || "";
+                        // });
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    },
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'fullname' },
+                    { data: 'position' },
+                    { data: 'receipt' },
+                    { data: 'timestamp' }
+                ]
+                
+            });
 
             return this;
         },

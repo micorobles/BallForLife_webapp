@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.css">
 <?= load_css('global/tempus-dominus.min.css') ?>
 <?= load_css('global/global-styles.css') ?>
+<?= load_css('global/datatables.min.css'); ?>
 <?= load_css('Masters/scheduleMaster.css') ?>
 
 <?= $this->endSection(); ?>
@@ -112,6 +113,7 @@
 <script src="<?= base_url('js/global/moment.min.js') ?>"></script>
 <script src="<?= base_url('js/global/popper.min.js') ?>"></script>
 <script src="<?= base_url('js/global/tempus-dominus.min.js') ?>"></script>
+<?= load_js('global/datatables.min.js'); ?>
 <?= load_js('Masters/scheduleMaster.js'); ?>
 
 <?= $this->endSection(); ?>

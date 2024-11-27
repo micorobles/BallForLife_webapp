@@ -170,14 +170,34 @@
 
 #tblAppointments .imgUser {
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 }
 
 #tblAppointments .iconReceipt {
     cursor: pointer;
 }
 
+/* DATA TABLE CUSTOM STYLES */
+
+#tblAppointments_wrapper #dt-length-0,
+#tblAppointments_wrapper .dt-search label {
+    margin-right: 8px;
+}
+
+div.dt-container .dt-input,
+div.dt-container .dt-search input  {
+    border: 1px solid #800000;
+}
+
+div.dt-container .dt-search input:focus-visible {
+    outline: 2px solid #800000;  /* Add a green outline when focused */
+    border: 1px solid #800000;   /* Change border color on focus */
+    background-color: #f0f0f0;   /* Light gray background on focus */
+    color: #333;                 /* Change text color */
+    box-shadow: 0 0 5px rgba(128, 0, 0, 0.5); /* Add subtle box shadow */
+    transition: all 0.2s ease;   /* Smooth transition */
+}
 /* 
 [id*="btn"] {
 
@@ -212,4 +232,25 @@
         text-align: center;
         margin-top: 10px; /* Add spacing if needed */
     }
+}
+
+@media screen and (max-width: 767px) {
+    div.dt-container div.dt-layout-row:not(.dt-layout-table) {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 576px) {
+
+    /* Data table entries and search container */
+    #tblAppointments_wrapper > div:nth-child(1) {
+        display: flex;
+    }
+
+    /* Data table pagination container */
+    #tblAppointments_wrapper > div:nth-child(3) {
+        margin-top: 10px;
+        display: block;
+    }
+
 }
