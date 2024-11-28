@@ -143,9 +143,11 @@ class ScheduleMasterController extends BaseController
         $start = intval($this->request->getPost('start'));
         $length = intval($this->request->getPost('length'));
         $order = $this->request->getPost('order') ?? []; // Use empty array if not set
-        $columns = ['fullname', 'Position', 'Receipt', 'Timestamp'];
+        $columns = ['', 'userID', 'fullname', 'position', 'receipt', 'created_at'];
 
-        $sortColumnIndex = $order[0]['column'] ?? 0; // Default to first column
+        error_log('ORDER: ' . print_r($order, true));
+
+        $sortColumnIndex = $order[0]['column'] ?? 5; // Default to first column
         $sortDirection = $order[0]['dir'] ?? 'asc';
 
         // Validate the sort column index
@@ -161,9 +163,11 @@ class ScheduleMasterController extends BaseController
         // Total records count (without filtering)
         $totalCount = $builder->countAllResults(false);
 
+        error_log('TOTAL COUNT: ' . $totalCount);
+
         // Apply ordering and pagination
         if ($sortColumn === 'fullname') {
-            // Order by concatenated firstname and lastname
+            // Order by concatenated firstname and lastname 
             $builder->orderBy('u.firstname', $sortDirection)
                     ->orderBy('u.lastname', $sortDirection);
         } else {
@@ -196,16 +200,20 @@ class ScheduleMasterController extends BaseController
         $filteredCount = $builder->resetQuery()->countAllResults(false);
 
         // Map data
-        $data = array_map(function ($appointment) {
+        $data = array_map(function ($appointment, $index) {
             return [
+                // 'count' => $index + 1,  
                 'id' => $appointment['appointmentID'],
-                'fullname' => ucfirst($appointment['firstname']) . ' ' . ucfirst($appointment['lastname']),
+                'fullname' => '<img src="' . base_url($appointment['profilePic']) . '" alt="Profile Picture" class="imgUser me-1" /> 
+                                <span class="regular-text"> ' .  ucfirst($appointment['firstname']) . ' ' . ucfirst($appointment['lastname']) . '</span>',
                 'position' => $appointment['position'],
                 'receipt' => $appointment['receipt'],
-                // 'status' => $appointment['status'],
                 'timestamp' => $appointment['created_at'],
+                'status' => $appointment['status'],
+                'profilePic' => $appointment['profilePic'],
+                'count' => $index + 1,
             ];
-        }, $appointments);
+        }, $appointments, array_keys($appointments));
 
         // error_log('DATA: ' . print_r($data, true));
         // Return JSON response

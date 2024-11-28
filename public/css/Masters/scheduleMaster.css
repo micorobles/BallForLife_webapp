@@ -178,6 +178,22 @@
     cursor: pointer;
 }
 
+#tblAppointments th {
+    font-weight: 500;
+}
+
+#tblAppointments td {
+    font-weight: 400;
+}
+
+table.dataTable td:nth-child(2) {
+    width: 200px !important;  /* Force the width using !important */
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncate the text with ellipsis if it exceeds width */
+    white-space: nowrap; /* Prevent the text from wrapping */
+}
+
 /* DATA TABLE CUSTOM STYLES */
 
 #tblAppointments_wrapper #dt-length-0,

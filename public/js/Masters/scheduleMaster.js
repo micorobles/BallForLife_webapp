@@ -329,11 +329,12 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                             <table id="tblAppointments" class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Fullname</th>
-                                        <th scope="col">Position</th>
-                                        <th scope="col" style="text-align: center;">Receipt</th>
-                                        <th scope="col" style="text-align: center;">Timestamp</th>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Fullname</th>
+                                        <th>Position</th>
+                                        <th>Receipt</th>
+                                        <th>Timestamp</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -350,7 +351,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 $('#scheduleModal .modal-body .appointments-container').addClass('show');
 
                 self.drawDataTable('#tblAppointments');
-                
+
             }, 10);
 
 
@@ -366,7 +367,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             $(tableID).DataTable({
                 orderCellsTop: true, // Keeps the sorting on the first row, not the second
                 responsive: true,
-                select: true,
+                // autoWidth: true,
+                // select: true,
                 language: {
                     lengthMenu: "_MENU_ Entries",
                 },
@@ -380,27 +382,77 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     datatype: "json",
                     data: function (d) {
                         console.log('Data: ', d);
-                        // d.draw = self.$tblAppointments ? self.$tblAppointments.settings()[0].iDraw : 1;
 
-                        // $('#tblUser thead tr:nth-child(2) th').each(function (index) {
-                        //     var searchValue = $(this).find('input').val(); 
-                        //     // d['columns[' + index + '][search][value]'] = searchValue || "";
-                        // });
                     },
                     error: function (error) {
                         console.error(error);
                     },
                 },
                 columns: [
-                    { data: 'id' },
-                    { data: 'fullname' },
+
+                    { data: 'count', title: '#', orderable: true, className: 'text-start' },
+                    { data: 'id', visible: false },
+                    {
+                        data: 'fullname',
+                        title: 'Player',
+                        render: function (data, type, row) {
+                            return `
+                                    <div class="">
+                                        ${data}
+                                    </div>
+                            `;
+                        }
+                    },
                     { data: 'position' },
-                    { data: 'receipt' },
-                    { data: 'timestamp' }
-                ]
-                
+                    {
+                        data: 'receipt',
+                        render: function (data, type, row) {
+                            return `
+                                    <div class="">
+                                        <button id="btnViewReceipt" class="btn btn-sm btn-primary" data-src="${data}">View</button>
+                                    </div>
+                            `;
+                        }
+                    },
+                    { data: 'timestamp' },
+                    {
+                        data: null,
+                        title: 'Action',
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            console.log('ROW: ', row);
+                            return `
+                                    <button class="btn btn-sm btn-success btnAppointmentAction" data-id="${row.id}" data-accept="true" >Accept</button>
+                                    <button class="btn btn-sm btn-danger btnAppointmentAction" data-id="${row.id}" data-accept="false" >Reject</button>
+                                `;
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: [1, 2, 3, 4, 6], // Disable sorting for columns with index 0, 1, and 2
+                        orderable: false, // Disable ordering for these columns
+                    },
+                ],
+                rowCallback: function (row, data) {
+
+                },
             });
 
+            return this;
+        },
+        acceptOrDeclineAppointment: function (appointmentID, accept) {
+            var self = this;
+
+            console.log('ACCEPT OR DECLINE: ', appointmentID, accept);
+
+            return this;
+        },
+        viewReceipt: function (receiptSrc) {
+            var self = this;
+
+            console.log(receiptSrc);
+            
             return this;
         },
         renderDateTimePicker: function (dateTime, selector) {
@@ -557,6 +609,21 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             _S.viewAppointments();
             $('#btnEditSchedule').fadeOut(300);
             $('#btnDeleteSchedule').fadeOut(300);
+        });
+
+        $(document).on('click', '.btnAppointmentAction', function (e) {
+            e.preventDefault();
+            let appointmentID = $(this).attr('data-id');
+            let isAccept = $(this).attr('data-accept');
+
+            _S.acceptOrDeclineAppointment(appointmentID, isAccept);
+        });
+
+        $(document).on('click', '#btnViewReceipt', function (e) {
+            e.preventDefault();
+            let receiptSrc = $(this).attr('data-src');
+
+            _S.viewReceipt(receiptSrc);
         });
 
         $('#scheduleModal').on('shown.bs.modal', function () {
