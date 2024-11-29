@@ -31,6 +31,7 @@ $routes->get('getSingleSchedule/(:num)', 'ScheduleMasterController::getSingleSch
 $routes->post('editSchedule/(:num)', 'ScheduleMasterController::editSchedule/$1', ['filter' => 'auth:Admin']);
 $routes->post('deleteSchedule/(:num)', 'ScheduleMasterController::deleteSchedule/$1', ['filter' => 'auth:Admin']);
 $routes->post('getScheduleAppointments/(:num)', 'ScheduleMasterController::getScheduleAppointments/$1', ['filter' => 'auth:Admin']);
+$routes->post('appointmentApproval/(:num)/(:segment)', 'ScheduleMasterController::appointmentApproval/$1/$2', ['filter' => 'auth:Admin']);
 
 $routes->get('schedules', 'ScheduleController::index', ['filter' => 'auth:Admin,User']);
 $routes->get('getAllScheduleToUsers', 'ScheduleController::getAllScheduleToUsers', ['filter' => 'auth:Admin,User']);

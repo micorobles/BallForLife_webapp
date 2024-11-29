@@ -137,50 +137,33 @@ class ScheduleMasterController extends BaseController
 
     public function getScheduleAppointments($scheduleID)
     {
-
         // Get parameters from the request
         $draw = intval($this->request->getPost('draw'));
         $start = intval($this->request->getPost('start'));
         $length = intval($this->request->getPost('length'));
         $order = $this->request->getPost('order') ?? []; // Use empty array if not set
-        $columns = ['', 'userID', 'fullname', 'position', 'receipt', 'created_at'];
+        $columns = ['userID', 'fullname', 'position', 'receipt', 'created_at'];
 
         error_log('ORDER: ' . print_r($order, true));
 
-        $sortColumnIndex = $order[0]['column'] ?? 5; // Default to first column
+        $sortColumnIndex = $order[0]['column'] ?? 4; // Default to first column
         $sortDirection = $order[0]['dir'] ?? 'asc';
 
         // Validate the sort column index
         $sortColumn = $columns[$sortColumnIndex];
 
+        // Initial query to get total count without pagination or filtering
         $builder = $this->schedulesAppointment
-                        ->select('u.profilePic, u.firstname, u.lastname, u.position, schedules-appointment.ID AS appointmentID, schedules-appointment.receipt, schedules-appointment.status , schedules-appointment.created_at')
-                        ->join('user AS u', 'schedules-appointment.userID = u.ID', 'inner')
-                        ->where('schedules-appointment.is_deleted', false)
-                        ->where('schedules-appointment.schedID', $scheduleID);
+            ->select('u.profilePic, u.firstname, u.lastname, u.position, schedules-appointment.ID AS appointmentID, schedules-appointment.receipt, schedules-appointment.status , schedules-appointment.created_at')
+            ->join('user AS u', 'schedules-appointment.userID = u.ID', 'inner')
+            ->where('schedules-appointment.is_deleted', false)
+            ->where('schedules-appointment.schedID', $scheduleID);
 
-
-        // Total records count (without filtering)
+        // Total records count (without filtering and pagination)
         $totalCount = $builder->countAllResults(false);
 
-        error_log('TOTAL COUNT: ' . $totalCount);
-
-        // Apply ordering and pagination
-        if ($sortColumn === 'fullname') {
-            // Order by concatenated firstname and lastname 
-            $builder->orderBy('u.firstname', $sortDirection)
-                    ->orderBy('u.lastname', $sortDirection);
-        } else {
-            // Order by the actual column
-            $builder->orderBy($sortColumn, $sortDirection);
-        }
-        
-        // Apply pagination
-        $builder->limit($length, $start);
-
+        // Apply search filtering
         $searchValue = $this->request->getPost('search')['value'] ?? '';
-
-        // Apply global search if there is a value
         if ($searchValue) {
             $builder->groupStart();
             $builder->orLike('u.firstname', $searchValue)
@@ -191,21 +174,31 @@ class ScheduleMasterController extends BaseController
             $builder->groupEnd();
         }
 
-        // Filtered records
-        // $appointments = $builder->get()->getResultArray();
-        $appointments = $builder->findAll($length, $start);
+        // Get the filtered count (without pagination)
+        $filteredCount = $builder->countAllResults(false); // This is the count after applying filters, but without limit/offset
 
-        // error_log('APPOINTMENTS: ' . print_r($appointments, true));
+        // Apply ordering
+        if ($sortColumn === 'fullname') {
+            // Order by concatenated firstname and lastname
+            $builder->orderBy('u.firstname', $sortDirection)
+                ->orderBy('u.lastname', $sortDirection);
+        } else {
+            // Order by the actual column
+            $builder->orderBy($sortColumn, $sortDirection);
+        }
 
-        $filteredCount = $builder->resetQuery()->countAllResults(false);
+        // Apply pagination
+        $builder->limit($length, $start);
+
+        // Get the records (appointments)
+        $appointments = $builder->get()->getResultArray();
 
         // Map data
         $data = array_map(function ($appointment, $index) {
             return [
-                // 'count' => $index + 1,  
                 'id' => $appointment['appointmentID'],
                 'fullname' => '<img src="' . base_url($appointment['profilePic']) . '" alt="Profile Picture" class="imgUser me-1" /> 
-                                <span class="regular-text"> ' .  ucfirst($appointment['firstname']) . ' ' . ucfirst($appointment['lastname']) . '</span>',
+                            <span class="regular-text"> ' . ucfirst($appointment['firstname']) . ' ' . ucfirst($appointment['lastname']) . '</span>',
                 'position' => $appointment['position'],
                 'receipt' => $appointment['receipt'],
                 'timestamp' => $appointment['created_at'],
@@ -215,14 +208,129 @@ class ScheduleMasterController extends BaseController
             ];
         }, $appointments, array_keys($appointments));
 
-        // error_log('DATA: ' . print_r($data, true));
         // Return JSON response
         return $this->response->setJSON([
             "draw" => $draw,
-            "recordsTotal" => $totalCount,
-            "recordsFiltered" => $filteredCount,
+            "recordsTotal" => $totalCount,  // Total count of all records
+            "recordsFiltered" => $filteredCount,  // Filtered count of records (without pagination)
             "data" => $data
         ]);
     }
+
+    public function appointmentApproval($appointmentID, $isAccept)
+    {
+        // Convert the string to a boolean value
+        $isAccept = filter_var($isAccept, FILTER_VALIDATE_BOOLEAN);
+
+        if (!isset($isAccept)) {
+            return $this->jsonResponse(false, 'Null request.');
+        }
+        
+        $appointment['status'] = $isAccept ? 'Joined' : 'Rejected';
+
+        error_log('ISACCEPT: ' . $isAccept);
+        error_log('STATUS: ' . $appointment['status']);
+
+        $appointmentAction = $this->schedulesAppointment->update($appointmentID, $appointment);
+
+        if (!$appointmentAction) {
+            return $this->jsonResponse(false, 'Error on appointment approval.');
+        }
+
+        return $this->jsonResponse(true, 'Player ' . $appointment['status']);
+    }
+
+    // public function getScheduleAppointments($scheduleID)
+    // {
+
+    //     // Get parameters from the request
+    //     $draw = intval($this->request->getPost('draw'));
+    //     $start = intval($this->request->getPost('start'));
+    //     $length = intval($this->request->getPost('length'));
+    //     $order = $this->request->getPost('order') ?? []; // Use empty array if not set
+    //     $columns = [ 'userID', 'fullname', 'position', 'receipt', 'created_at'];
+
+    //     error_log('ORDER: ' . print_r($order, true));
+
+    //     $sortColumnIndex = $order[0]['column'] ?? 4; // Default to first column
+    //     $sortDirection = $order[0]['dir'] ?? 'asc';
+
+    //     // Validate the sort column index
+    //     $sortColumn = $columns[$sortColumnIndex];
+
+    //     $builder = $this->schedulesAppointment
+    //                     ->select('u.profilePic, u.firstname, u.lastname, u.position, schedules-appointment.ID AS appointmentID, schedules-appointment.receipt, schedules-appointment.status , schedules-appointment.created_at')
+    //                     ->join('user AS u', 'schedules-appointment.userID = u.ID', 'inner')
+    //                     ->where('schedules-appointment.is_deleted', false)
+    //                     ->where('schedules-appointment.schedID', $scheduleID);
+
+
+    //     // Total records count (without filtering)
+    //     $totalCount = $builder->countAllResults(false);
+
+    //     error_log('SCHEDULE ID: ' . $scheduleID);
+    //     error_log('TOTAL COUNT: ' . $totalCount);
+
+
+    //     // Apply ordering and pagination
+    //     if ($sortColumn === 'fullname') {
+    //         // Order by concatenated firstname and lastname 
+    //         $builder->orderBy('u.firstname', $sortDirection)
+    //                 ->orderBy('u.lastname', $sortDirection);
+    //     } else {
+    //         // Order by the actual column
+    //         $builder->orderBy($sortColumn, $sortDirection);
+    //     }
+
+    //     // Apply pagination
+    //     $builder->limit($length, $start);
+
+    //     $searchValue = $this->request->getPost('search')['value'] ?? '';
+
+    //     // Apply global search if there is a value
+    //     if ($searchValue) {
+    //         $builder->groupStart();
+    //         $builder->orLike('u.firstname', $searchValue)
+    //             ->orLike('u.lastname', $searchValue)
+    //             ->orLike('u.position', $searchValue)
+    //             ->orLike('schedules-appointment.receipt', $searchValue)
+    //             ->orLike('schedules-appointment.created_at', $searchValue);
+    //         $builder->groupEnd();
+    //     }
+
+    //     // Filtered records
+    //     // $appointments = $builder->get()->getResultArray();
+    //     // $appointments = $builder->findAll($length, $start);
+    //     $appointments = $builder->get()->getResultArray();
+
+    //     // error_log('APPOINTMENTS: ' . print_r($appointments, true));
+
+    //     $filteredCount = $builder->resetQuery()->countAllResults(false);
+
+    //     // Map data
+    //     $data = array_map(function ($appointment, $index) {
+    //         return [
+    //             // 'count' => $index + 1,  
+    //             'id' => $appointment['appointmentID'],
+    //             'fullname' => '<img src="' . base_url($appointment['profilePic']) . '" alt="Profile Picture" class="imgUser me-1" /> 
+    //                             <span class="regular-text"> ' .  ucfirst($appointment['firstname']) . ' ' . ucfirst($appointment['lastname']) . '</span>',
+    //             'position' => $appointment['position'],
+    //             'receipt' => $appointment['receipt'],
+    //             'timestamp' => $appointment['created_at'],
+    //             'status' => $appointment['status'],
+    //             'profilePic' => $appointment['profilePic'],
+    //             'count' => $index + 1,
+    //         ];
+    //     }, $appointments, array_keys($appointments));
+
+    //     // error_log('DATA: ' . print_r($data, true));
+    //     // Return JSON response
+    //     return $this->response->setJSON([
+    //         "draw" => $draw,
+    //         "recordsTotal" => $totalCount,
+    //         "recordsFiltered" => $filteredCount,
+    //         "data" => $data
+    //     ]);
+    // }
 
 }

@@ -17,19 +17,34 @@
 
 <?= $this->section('content'); ?>
 
+
+
 <div id="calendar"></div>
-
-
 
 <!-- Create Schedule Modal -->
 <div class="modal fade" id="scheduleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="scheduleModalLabel">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
+
+            <div class="container receipt-container d-none">
+                <div class="imgReceipt">
+                    <img id="imgReceipt" src="<?= base_url(' images/uploads/receipts/10_WIN_20240619_18_34_46_Pro.jpg') ?>">
+                    <span class="close">&times;</span>
+                </div>
+            </div>
+
             <div class="modal-header">
                 <h3 class="modal-title medium-text" id="scheduleModalLabel"></h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
+                <!-- <div class="container receipt-container">
+                    <div class="imgReceipt" style="display: none;">
+                        <img src="" alt="Receipt" class="popout-img">
+                    </div>
+                </div> -->
+
                 <form id='frmSchedule' action="<?= base_url('createSchedule') ?>">
                     <div class="row">
                         <div class="col-12 col-md-6 col-xl-6 d-flex flex-column">
@@ -87,7 +102,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button id='btnCreateSchedule' type="submit" class="btn btn-success">Create</button>
-                <button id='btnEditSchedule' type="button" class="btn btn-primary">Edit</button>    
+                <button id='btnEditSchedule' type="button" class="btn btn-primary">Edit</button>
                 <button id='btnDeleteSchedule' type="submit" class="btn btn-danger">Delete</button>
                 <button id='btnAppointments' type="submit" class="btn btn-custom-color text-white">Appointments</button>
                 <button id='btnSaveSchedule' type="button" class="btn btn-success">Save</button>
@@ -95,6 +110,7 @@
         </div>
     </div>
 </div>
+
 
 <?= $this->endSection(); ?>
 

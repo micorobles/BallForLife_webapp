@@ -22,6 +22,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         this.scheduleForm = $('#frmSchedule');
         this.eventID = '';
         this.eventTitle = '';
+        this.$tblAppointments = '';
     }
     ScheduleMaster.prototype = {
         drawCalendar: function () {
@@ -174,7 +175,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     const startDate = moment(arg.event.startStr);
                     const endDate = moment(arg.event.endStr);
 
-                    console.log(today);
+                    // console.log(today);
 
                     // Check if the event's start and end dates are valid
                     if (!startDate.isValid() || !endDate.isValid()) {
@@ -318,18 +319,22 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         viewAppointments: function () {
             var self = this;
 
-            console.log(self.eventID);
+            // console.log(self.eventID);
             var html = '';
+
+            if (self.$tblAppointments) {
+                self.$tblAppointments.clear().destroy();
+                console.log('DataTable detroyed');
+            }
 
             /////////////////////////////// DESIGN TABLE DATA TABLE ////////////////////////////////////////
             html = `
                     <div class="appointments-container mt-4">
                         <label class="font-md text-muted mb-2">Appointments</label>
-                        <div class="appointments rounded p-2">
+                        <div class="appointments rounded border p-2">
                             <table id="tblAppointments" class="table">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>ID</th>
                                         <th>Fullname</th>
                                         <th>Position</th>
@@ -362,15 +367,17 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             if ($.fn.DataTable.isDataTable(tableID)) {
                 $(tableID).DataTable().destroy();
+                // console.log('DataTable destroyed');
             }
 
-            $(tableID).DataTable({
+            self.$tblAppointments = $(tableID).DataTable({
                 orderCellsTop: true, // Keeps the sorting on the first row, not the second
                 responsive: true,
                 // autoWidth: true,
                 // select: true,
                 language: {
                     lengthMenu: "_MENU_ Entries",
+                    emptyTable: "No players yet"
                 },
                 processing: true,
                 serverSide: true,
@@ -381,7 +388,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     type: "POST",
                     datatype: "json",
                     data: function (d) {
-                        console.log('Data: ', d);
+                        // console.log('Data: ', d);
 
                     },
                     error: function (error) {
@@ -390,7 +397,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 },
                 columns: [
 
-                    { data: 'count', title: '#', orderable: true, className: 'text-start' },
+                    // { data: 'count', title: '#', orderable: true, className: 'text-start' },
                     { data: 'id', visible: false },
                     {
                         data: 'fullname',
@@ -420,7 +427,6 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                         title: 'Action',
                         className: 'text-center',
                         render: function (data, type, row) {
-                            console.log('ROW: ', row);
                             return `
                                     <button class="btn btn-sm btn-success btnAppointmentAction" data-id="${row.id}" data-accept="true" >Accept</button>
                                     <button class="btn btn-sm btn-danger btnAppointmentAction" data-id="${row.id}" data-accept="false" >Reject</button>
@@ -430,29 +436,72 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 ],
                 columnDefs: [
                     {
-                        targets: [1, 2, 3, 4, 6], // Disable sorting for columns with index 0, 1, and 2
+                        targets: [0, 1, 2, 3, 5], // Disable sorting for columns with index 0, 1, and 2
                         orderable: false, // Disable ordering for these columns
                     },
                 ],
                 rowCallback: function (row, data) {
+                    let status = data.status;
+                    const $row = $(row);
+                    const $btns = $row.find('.btnAppointmentAction');
 
+                    // console.log('ROW: ', $row);
+
+                    $row.removeClass('joined rejected');
+                    $btns.show();
+
+                    switch (status) {
+                        case 'Joined':
+                            $row.addClass('joined');
+                            break;
+                        case 'Rejected':
+                            $row.addClass('rejected');
+                            break;
+                        default:
+                            $btns.show();
+                            break;
+                    }
+
+                    $('#tblAppointments tbody').on('click', row, function () {
+                        var parentRow = $(row);
+                        var childRow = parentRow.next('.child');
+
+                        if ($('#tblAppointments').hasClass('dtr-inline')) {
+
+                            if (parentRow.hasClass('joined dt-hasChild dtr-expanded') || parentRow.hasClass('rejected dt-hasChild dtr-expanded')) {
+                                childRow.find('.btnAppointmentAction').hide();  // Hides buttons in the child row
+                            } 
+                        } 
+                    });
                 },
             });
 
             return this;
         },
-        acceptOrDeclineAppointment: function (appointmentID, accept) {
+        acceptOrDeclineAppointment: async function (appointmentID, isAccept) {
             var self = this;
 
-            console.log('ACCEPT OR DECLINE: ', appointmentID, accept);
+            console.log('Appointment Action: ', appointmentID, isAccept);
+
+            const appointmentAction = await ajaxRequest('POST', baseURL + `/appointmentApproval/${appointmentID}/${isAccept}`);
+
+            if (!appointmentAction.success) {
+                showToast('error', 'Error: ', appointmentAction.message);
+                return;
+            }
+
+            // console.log(saveSchedule);
+            showToast('success', '', appointmentAction.message);
+            self.$tblAppointments.ajax.reload();
 
             return this;
         },
         viewReceipt: function (receiptSrc) {
             var self = this;
 
-            console.log(receiptSrc);
-            
+            $('.receipt-container').removeClass('d-none');
+            $('#imgReceipt').attr('src', receiptSrc);
+
             return this;
         },
         renderDateTimePicker: function (dateTime, selector) {
@@ -614,16 +663,33 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         $(document).on('click', '.btnAppointmentAction', function (e) {
             e.preventDefault();
             let appointmentID = $(this).attr('data-id');
-            let isAccept = $(this).attr('data-accept');
+            let isAccept = $(this).attr('data-accept') === 'true' ? true : false;               
 
-            _S.acceptOrDeclineAppointment(appointmentID, isAccept);
+            if (!isAccept) {
+                showQuestionToast({
+                    message: `Are you sure you want to reject this player?`,
+                    onYes: async function (instance, toast) {
+                        _S.acceptOrDeclineAppointment(appointmentID, isAccept);
+                        return;
+                    },
+                });
+            } else {
+                _S.acceptOrDeclineAppointment(appointmentID, isAccept);
+            }
+            
         });
 
         $(document).on('click', '#btnViewReceipt', function (e) {
             e.preventDefault();
             let receiptSrc = $(this).attr('data-src');
-
+            
             _S.viewReceipt(receiptSrc);
+        });
+
+        $(document).on('click', '.close', function (e) {
+            e.preventDefault();
+            
+            $('.receipt-container').addClass('d-none');
         });
 
         $('#scheduleModal').on('shown.bs.modal', function () {

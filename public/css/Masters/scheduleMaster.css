@@ -148,6 +148,7 @@
 }
 
 .appointments {
+    /* border: 1px solid #800000; */
     max-height: 500px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
     overflow-y: auto;
@@ -155,7 +156,7 @@
 }
 
 #tblAppointments tbody tr {
-    height: 80px; /* Adjust row height */
+    height: 50px; /* Adjust row height */
 }
 
 #tblAppointments th,
@@ -186,7 +187,7 @@
     font-weight: 400;
 }
 
-table.dataTable td:nth-child(2) {
+table.dataTable td:nth-child(1) {
     width: 200px !important;  /* Force the width using !important */
     max-width: 200px;
     overflow: hidden;
@@ -196,7 +197,7 @@ table.dataTable td:nth-child(2) {
 
 /* DATA TABLE CUSTOM STYLES */
 
-#tblAppointments_wrapper #dt-length-0,
+#tblAppointments_wrapper .dt-input,
 #tblAppointments_wrapper .dt-search label {
     margin-right: 8px;
 }
@@ -214,6 +215,79 @@ div.dt-container .dt-search input:focus-visible {
     box-shadow: 0 0 5px rgba(128, 0, 0, 0.5); /* Add subtle box shadow */
     transition: all 0.2s ease;   /* Smooth transition */
 }
+
+tr.joined {
+    background-color: #198754bd !important;
+}
+
+tr.rejected {
+    background-color: #dc3546bc !important;
+}
+
+tr.joined > td > button.btnAppointmentAction,
+tr.rejected > td > button.btnAppointmentAction, 
+tr.joined > td.dtr-hidden > button.btnAppointmentAction,
+tr.rejected > td.dtr-hidden > button.btnAppointmentAction {
+    display: none;
+}
+
+.receipt-container {
+    z-index: 99999;
+    /* background-color: rgba(255, 255, 255, 0.52); */
+    background-color: rgba(209, 204, 204, 0.79);
+    position: absolute;
+    padding: 2rem;
+    top: 0rem;
+    left: 0rem;
+    right: 0rem;
+    bottom: 0rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: all 0.3s ease;
+}   
+
+.receipt-container .imgReceipt {
+    /* height: 100%; */
+    position: relative;
+    width: 100%;
+}
+
+.receipt-container .imgReceipt img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    object-position: center;
+    animation-name: zoomIn;
+    animation-duration: 0.4s
+}
+
+.receipt-container .close {
+    position: absolute;
+    cursor: pointer;
+    top: -50px;
+    right: 0;
+    color: #000;
+    font-size: 40px;
+    font-weight: 400;
+    transition: 0.3s;
+  }
+  
+  @-webkit-keyframes zoomIn {
+    from {-webkit-transform:scale(0)} 
+    to {-webkit-transform:scale(1)}
+  }
+  
+  @keyframes zoomIn {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+  }
+
+/* #tblAppointments > tbody > tr.joined > td.text-center > button.btn.btn-sm.btn-success.btnAppointmentAction {
+    display: none;
+} */
+
+/* #tblAppointments > tbody > tr.child > td > ul > li > span.dtr-data > button.btn.btn-sm.btn-success.btnAppointmentAction */
 /* 
 [id*="btn"] {
 
