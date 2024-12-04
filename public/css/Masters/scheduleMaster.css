@@ -322,6 +322,10 @@ tr.rejected > td.dtr-hidden > button.btnAppointmentAction {
         text-align: center;
         margin-top: 10px; /* Add spacing if needed */
     }
+
+    .receipt-container {
+        padding-top: 50rem;
+    }
 }
 
 @media screen and (max-width: 767px) {

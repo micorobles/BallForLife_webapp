@@ -50,15 +50,40 @@ class ScheduleMasterController extends BaseController
     public function getAllSchedule()
     {
 
-        $schedules = $this->schedules->where('is_deleted', false)->findAll();
+        // $schedules = $this->schedules->where('is_deleted', false)->findAll();
+        $schedules = $this->schedules
+                        ->select('schedules.*, COUNT(`schedules-appointment`.ID) AS appointments')
+                        ->join('`schedules-appointment`', 'schedules.ID = `schedules-appointment`.schedID', 'left')
+                        ->where('schedules.is_deleted', false)
+                        ->groupBy('schedules.ID')
+                        ->findAll();
+
+        // $schedules = $this->schedules
+        //     ->select('schedules.*, COUNT(schedules-appointment.ID) AS hasAppointment')
+        //     ->join('schedules-appointment', 'schedules.ID = schedules-appointment.schedID', 'left')
+        //     ->where('schedules.is_deleted', false)
+        //     ->groupBy('schedules.ID')
+        //     ->findAll();
+
+        // $schedules = $this->schedules
+        //     ->select('schedules.*, COUNT(`schedules-appointment`.ID) AS hasAppointment')
+        //     ->join('`schedules-appointment`', 'schedules.ID = `schedules-appointment`.schedID AND `schedules-appointment`.is_deleted=false ', 'left')
+        //     ->where('schedules.is_deleted', false)
+        //     ->groupBy('schedules.ID')
+        //     ->findAll();
+
 
         if (!$schedules) {
             return $this->jsonResponse(false, 'Error fetching all schedules', '');
         }
 
+
         $formattedSchedules = [];
 
         foreach ($schedules as $schedule) {
+
+            // $hasAppointment = $this->schedulesAppointment->where('is_deleted', false)
+            //                                              ->where('schedID', $schedule['ID']);
 
             // $isoStartDate = new DateTime($schedule['startDate']->format('Y-m-d\TH:i:s'));
             $startDate = new DateTime($schedule['startDate']);
@@ -73,9 +98,12 @@ class ScheduleMasterController extends BaseController
                 'textColor' => $schedule['textColor'],
                 'allDay' => false,
                 'display' => 'block',
+                'appointmentCount' => $schedule['appointments'],
+                'ugh' => 'yeah'
             ];
+            error_log('SCHED: ' . $schedule['title']);
+            error_log('HAS APPOINTMENT: ' . $schedule['appointments']);
         }
-
         return $this->jsonResponse(true, 'Fetched all schedules', $formattedSchedules);
     }
 
@@ -225,7 +253,7 @@ class ScheduleMasterController extends BaseController
         if (!isset($isAccept)) {
             return $this->jsonResponse(false, 'Null request.');
         }
-        
+
         $appointment['status'] = $isAccept ? 'Joined' : 'Rejected';
 
         error_log('ISACCEPT: ' . $isAccept);

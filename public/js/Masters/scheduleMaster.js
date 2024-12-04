@@ -96,8 +96,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
                     successCallback(getAllEvents.data);
 
-                    // console.log(fetchInfo);
-                    // console.log(getAllEvents);
+                    // console.log('FETCH INFO: ', fetchInfo);
+                    // console.log('GET ALL EVENTS: ', getAllEvents);
                 },
                 eventClick: async function (event) {
                     // console.log(event);
@@ -162,7 +162,11 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     showToast('success', '', 'Schedule moved!');
                 },
                 eventDidMount: function (info) {
-                    console.log('INFO: ', info);
+                    // console.log('INFO: ', info);
+
+                    let hasAppointment = info.event.extendedProps.appointmentCount > 0 ? true : false;
+
+                    hasAppointment ? info.event.setProp('editable', false) : '';
 
                     info.isEnd ? info.el.classList.add('event-ended') : '';
                     info.isPast ? info.el.classList.add('event-past') : '';
@@ -470,8 +474,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
                             if (parentRow.hasClass('joined dt-hasChild dtr-expanded') || parentRow.hasClass('rejected dt-hasChild dtr-expanded')) {
                                 childRow.find('.btnAppointmentAction').hide();  // Hides buttons in the child row
-                            } 
-                        } 
+                            }
+                        }
                     });
                 },
             });
@@ -663,7 +667,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         $(document).on('click', '.btnAppointmentAction', function (e) {
             e.preventDefault();
             let appointmentID = $(this).attr('data-id');
-            let isAccept = $(this).attr('data-accept') === 'true' ? true : false;               
+            let isAccept = $(this).attr('data-accept') === 'true' ? true : false;
 
             if (!isAccept) {
                 showQuestionToast({
@@ -676,19 +680,19 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             } else {
                 _S.acceptOrDeclineAppointment(appointmentID, isAccept);
             }
-            
+
         });
 
         $(document).on('click', '#btnViewReceipt', function (e) {
             e.preventDefault();
             let receiptSrc = $(this).attr('data-src');
-            
+
             _S.viewReceipt(receiptSrc);
         });
 
         $(document).on('click', '.close', function (e) {
             e.preventDefault();
-            
+
             $('.receipt-container').addClass('d-none');
         });
 
