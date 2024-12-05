@@ -104,7 +104,7 @@
                 <button id='btnCreateSchedule' type="submit" class="btn btn-success">Create</button>
                 <button id='btnEditSchedule' type="button" class="btn btn-primary">Edit</button>
                 <button id='btnDeleteSchedule' type="submit" class="btn btn-danger">Delete</button>
-                <button id='btnAppointments' type="submit" class="btn btn-custom-color text-white">Appointments</button>
+                <button id='btnAppointments' type="submit" class="btn btn-custom-color text-white">Appointments <i class="fa-solid fa-angles-down fa-1x ms-1"></i></button>
                 <button id='btnSaveSchedule' type="button" class="btn btn-success">Save</button>
             </div>
         </div>

@@ -639,6 +639,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             e.preventDefault();
             $('#btnEditSchedule').hide();
             $('#btnDeleteSchedule').hide();
+            $('#btnAppointments').hide();
             $('#btnSaveSchedule').show();
             $('[id*="modal-sched"]').prop('disabled', false);
             _S.renderColorPicker('#colorPicker', '#modal-schedColor', '#modal-schedTextColor');
@@ -659,9 +660,25 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
         $('#btnAppointments').on('click', function (e) {
             e.preventDefault();
-            _S.viewAppointments();
-            $('#btnEditSchedule').fadeOut(300);
-            $('#btnDeleteSchedule').fadeOut(300);
+
+            const $btn = $(this);
+            const $icon = $btn.find('i');
+            const isAppointmentShow = $('#scheduleModal .modal-body .appointments-container').hasClass('show');
+
+            if (isAppointmentShow) {
+                $('#scheduleModal .modal-body .appointments-container').removeClass('show').fadeOut(300, function () {
+                    $(this).remove(); 
+                });
+                $icon.removeClass('fa-angles-up').addClass('fa-angles-down');
+                $('#btnEditSchedule').fadeIn(300);
+                $('#btnDeleteSchedule').fadeIn(300);
+            } else {
+                _S.viewAppointments();
+                $icon.removeClass('fa-angles-down').addClass('fa-angles-up');
+                $('#btnEditSchedule').fadeOut(300);
+                $('#btnDeleteSchedule').fadeOut(300);
+            }
+
         });
 
         $(document).on('click', '.btnAppointmentAction', function (e) {
@@ -698,6 +715,11 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
         $('#scheduleModal').on('shown.bs.modal', function () {
             $(this).removeAttr('aria-hidden'); // Remove aria-hidden when the modal is visible
+        });
+        $('#scheduleModal').on('hidden.bs.modal', function () {
+            const $icon = $('#btnAppointments').find('i'); 
+            $('#scheduleModal .modal-body .appointments-container').remove(); 
+            $icon.removeClass('fa-angles-up').addClass('fa-angles-down');
         });
 
     });

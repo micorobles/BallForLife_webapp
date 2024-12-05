@@ -265,6 +265,13 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             html = `
                 <label class="font-md text-muted mt-3" >Payment Receipt</label>
+                <div class="container gcash-container d-flex justify-content-center align-items-center mt-2">
+                    <h3>Gcash:</h3>
+                    <div class="d-block ms-3 text-center">
+                        <span class="gcashName font-md regular-text">LY.A EU...E J.</span><br>
+                        <span class="gcashNum font-md">09230853051</span>
+                    </div>
+                </div>
                 <form id='frmBookSchedule' class="mt-3 dropzone" action="<?= base_url('') ?> ">
                     <i id="uploadIcon" class="fa-solid fa-circle-plus fa-3x"></i>
                     <input type="text" id="booking-schedID" name="booking-schedID" value="${$('#schedID').text()}" hidden>

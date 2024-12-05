@@ -17,7 +17,7 @@
         </div>
 
         <div class="col-xl-8 col-lg-6 col-md-4 col-sm-7 col-7  d-flex align-items-center justify-content-end">
-            <div class="" style="width: 150px;">SEARCH</div>
+            <div class="" style="width: 150px;"></div>
         </div>
         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-5 d-flex align-items-center justify-content-end p-1">
             <div class="btn-group">
