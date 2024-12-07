@@ -28,6 +28,9 @@
         <div class="col-6 mt-2 col-md-4 mt-md-0 col-lg-3 mt-lg-0">
             <button id="btnView" class="crud-buttons btn btn-secondary font-sm" data-bs-toggle="modal" data-bs-target="#viewProfileModal" disabled><i class="fa-regular fa-eye me-1"></i> View</button>
         </div>
+        <div class="col-6 mt-2 col-md-4 mt-md-0 col-lg-3 mt-lg-0">
+            <button id="btnAccept" class="crud-buttons btn btn-success font-sm" disabled><i class="fa-solid fa-check me-1"></i> Accept</button>
+        </div>
     </div>
     <!-- <button class="btn btn-primary"></button> -->
 </div>
@@ -204,7 +207,7 @@
                             <div class="col-12 col-md-12 col-xl-12 d-flex flex-column mt-3">
                                 <label>Password</label>
                                 <div class="input-group mb-3 password-input-group">
-                                    <input type="text" id="modal-password" class="form-control" name="modal-password">
+                                    <input type="text" id="modal-password" class="form-control" name="modal-password" style="pointer-events: none;" readonly>
                                     <span class="input-group-text" id="shuffle-icon"><i class="fa-solid fa-shuffle fa-1x"></i></span>
                                     <i id="pwCopy" class="fa-solid fa-copy fa-1x"></i>
                                 </div>

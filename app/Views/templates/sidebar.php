@@ -42,18 +42,20 @@
                 <span>Home</span>
             </a>
         </li>
-        <li>
-            <a href="<?= base_url('schedules') ?>">
-                <i class="fas fa-calendar-days fa-1x"></i>
-                <span>Game Schedules</span>
-            </a>
-        </li>
-        <li>
+        <?php if (session()->get('status') === 'Active'): ?>
+            <li>
+                <a href="<?= base_url('schedules') ?>">
+                    <i class="fas fa-calendar-days fa-1x"></i>
+                    <span>Game Schedules</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <!-- <li>
             <a href="javascript:;">
                 <i class="fas fa-people-line fa-1x"></i>
                 <span>Feed</span>
             </a>
-        </li>
+        </li> -->
 
         <?php if (session()->get('userRole') === 'Admin'): ?>
             

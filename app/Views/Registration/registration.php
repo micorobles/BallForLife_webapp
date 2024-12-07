@@ -35,15 +35,15 @@
                 </ul>
             </div>
         </div>
-        <form id="frmRegister" action="<?= base_url('register') ?>" method="post">
+        <form id="frmRegister" action="<?= base_url('register') ?>" method="post" data-parsley-validate>
             <div class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text">@</span>
                 </div>
-                <input id="email" name="email" type="email" class="form-control" placeholder="name@example.com"
-                    required>
-                <div class="invalid-feedback">
-                    Please choose an email.
+                <input id="email" name="email" type="email" class="form-control" placeholder="name@example.com" required
+                    required data-parsley-trigger="change" data-parsley-type="email"
+                    data-parsley-errors-container="#err-email">
+                <div id="err-email" class="errMsg">
                 </div>
             </div>
             <div class="input-group has-validation mt-4">
@@ -51,38 +51,42 @@
                     <span class="input-group-text">-</span>
                 </div>
                 <input id="firstname" name="firstname" type="text" class="form-control" placeholder="First name"
-                    required>
+                    required required data-parsley-trigger="change" data-parsley-pattern="^[a-zA-Z]+$"
+                    data-parsley-errors-container="#err-firstname">
+                <div id="err-firstname" class="errMsg">
+                </div>
             </div>
             <div class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text">-</span>
                 </div>
-                <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Last name" required>
-            </div>
-            <!-- <div class="input-group has-validation mt-4">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">-</span>
+                <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Last name" required
+                    required data-parsley-trigger="change" data-parsley-pattern="^[a-zA-Z]+$"
+                    data-parsley-errors-container="#err-lastname">
+                <div id="err-lastname" class="errMsg">
                 </div>
-                <input id="birthday" name="birthday" type="text" class="form-control" placeholder="Birthdate" required>
-            </div> -->
+            </div>
             <div class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text">-</span>
                 </div>
                 <input id="contactNum" name="contactNum" type="text" class="form-control" placeholder="Contact number"
-                    pattern="\d{11}" title="Please enter an 11-digit contact number" required>
+                    pattern="\d{11}" title="Please enter an 11-digit contact number" required data-parsley-trigger="change" data-parsley-type="number" data-parsley-pattern="\d{11}"
+                    data-parsley-errors-container="#err-contactNum">
+                <div id="err-contactNum" class="errMsg">
+                </div>
             </div>
             <div id="show_hide_password" class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text">*</span>
                 </div>
                 <input id="password" name="password" type="password" class="form-control"
-                    placeholder="Create a password" minlength="8" required>
+                    placeholder="Create a password" minlength="8" required data-parsley-trigger="change" data-parsley-minlength="8"
+                    data-parsley-errors-container="#err-password">
                 <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
                     <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                 </div>
-                <div class="invalid-feedback">
-                    Please enter password.
+                <div id="err-password" class="errMsg">
                 </div>
             </div>
             <div id="show_hide_password" class="input-group has-validation mt-4">
@@ -90,17 +94,18 @@
                     <span class="input-group-text">*</span>
                 </div>
                 <input id="confirm-password" name="confirm-password" type="password" class="form-control"
-                    placeholder="Confirm password" minlength="8" required>
+                    placeholder="Confirm password" minlength="8" required data-parsley-trigger="change" data-parsley-minlength="8"
+                    data-parsley-errors-container="#err-confirmPassword">
                 <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
                     <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                 </div>
-                <div class="invalid-feedback">
-                    Please enter password.
+                <div id="err-confirmPassword" class="errMsg">
                 </div>
             </div>
 
             <div class="mt-4 d-grid">
-                <input id="btnRegister" type="submit" class="btn btn-primary btn-md btn-custom-color" value="Register"></input>
+                <input id="btnRegister" type="submit" class="btn btn-primary btn-md btn-custom-color"
+                    value="Register"></input>
             </div>
 
 

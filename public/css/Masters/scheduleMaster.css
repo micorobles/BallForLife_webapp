@@ -320,6 +320,12 @@ tr.rejected > td.dtr-hidden > button.btnAppointmentAction {
 
 } */
 
+@media (max-width: 1200px) {
+    .receipt-container {
+        padding-top: 20rem;
+    }
+}
+
 /* Mobile-specific styling */
 @media (max-width: 768px) {
 

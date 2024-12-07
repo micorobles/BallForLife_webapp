@@ -3,6 +3,8 @@ import { ajaxRequest, showToast, togglePassword } from "../global/global-functio
 $(function () {
     console.log('document is ready!');
 
+    $('#frmLogin').parsley();
+
     // Get flash data if auth fails
     const flashMessage = $('#flash-data').text().trim() ?? '';
 

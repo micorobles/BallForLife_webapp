@@ -24,6 +24,7 @@ if (!function_exists('load_bundle_js')) {
             <script src="https://kit.fontawesome.com/9ee5e62459.js" crossorigin="anonymous"></script>
             <script src="' . base_url('js/global/iziToast.min.js') . '" crossorigin="anonymous"></script>
             <script src="' . base_url('js/global/select2.min.js') . '" crossorigin="anonymous"></script>
+            <script src="' . base_url('js/global/parsley.min.js') . '" crossorigin="anonymous"></script>
             <script type="module" src="' . base_url('js/global/global-functions.js') . '" crossorigin="anonymous"></script>
             <script src="' . base_url('js/templates/sidebar.js') . '" crossorigin="anonymous"></script>
             <script src="' . base_url('js/templates/header.js') . '" crossorigin="anonymous"></script>

@@ -60,6 +60,9 @@ $(function () {
 
     $(document).ready(function () {
         var _R = Registration();
+
+        $('#frmRegister').parsley();
+
         // Bind form submission
         $('#frmRegister').on('submit', function (e) {
             e.preventDefault();

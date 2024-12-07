@@ -388,6 +388,15 @@ form input, form label {
     font-weight: 400;
 }
 
+.errMsg {
+    width: 100%; /* Ensures it spans below the input */
+    color: #dc3545; /* Bootstrap danger color */
+    font-size: 0.75rem; /* Adjust font size */
+    margin-top: 5px; /* Add some spacing above */
+    padding: 0;
+    height: 0;
+}
+
 /* .iziToast.iziToast-color-yellow {
     background: #800000 !important;
     border-color: #800000 !important;

@@ -16,13 +16,14 @@ $routes->post('google', 'AccountController::google');
 $routes->get('getUser/(:num)', 'AccountController::getUser/$1', ['filter' => 'auth:Admin,User']);
 $routes->get('profile/(:num)', 'AccountController::profile/$1', ['filter' => 'auth:Admin,User']);
 $routes->post('editProfile', 'AccountController::editProfile', ['filter' => 'auth:Admin,User']);
-$routes->get('registration', 'AccountController::registration', ['filter' => 'auth:User']);
-$routes->post('register', 'AccountController::register', ['filter' => 'auth:User']);
+$routes->get('registration', 'AccountController::registration');
+$routes->post('register', 'AccountController::register');
 
 $routes->get('userMaster', 'UserMasterController::index', ['filter' => 'auth:Admin']);
 $routes->post('getUserList', 'UserMasterController::getUserList', ['filter' => 'auth:Admin']);
 $routes->post('modifyUser/(:num)', 'UserMasterController::modifyUserStatusOrPassword/$1', ['filter' => 'auth:Admin']);
 $routes->post('deleteUser/(:num)', 'UserMasterController::deleteUser/$1', ['filter' => 'auth:Admin']);
+$routes->post('acceptUser/(:num)', 'UserMasterController::acceptUser/$1', ['filter' => 'auth:Admin']);
 
 $routes->get('scheduleMaster', 'ScheduleMasterController::index', ['filter' => 'auth:Admin']);
 $routes->post('createSchedule', 'ScheduleMasterController::createSchedule', ['filter' => 'auth:Admin']);

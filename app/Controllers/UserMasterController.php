@@ -34,11 +34,11 @@ class UserMasterController extends BaseController
         $start = intval($this->request->getPost('start'));
         $length = intval($this->request->getPost('length'));
         $order = $this->request->getPost('order') ?? []; // Use empty array if not set
-        $columns = ['email', 'firstname', 'lastname', 'position', 'status', 'updated_at'];
+        $columns = ['id','email', 'firstname', 'lastname', 'position', 'status', 'updated_at'];
         
         // Determine sorting
-        $sortColumnIndex = $order[0]['column'] ?? 0; // Default to first column
-        $sortDirection = $order[0]['dir'] ?? 'asc';
+        $sortColumnIndex = $order[0]['column'] ?? 5; // Default to first column
+        $sortDirection = $order[0]['dir'] ?? 'desc';
 
         // Validate the sort column index
         $sortColumn = $columns[$sortColumnIndex];
@@ -100,8 +100,11 @@ class UserMasterController extends BaseController
 
         $userChanges['status'] = $this->request->getPost('modal-status');
         $userChanges['role'] = $this->request->getPost('modal-role');
-        // $userChanges['password'] = $this->request->getPost('modal-password');
-        $userChanges['password'] = password_hash($this->request->getPost('modal-password'), PASSWORD_DEFAULT);
+        $newPassword = $this->request->getPost('modal-password');
+
+        if (!empty($newPassword)) {
+            $userChanges['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
+        }
 
         $modifyUser = $this->users->update($userID, $userChanges);
 
@@ -121,5 +124,17 @@ class UserMasterController extends BaseController
         }
 
         return $this->jsonResponse(true, 'User deleted', '');
+    }
+
+    public function acceptUser($userID)
+    {
+
+        $acceptUser = $this->users->update($userID, ['status' => 'Active']);
+
+        if (!$acceptUser) {
+            return $this->jsonResponse(false, 'Error accepting user', $acceptUser);
+        }
+
+        return $this->jsonResponse(true, 'User accepted!', '');
     }
 }

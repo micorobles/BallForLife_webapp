@@ -31,30 +31,30 @@
                 </ul>
             </div>
         </div>
-        <form id="frmLogin" class="font-xs" action="<?= base_url('login') ?>" method="post">
+        <form id="frmLogin" class="font-xs" action="<?= base_url('login') ?>" method="post" data-parsley-validate>
             <div class="input-group has-validation mt-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text font-md">@</span>
                 </div>
-                <input id="email" name="email" type="email" class="form-control" placeholder="name@example.com" required>
-                <div class="invalid-feedback">
-                    Please choose an email.
+                <input id="email" name="email" type="email" class="form-control" placeholder="name@example.com" required data-parsley-trigger="change" data-parsley-type="email" data-parsley-errors-container="#err-email" >
+                <div id="err-email" class="errMsg mb-4">
+
                 </div>
             </div>
-            <div id="show_hide_password" class="input-group has-validation mt-4">
+            <div id="show_hide_password" class="input-group has-validation">
                 <div class="input-group-prepend">
                     <span class="input-group-text font-md">*</span>
                 </div>
-                <input id="password" name="password" type="password" class="form-control" placeholder="********" required>
+                <input id="password" name="password" type="password" class="form-control" placeholder="********" required data-parsley-trigger="change" data-parsley-minlength="8" data-parsley-errors-container="#err-password">
                 <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
                     <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                 </div>
-                <div class="invalid-feedback">
-                    Please enter password.
+                <div id="err-password" class="errMsg mb-4">
+
                 </div>
             </div>
 
-            <div class="checkbox checkbox-css mt-3">
+            <div class="checkbox checkbox-css">
                 <input type="checkbox" name="rememberMe" id="rememberMe" class="rounded-sm">
                 <label for="rememberMe" class="text-secondary font-xs light-text" style="display: inline-block; vertical-align: middle; margin-left: 2px;">
                     <small>Remember Me</small>

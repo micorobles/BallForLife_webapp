@@ -1,3 +1,8 @@
+.input-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .input-group-text {
     width: 100%;
     justify-content: center;
@@ -25,4 +30,13 @@
 
 .input-group-addon a:hover {
     color: #747474;
+}
+
+.errMsg {
+    width: 100%; /* Ensures it spans below the input */
+    color: #dc3545; /* Bootstrap danger color */
+    font-size: 0.75rem; /* Adjust font size */
+    margin-top: 5px; /* Add some spacing above */
+    padding: 0;
+    height: 0;
 }

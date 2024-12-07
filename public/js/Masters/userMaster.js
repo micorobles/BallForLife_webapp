@@ -48,7 +48,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 },
                 processing: true,
                 serverSide: true,
-                order: [[4, "desc"]],
+                order: [[5, "desc"]],
                 dataSrc: "data",
                 ajax: {
                     url: baseURL + "getUserList",
@@ -102,16 +102,17 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     //     .toArray();  
                     var selectedRows = self.$tblUser.rows({ selected: true }).data().toArray();
 
+                    
                     self.isSingleSelection = selectedRows.length === 1;
-
+                    
                     self.selectedRowID = null;
                     self.rowIDs = [];
                     self.rowDetails = [];
-
+                    
                     // if (self.isSingleSelection) {
                     //     self.selectedRowID = selectedRows[0].id;
                     // }
-
+                    
                     // Iterate through the selected rows' data and log each row's data or process as needed
                     selectedRows.forEach(function (row) {
                         // self.selectedRowID = row.id;
@@ -120,20 +121,32 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                         self.rowIDs.push(row.id);
                         self.rowDetails.push({
                             firstname: row.firstname,
-                            lastname: row.lastname
+                            lastname: row.lastname,
+                            status: row.status
                         });
-
+                        
+                        
                         $('.crud-buttons').prop('disabled', false);
                         // console.log('Selected ID:', row.id); // Outputs the ID if "id" is part of the data
                     });
 
+                    
                     // console.log(self.isSingleSelection);
                     if (self.isSingleSelection) {
                         self.selectedRowID = self.rowIDs[0];
                         $('.crud-buttons').prop('disabled', false);
-                    } else {
+
+                        if (self.rowDetails[0].status !== 'Pending') {
+                            $('#btnAccept').prop('disabled', true);
+                        }
+                    } 
+                    else {
                         $('.crud-buttons').prop('disabled', true);
                         $('#btnDeleteUser').prop('disabled', false);
+                        
+                        if (self.rowDetails.every(detail => detail.status === 'Pending')) {
+                            $('#btnAccept').prop('disabled', false);
+                        }
                     }
 
                 }
@@ -240,6 +253,45 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 },
             });
         },
+        acceptUser: async function () {
+            var self = this;
+
+            // let arrStatus = [];
+
+            // self.rowDetails.map(row => {
+            //     arrStatus.push(row.status);
+            // });
+
+            showQuestionToast({
+                message: 'Are you sure you want to accept this/these user(s)?',
+                onYes: async function (instance, toast) {
+
+                    try {
+                        // Loop through selected IDs, handling both single and multiple deletions
+                        const acceptPromises = self.rowIDs.map(userID => {
+                            const acceptUser = baseURL + `acceptUser/${userID}`;
+                            return ajaxRequest('POST', acceptUser, '')
+                                .then(acceptUser => {
+                                    if (!acceptUser.success) throw new Error(acceptUser.message);
+                                    return acceptUser.message;
+                                });
+                        });
+        
+                        // Wait for all deletion requests to complete
+                        const results = await Promise.all(acceptPromises);
+                        results.forEach(message => showToast('success', '', message));
+        
+                        self.$tblUser.ajax.reload();
+                    } catch (error) {
+                        showToast('error', 'Error: ', error.message);
+                    }
+                },
+            });
+
+            console.log(self.rowIDs);
+
+            return this;
+        },
         populateUserModal: async function () {
             var self = this;
 
@@ -277,6 +329,9 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 if (formInput) {
                     // console.log('FORM INPUT: ', formInput);
                     if (formInput.type === 'text') {
+                        if (formInput.name === 'modal-password') {
+                            return;
+                        }
                         formInput.element.val(value);
                     }
 
@@ -389,6 +444,11 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         });
 
         $('#btnView').on('click', profileAction);
+
+        $('#btnAccept').on('click', function (e) {
+            e.preventDefault();
+            _U.acceptUser();
+        });
 
         $('#btnModifyUser').on('click', function () {
             _U.populateUserModal();
