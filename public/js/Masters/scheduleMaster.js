@@ -623,11 +623,25 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
     $(document).ready(function () {
         var _S = ScheduleMaster();
 
+        const prslyFrmSchedule = $('#frmSchedule').parsley();
         _S.drawCalendar();
-
+        
         $('#btnCreateSchedule').click(function (e) {
             e.preventDefault();
-            _S.createSchedule();
+            // console.log(frmSchedule.isValid());
+            prslyFrmSchedule.isValid() ? _S.createSchedule() : prslyFrmSchedule.validate({ focus: 'first' }) ;
+
+            // Validate the form using Parsley
+        // var isValid = $('#frmSchedule').parsley().validate();
+
+        // if (isValid) {
+        //     // If the form is valid, proceed with the CreateSchedule logic
+        //     createSchedule();
+        // } else {
+        //     // If the form is invalid, focus on the first invalid field
+        //     $('#frmSchedule').parsley().validate({ focus: 'first' });
+        
+        // }
         });
 
         $('#btnDeleteSchedule').click(function (e) {
@@ -720,8 +734,44 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             const $icon = $('#btnAppointments').find('i'); 
             $('#scheduleModal .modal-body .appointments-container').remove(); 
             $icon.removeClass('fa-angles-up').addClass('fa-angles-down');
+            prslyFrmSchedule.destroy();
         });
 
+        // Special functions
+
+        $('#modal-schedStartDate').on('change', function () {
+            $(this).parsley().validate();  // Force validation
+        });
+
+        $('#modal-schedEndDate').on('change', function () {
+            $('#modal-schedStartDate').parsley().validate();  // Force validation
+        });
+
+        window.Parsley.addValidator('dateorder', {
+            validateString: function (value, otherFieldSelector) {
+                let startDate = moment(value, 'MMMM D, YYYY - h:mm A');
+                let endDate = moment($(otherFieldSelector).val(), 'MMMM D, YYYY - h:mm A');
+                console.log(value, otherFieldSelector);
+                // console.log(startDate, endDate);
+                console.log('START DATE: ', startDate);
+                console.log('END DATE: ', endDate);
+                return startDate.isBefore(endDate);
+            },
+            messages: {
+                en: 'Start Date must be before End Date.'
+            }
+        });
+
+        window.Parsley.addValidator('notsamedate', {
+            validateString: function (value, otherFieldSelector) {
+                let startDate = moment($(otherFieldSelector).val(), 'MMMM D, YYYY - h:mm A');
+                let endDate = moment(value, 'MMMM D, YYYY - h:mm A');
+                return !startDate.isSame(endDate, 'minute'); // Dates must not be the same
+            },
+            messages: {
+                en: 'Start Date and End Date cannot be the same.'
+            }
+        });
     });
 
 })();

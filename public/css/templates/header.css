@@ -72,7 +72,9 @@
     background-color: #e9ecef;
 }
 
-
+#btnLogout {
+    display: block !important;
+}
 
 
 /* @media (max-width: 768px) {

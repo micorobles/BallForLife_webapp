@@ -36,7 +36,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a id='btnLogout' class="dropdown-item" href="javascript:;">Logout</a></li>
+                    <li><a id='btnLogout' class="dropdown-item" href="#" style="display: block !important;">Logout</a></li>
                 </ul>
 
             </div>

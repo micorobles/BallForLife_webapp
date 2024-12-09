@@ -45,29 +45,34 @@
                     </div>
                 </div> -->
 
-                <form id='frmSchedule' action="<?= base_url('createSchedule') ?>">
+                <form id='frmSchedule' action="<?= base_url('createSchedule') ?>" data-parsley-validate>
                     <div class="row">
                         <div class="col-12 col-md-6 col-xl-6 d-flex flex-column">
-                            <label>Schedule Title</label>
-                            <input type="text" id="modal-schedTitle" class="form-control" name="modal-schedTitle" required>
+                            <label>Schedule Title <span class="text-danger"> *</span></label>
+                            <input type="text" id="modal-schedTitle" class="form-control" name="modal-schedTitle" required data-parsley-required data-parsley-trigger="change" data-parsley-errors-container="#err-title">
+                            <div id="err-title" class="errMsg"></div>
                         </div>
                         <div class="col-12 col-md-6 col-xl-6 mt-3 mt-md-0 d-flex flex-column">
-                            <label>Venue</label>
-                            <input type="text" id="modal-schedVenue" class="form-control" name="modal-schedVenue" required>
+                            <label>Venue <span class="text-danger"> *</span></label>
+                            <input type="text" id="modal-schedVenue" class="form-control" name="modal-schedVenue" required data-parsley-required data-parsley-trigger="change" data-parsley-errors-container="#err-venue">
+                            <div id="err-venue" class="errMsg"></div>
                         </div>
                         <div class="col-12 col-md-12 col-xl-12 mt-3 d-flex flex-column">
                             <label>Description</label>
-                            <input type="text" id="modal-schedDescription" class="form-control" name="modal-schedDescription">
+                            <input type="text" id="modal-schedDescription" class="form-control" name="modal-schedDescription" data-parsley-trigger="change" data-parsley-errors-container="#err-description" data-parsley-maxLength="255">
+                            <div id="err-description" class="errMsg"></div>
                         </div>
                         <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
-                            <label>Start Date</label>
+                            <label>Start Date <span class="text-danger"> *</span></label>
                             <div class="input-group">
-                                <input type="text" id="modal-schedStartDate" class="form-control datetimepicker" name="modal-schedStartDate" required>
+                                <input type="text" id="modal-schedStartDate" class="form-control datetimepicker" name="modal-schedStartDate" required data-parsley-trigger="change" data-parsley-dateorder="#modal-schedEndDate"
+                                data-parsley-notsamedate="#modal-schedEndDate" data-parsley-errors-container="#err-startDate">
                                 <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
                             </div>
+                            <div id="err-startDate" class="errMsg mb-4"></div>
                         </div>
                         <div class="col-12 col-md-6 col-xl-6 mt-3 d-flex flex-column">
-                            <label>End Date</label>
+                            <label>End Date <span class="text-danger"> *</span></label>
                             <div class="input-group">
                                 <input type="text" id="modal-schedEndDate" class="form-control datetimepicker" name="modal-schedEndDate" required>
                                 <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
@@ -80,14 +85,16 @@
                             <input type="text" class="form-control" id="modal-schedTextColor" name="modal-schedTextColor" hidden>
                         </div>
                         <div class="col-6 col-md-4 col-xl-4 mt-3 d-flex flex-column">
-                            <label>Max Players</label>
-                            <input type="number" id="modal-schedMaxPlayer" class="form-control" name="modal-schedMaxPlayer" required>
+                            <label>Max Players <span class="text-danger"> *</span></label>
+                            <input type="number" id="modal-schedMaxPlayer" class="form-control" name="modal-schedMaxPlayer" required data-parsley-trigger="change" data-parsley-type="number" data-parsley-errors-container="#err-maxPlayer">
+                            <div id="err-maxPlayer" class="errMsg"></div>
                         </div>
                         <div class="col-6 col-md-4 col-xl-4 mt-3 d-flex flex-column">
-                            <label>Game Fee</label>
+                            <label>Game Fee <span class="text-danger"> *</span></label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa-solid fa-peso-sign"></i></span>
-                                <input type="number" id="modal-schedGameFee" class="form-control" name="modal-schedGameFee" required>
+                                <input type="number" id="modal-schedGameFee" class="form-control" name="modal-schedGameFee" required data-parsley-trigger="change" data-parsley-type="number" data-parsley-errors-container="#err-gameFee">
+                                <div id="err-gameFee" class="errMsg"></div>
                             </div>
                         </div>
                         <div class="col-12 d-flex flex-column mt-4">
