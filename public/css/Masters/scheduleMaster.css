@@ -367,11 +367,27 @@ tr.rejected>td.dtr-hidden>button.btnAppointmentAction {
 }
 
 .float-widget .widget-header {
+    position: relative;
     padding: 7px;
     text-align: center;
     font-weight: 400;
     border-radius: 4px 4px 0 0;
     background: rgba(0, 0, 0, .4);
+}
+
+.widget-header i {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    bottom: 0;
+    color: rgba(255, 255, 255, .7);
+    cursor: pointer;
+}
+
+.widget-header i:hover {
+   color: white;
+   transform: scale(1.1);
+   transition: all 0.1s ease;
 }
 
 .float-widget .widget-body {

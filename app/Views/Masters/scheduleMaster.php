@@ -21,6 +21,7 @@
     <div id="appointments" class="float-widget">
         <div class="widget-header">
             Appointments
+            <i class="fa-solid fa-minimize"></i>
         </div>
         <div class="widget-body">
             <ul class="list-group">
