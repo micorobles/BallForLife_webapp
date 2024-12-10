@@ -17,9 +17,43 @@
 
 <?= $this->section('content'); ?>
 
-
-
-<div id="calendar"></div>
+<div class="scheduleMaster-container">
+    <div id="appointments" class="float-widget">
+        <div class="widget-header">
+            Appointments
+        </div>
+        <div class="widget-body">
+            <ul class="list-group">
+                <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
+                    <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                        Game for A Cause
+                    </span>
+                    <span id="appointmentCount" class="badge bg-danger">4</span>
+                </li>
+                <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
+                    <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                        Papawis ni Renato fadssssssssss
+                    </span>
+                    <span id="appointmentCount" class="badge bg-danger">4</span>
+                </li>
+                <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
+                    <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                        Game for A Cause
+                    </span>
+                    <span id="appointmentCount" class="badge bg-danger">4</span>
+                </li>
+                <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
+                    <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                        Papawis ni Renato fadssssssssss
+                    </span>
+                    <span id="appointmentCount" class="badge bg-danger">4</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="calendar">
+    </div>
+</div>
 
 <!-- Create Schedule Modal -->
 <div class="modal fade" id="scheduleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="scheduleModalLabel">
@@ -66,7 +100,7 @@
                             <label>Start Date <span class="text-danger"> *</span></label>
                             <div class="input-group">
                                 <input type="text" id="modal-schedStartDate" class="form-control datetimepicker" name="modal-schedStartDate" required data-parsley-trigger="change" data-parsley-dateorder="#modal-schedEndDate"
-                                data-parsley-notsamedate="#modal-schedEndDate" data-parsley-errors-container="#err-startDate">
+                                    data-parsley-notsamedate="#modal-schedEndDate" data-parsley-errors-container="#err-startDate">
                                 <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x"></i></span>
                             </div>
                             <div id="err-startDate" class="errMsg mb-4"></div>

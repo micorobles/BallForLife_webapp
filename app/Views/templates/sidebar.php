@@ -37,9 +37,9 @@
     <ul class="nav">
         <li class="nav-header">Navigation</li>
         <li class="">
-            <a href="<?= base_url('homepage') ?>">
+            <a href="<?= base_url('dashboard') ?>">
                 <i class="fas fa-home fa-1x"></i>
-                <span>Home</span>
+                <span>Dashboard</span>
             </a>
         </li>
         <?php if (session()->get('status') === 'Active'): ?>

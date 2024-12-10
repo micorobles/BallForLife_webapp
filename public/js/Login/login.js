@@ -37,7 +37,7 @@ $(function () {
                     console.log('response: ', response);
                     document.cookie = `authToken=${response.data}; path=/; max-age=3600`;
 
-                    window.location.href = baseURL + '/homepage'; 
+                    window.location.href = baseURL + '/dashboard'; 
                     
                 } else {
                     console.error("Failed to login with Google: ", response.message);
@@ -115,7 +115,7 @@ async function handleLogin(e) {
         console.log(loginUser);
 
         document.cookie = `authToken=${loginUser.data}; path=/; max-age=3600`;
-        window.location.href = window.location.origin + '/homepage';
+        window.location.href = window.location.origin + '/dashboard';
 
     } catch (error) {
         // Handle any errors that occurred during the AJAX request

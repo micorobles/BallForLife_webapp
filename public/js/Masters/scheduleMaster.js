@@ -735,6 +735,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             $('#scheduleModal .modal-body .appointments-container').remove(); 
             $icon.removeClass('fa-angles-up').addClass('fa-angles-down');
             prslyFrmSchedule.destroy();
+            $('.receipt-container').addClass('d-none');
         });
 
         // Special functions

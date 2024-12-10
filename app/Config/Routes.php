@@ -38,8 +38,8 @@ $routes->get('schedules', 'ScheduleController::index', ['filter' => 'auth:Admin,
 $routes->get('getAllScheduleToUsers', 'ScheduleController::getAllScheduleToUsers', ['filter' => 'auth:Admin,User']);
 $routes->post('bookSchedule', 'ScheduleController::bookSchedule', ['filter' => 'auth:Admin,User']);
 
-$routes->get('homepage', 'HomepageController::index', ['filter' => 'auth:Admin,User']);
-$routes->get('logout', 'HomepageController::logout', ['filter' => 'auth:Admin,User']); 
+$routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth:Admin,User']);
+$routes->get('logout', 'DashboardController::logout', ['filter' => 'auth:Admin,User']); 
 // $routes->post('homepage', 'HomepageController::register');
 
 // $routes->get('schedule', 'ScheduleController::index', ['filter' => 'auth:Admin']);

@@ -1,4 +1,17 @@
 /* DATE TIME PICKER CUSTOM STYLE */
+
+.scheduleMaster-container {
+    position: relative;
+}
+
+#calendar {
+    margin-left: 220px;
+}
+
+.list-group-item:hover .badge {
+    color: white;
+}
+
 .tempus-dominus-widget {
     max-width: 100%;
 }
@@ -72,12 +85,14 @@
 /* CALENDAR CUSTOM STYLES */
 
 #external-events .fc-event {
-    z-index: 9999; /* Ensure that the draggable event is on top of other elements */
+    z-index: 9999;
+    /* Ensure that the draggable event is on top of other elements */
     pointer-events: auto;
 }
 
 #calendar {
-    position: relative; /* Make sure calendar container is positioned */
+    position: relative;
+    /* Make sure calendar container is positioned */
 }
 
 .fc-toolbar-title {
@@ -98,12 +113,13 @@
 .fc-header-toolbar {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Adjust spacing between chunks */
+    justify-content: space-between;
+    /* Adjust spacing between chunks */
     align-items: center;
     gap: 10px;
 }
 
-.colorPreview { 
+.colorPreview {
     width: 100%;
     height: 100%;
     cursor: pointer;
@@ -117,6 +133,7 @@
     background: #f7f7f7;
     margin-bottom: 20px;
 }
+
 .fc-event {
     margin: 10px 0;
     padding: 5px;
@@ -126,9 +143,10 @@
     cursor: pointer;
 }
 
-.event-ended, .event-past {
+.event-ended,
+.event-past {
     opacity: 0.5;
-    pointer-events: none; 
+    pointer-events: none;
 }
 
 .event-ended span,
@@ -137,31 +155,37 @@
 }
 
 .appointments-container {
-    transform: translateY(-20px); /* Start 20px above the view */
-    opacity: 0; /* Initially hidden */
+    transform: translateY(-20px);
+    /* Start 20px above the view */
+    opacity: 0;
+    /* Initially hidden */
     transition: transform 0.5s ease-out, opacity 0.5s ease-out;
 }
 
 .appointments-container.show {
-    transform: translateY(0); /* Slide into normal position */
-    opacity: 1; /* Fade in the modal body */
+    transform: translateY(0);
+    /* Slide into normal position */
+    opacity: 1;
+    /* Fade in the modal body */
 }
 
 .appointments {
     /* border: 1px solid #800000; */
     max-height: 500px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 #tblAppointments tbody tr {
-    height: 50px; /* Adjust row height */
+    height: 50px;
+    /* Adjust row height */
 }
 
 #tblAppointments th,
 #tblAppointments td {
-    vertical-align: middle; /* Vertically center content */
+    vertical-align: middle;
+    /* Vertically center content */
 }
 
 #tblAppointments .imgReceipt {
@@ -191,7 +215,8 @@
     border-top: none;
 }
 
-table.dataTable>thead>tr>th, table.dataTable>thead>tr>td {
+table.dataTable>thead>tr>th,
+table.dataTable>thead>tr>td {
     border-bottom: none;
 }
 
@@ -207,19 +232,22 @@ table.dataTable>thead>tr>th, table.dataTable>thead>tr>td {
 }
 
 #tblAppointments thead tr th:first-child {
-   border-radius: 12px 0px 0px 0px;
+    border-radius: 12px 0px 0px 0px;
 }
 
 #tblAppointments thead tr th:last-child {
-   border-radius: 0px 12px 0px 0px;
+    border-radius: 0px 12px 0px 0px;
 }
 
 table.dataTable td:nth-child(1) {
-    width: 200px !important;  /* Force the width using !important */
+    width: 200px !important;
+    /* Force the width using !important */
     max-width: 200px;
     overflow: hidden;
-    text-overflow: ellipsis; /* Truncate the text with ellipsis if it exceeds width */
-    white-space: nowrap; /* Prevent the text from wrapping */
+    text-overflow: ellipsis;
+    /* Truncate the text with ellipsis if it exceeds width */
+    white-space: nowrap;
+    /* Prevent the text from wrapping */
 }
 
 /* DATA TABLE CUSTOM STYLES */
@@ -230,17 +258,23 @@ table.dataTable td:nth-child(1) {
 }
 
 div.dt-container .dt-input,
-div.dt-container .dt-search input  {
+div.dt-container .dt-search input {
     border: 1px solid #800000;
 }
 
 div.dt-container .dt-search input:focus-visible {
-    outline: 2px solid #800000;  /* Add a green outline when focused */
-    border: 1px solid #800000;   /* Change border color on focus */
-    background-color: #f0f0f0;   /* Light gray background on focus */
-    color: #333;                 /* Change text color */
-    box-shadow: 0 0 5px rgba(128, 0, 0, 0.5); /* Add subtle box shadow */
-    transition: all 0.2s ease;   /* Smooth transition */
+    outline: 2px solid #800000;
+    /* Add a green outline when focused */
+    border: 1px solid #800000;
+    /* Change border color on focus */
+    background-color: #f0f0f0;
+    /* Light gray background on focus */
+    color: #333;
+    /* Change text color */
+    box-shadow: 0 0 5px rgba(128, 0, 0, 0.5);
+    /* Add subtle box shadow */
+    transition: all 0.2s ease;
+    /* Smooth transition */
 }
 
 tr.joined {
@@ -251,10 +285,10 @@ tr.rejected {
     background-color: #dc3546bc !important;
 }
 
-tr.joined > td > button.btnAppointmentAction,
-tr.rejected > td > button.btnAppointmentAction, 
-tr.joined > td.dtr-hidden > button.btnAppointmentAction,
-tr.rejected > td.dtr-hidden > button.btnAppointmentAction {
+tr.joined>td>button.btnAppointmentAction,
+tr.rejected>td>button.btnAppointmentAction,
+tr.joined>td.dtr-hidden>button.btnAppointmentAction,
+tr.rejected>td.dtr-hidden>button.btnAppointmentAction {
     display: none;
 }
 
@@ -272,7 +306,7 @@ tr.rejected > td.dtr-hidden > button.btnAppointmentAction {
     justify-content: center;
     align-items: center;
     transform: all 0.3s ease;
-}   
+}
 
 .receipt-container .imgReceipt {
     /* height: 100%; */
@@ -280,7 +314,7 @@ tr.rejected > td.dtr-hidden > button.btnAppointmentAction {
     width: 100%;
 }
 
-.receipt-container .imgReceipt img{
+.receipt-container .imgReceipt img {
     height: 100%;
     width: 100%;
     object-fit: contain;
@@ -298,27 +332,125 @@ tr.rejected > td.dtr-hidden > button.btnAppointmentAction {
     font-size: 40px;
     font-weight: 400;
     transition: 0.3s;
-  }
-  
-  @-webkit-keyframes zoomIn {
-    from {-webkit-transform:scale(0)} 
-    to {-webkit-transform:scale(1)}
-  }
-  
-  @keyframes zoomIn {
-    from {transform:scale(0)} 
-    to {transform:scale(1)}
-  }
+}
 
-/* #tblAppointments > tbody > tr.joined > td.text-center > button.btn.btn-sm.btn-success.btnAppointmentAction {
-    display: none;
-} */
+@-webkit-keyframes zoomIn {
+    from {
+        -webkit-transform: scale(0)
+    }
 
-/* #tblAppointments > tbody > tr.child > td > ul > li > span.dtr-data > button.btn.btn-sm.btn-success.btnAppointmentAction */
-/* 
-[id*="btn"] {
+    to {
+        -webkit-transform: scale(1)
+    }
+}
 
-} */
+@keyframes zoomIn {
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+/* APPOINTMENT FLOATING WIDGET */
+
+.float-widget {
+    background-color: #2c3e50;
+    width: 200px;
+    position: absolute;
+    top: 52px;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.float-widget .widget-header {
+    padding: 7px;
+    text-align: center;
+    font-weight: 400;
+    border-radius: 4px 4px 0 0;
+    background: rgba(0, 0, 0, .4);
+}
+
+.float-widget .widget-body {
+    max-height: 211px;
+    overflow: hidden;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Styling the scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+.float-widget .widget-body::-webkit-scrollbar {
+    width: 8px;
+    /* Width of the scrollbar */
+}
+
+.float-widget .widget-body::-webkit-scrollbar-track {
+    background: #2c3e50 !important;
+    /* Background of the track */
+    border-radius: 4px;
+    /* Rounded corners */
+}
+
+.float-widget .widget-body::-webkit-scrollbar-thumb {
+    background: #33495f !important;
+    /* Color of the scrollbar handle */
+    border-radius: 4px;
+    /* Rounded corners */
+}
+
+.float-widget .widget-body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* Darker color on hover */
+}
+
+/* Firefox scrollbar styling */
+@supports (scrollbar-color: auto) {
+    .float-widget .widget-body {
+        scrollbar-width: thin;
+        /* Thin scrollbar */
+        scrollbar-color: #888 #f1f1f1;
+        /* Thumb color and track color */
+    }
+}
+
+.list-group {
+    border-radius: 0px 0px 4px 4px;
+    list-style: none;
+    padding: 0;
+}
+
+.list-group-item {
+    background-color: transparent;
+    color: rgba(255, 255, 255, .7);
+    border: 1px solid rgba(0, 0, 0, .125);
+    cursor: pointer;
+
+    padding: 6px 10px;
+
+}
+
+.list-group-item:hover {
+    color: white;
+    background-color: #33495f;
+}
+
+.list-group-item .scheduleName {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.badge {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.5;
+    float: right;
+    color: rgba(255, 255, 255, .7);
+}
+
 
 @media (max-width: 1200px) {
     .receipt-container {
@@ -332,28 +464,36 @@ tr.rejected > td.dtr-hidden > button.btnAppointmentAction {
     .fc-header-toolbar {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between; /* Adjust spacing between chunks */
+        justify-content: space-between;
+        /* Adjust spacing between chunks */
         align-items: center;
         gap: 10px;
     }
 
     .fc-left {
-        order: 1; /* Place on the left */
-        flex: 1; /* Allow space for alignment */
+        order: 1;
+        /* Place on the left */
+        flex: 1;
+        /* Allow space for alignment */
         text-align: left;
     }
-    
+
     .fc-right {
-        order: 2; /* Place on the right */
-        flex: 1; /* Allow space for alignment */
+        order: 2;
+        /* Place on the right */
+        flex: 1;
+        /* Allow space for alignment */
         text-align: right;
     }
-    
+
     .fc-center {
-        order: 3; /* Place below */
-        width: 100%; /* Make it take the full width */
+        order: 3;
+        /* Place below */
+        width: 100%;
+        /* Make it take the full width */
         text-align: center;
-        margin-top: 10px; /* Add spacing if needed */
+        margin-top: 10px;
+        /* Add spacing if needed */
     }
 
     .receipt-container {
@@ -370,12 +510,12 @@ tr.rejected > td.dtr-hidden > button.btnAppointmentAction {
 @media screen and (max-width: 576px) {
 
     /* Data table entries and search container */
-    #tblAppointments_wrapper > div:nth-child(1) {
+    #tblAppointments_wrapper>div:nth-child(1) {
         display: flex;
     }
 
     /* Data table pagination container */
-    #tblAppointments_wrapper > div:nth-child(3) {
+    #tblAppointments_wrapper>div:nth-child(3) {
         margin-top: 10px;
         display: block;
     }

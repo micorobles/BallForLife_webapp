@@ -25,16 +25,17 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             }
 
             self.renderScheduleCard(getAllSchedule.data);
-
+            
             return this;
         },
         renderScheduleCard: function (schedules) {
             var self = this;
-
+            
             console.log(schedules);
-
+            
             self.schedule = schedules;
-
+            
+            $('.schedules-body > .row').empty();
             var html = '';
 
             $.each(schedules, function (i, schedule) {
@@ -102,7 +103,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                                     <div class="card-heading border-bottom pb-2">
                                         <div class="row">
                                             <div class="col-10">
-                                                <h3 id='schedTitle' class="card-title mb-0 text-nowrap text-truncate">${schedule.title}</h3>
+                                                <h3 id='schedTitle' class="card-title mb-0 text-nowrap custom-text-truncate">${schedule.title}</h3>
                                             </div>
                                             <div class="col-2 p-0 d-flex justify-content-end">
                                                 <span id='schedMaxPlayer' class="max-players font-xs text-muted regular-text me-2">${schedule.maxPlayer} <i class="fa-solid fa-people-group fa-1x text-muted"></i></span>
@@ -131,13 +132,13 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                                         <div class="row mt-1">
                                             <div class="col d-flex">
                                                 <i class="fa-solid fa-align-left fa-1x text-muted me-2" style="margin-top: 5px;"></i>
-                                                <span id="schedDescription" class="card-description regular-text text-muted font-sm text-truncate">${schedule.description}</span>
+                                                <span id="schedDescription" class="card-description regular-text text-muted font-sm custom-text-truncate">${schedule.description}</span>
                                             </div>
                                         </div>
                                         <div class="row mt-1">
                                             <div class="col d-flex">
                                                 <i class="fa-solid fa-comment-dots fa-1x text-muted me-2" style="margin-top: 5px;"></i>
-                                                <p id="schedNotes" class="card-note medium-text text-muted text-truncate">${schedule.notes}</p>
+                                                <p id="schedNotes" class="card-note medium-text text-muted custom-text-truncate">${schedule.notes}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -189,7 +190,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                         <div class="row">
                             <div class="col-10">
                                 <span id="schedID" class="d-none">${schedule.ID}</span>
-                                <h3 id='schedTitle' class="card-title mb-0 text-nowrap text-truncate">
+                                <h3 id='schedTitle' class="card-title mb-0 text-nowrap custom-text-truncate">
                                     ${schedule.title}</h3>
                             </div>
                             <div class="col-2 p-0 d-flex justify-content-end">
@@ -345,14 +346,14 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             let schedID = $('#schedID').text().trim() ?? 0;
 
             if (dropZone.files.length === 0) {
-                showToast('error', 'Error: ', 'Please upload a file before submitting');
+                showToast('error', 'Error: ', 'Please upload your receipt before submitting');
                 return;
             }
 
             dropZone = dropZone.files[0];
 
             if (dropZone.status !== Dropzone.SUCCESS) {
-                showToast('warning', 'Warning: ', 'Please wait for the file to complete uploading');
+                showToast('warning', 'Warning: ', 'Please wait for the receipt to complete uploading');
                 return;
             }
 
