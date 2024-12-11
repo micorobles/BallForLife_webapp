@@ -29,7 +29,9 @@ class Dashboard extends Model
     }
     public function getAppointmentRequests()
     {
-        return $this->db->table('schedules-appointment')->where('is_deleted', false)->countAllResults();
+        return $this->db->table('schedules-appointment')->where('is_deleted', false)
+                                                                   ->where('status', 'Pending') 
+                                                                   ->countAllResults();
     }
 
     // USERS

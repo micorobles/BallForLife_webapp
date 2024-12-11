@@ -29,6 +29,7 @@ $routes->get('scheduleMaster', 'ScheduleMasterController::index', ['filter' => '
 $routes->post('createSchedule', 'ScheduleMasterController::createSchedule', ['filter' => 'auth:Admin']);
 $routes->get('getAllSchedule', 'ScheduleMasterController::getAllSchedule', ['filter' => 'auth:Admin']);
 $routes->get('getSingleSchedule/(:num)', 'ScheduleMasterController::getSingleSchedule/$1', ['filter' => 'auth:Admin']);
+$routes->get('getWidgetsData', 'ScheduleMasterController::getWidgetsData', ['filter' => 'auth:Admin']);
 $routes->post('editSchedule/(:num)', 'ScheduleMasterController::editSchedule/$1', ['filter' => 'auth:Admin']);
 $routes->post('deleteSchedule/(:num)', 'ScheduleMasterController::deleteSchedule/$1', ['filter' => 'auth:Admin']);
 $routes->post('getScheduleAppointments/(:num)', 'ScheduleMasterController::getScheduleAppointments/$1', ['filter' => 'auth:Admin']);

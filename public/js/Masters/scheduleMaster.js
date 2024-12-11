@@ -23,6 +23,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         this.eventID = '';
         this.eventTitle = '';
         this.$tblAppointments = '';
+        this.appointments = [];
     }
     ScheduleMaster.prototype = {
         drawCalendar: function () {
@@ -97,7 +98,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     successCallback(getAllEvents.data);
 
                     // console.log('FETCH INFO: ', fetchInfo);
-                    // console.log('GET ALL EVENTS: ', getAllEvents);
+                    console.log('GET ALL EVENTS: ', getAllEvents);
                 },
                 eventClick: async function (event) {
                     // console.log(event);
@@ -165,9 +166,25 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     // console.log('INFO: ', info);
 
                     let hasAppointment = info.event.extendedProps.appointmentCount > 0 ? true : false;
+                    // console.log(hasAppointment);
+                    // var appointments = {};
 
                     hasAppointment ? info.event.setProp('editable', false) : '';
 
+                    // if (hasAppointment && !info.isPast) {
+                    //     info.event.setProp('editable', false);
+
+                    //     self.appointments.push({
+                    //         title: info.event.title,
+                    //         count: info.event.extendedProps.appointmentCount
+                    //     });
+
+                    // self.appointments['title'] = info.event.title;
+                    // self.appointments['count'] = info.event.extendedProps.appointmentCount;
+                    // self.renderAppointmentWidget(info.event.title, info.event.extendedProps.appointmentCount);
+                    // }
+
+                    // console.log('appointments object: ', self.appointments);
                     info.isEnd ? info.el.classList.add('event-ended') : '';
                     info.isPast ? info.el.classList.add('event-past') : '';
 
@@ -208,6 +225,41 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             calendar.render();
             return calendar;
+        },
+        renderWidgets: async function () {
+            var self = this;
+
+            const widgetsData = await ajaxRequest('GET', baseURL + '/getWidgetsData', '');
+
+            if (!widgetsData.success) {
+                showToast('error', 'Error: ', widgetsData.message);
+                return;
+            }
+
+            console.log(widgetsData.data);
+            const apptPending = widgetsData.data.appointmentsPending;
+            const apptJoined = widgetsData.data.appointmentsJoined;
+
+            // APPOINTMENT REQUESTS WIDGET
+            $('.float-widget .widget-body ul.list-group').empty();
+            var html = '';
+
+            $.each(apptPending, function (i, appt) {
+
+                html += `
+                        <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
+                            <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                                ${appt.title}
+                            </span>
+                            <span id="appointmentCount" class="badge bg-danger">${appt.count}</span>
+                        </li>
+                
+                        `;
+            });
+
+
+            $('.float-widget .widget-body ul.list-group').append(html);
+            return this;
         },
         createSchedule: function () {
             var self = this;
@@ -625,23 +677,35 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
         const prslyFrmSchedule = $('#frmSchedule').parsley();
         _S.drawCalendar();
-        
+        _S.renderWidgets();
+
+        $('.toggle-widget').on('click', function () {
+            const $widget = $(this).closest('.float-widget');
+            $widget.toggleClass('minimized');
+
+            if ($widget.hasClass('minimized')) {
+                $(this).removeClass('fa-square-caret-up').addClass('fa-square-caret-down');
+            } else {
+                $(this).removeClass('fa-square-caret-down').addClass('fa-square-caret-up');
+            }
+        });
+
         $('#btnCreateSchedule').click(function (e) {
             e.preventDefault();
             // console.log(frmSchedule.isValid());
-            prslyFrmSchedule.isValid() ? _S.createSchedule() : prslyFrmSchedule.validate({ focus: 'first' }) ;
+            prslyFrmSchedule.isValid() ? _S.createSchedule() : prslyFrmSchedule.validate({ focus: 'first' });
 
             // Validate the form using Parsley
-        // var isValid = $('#frmSchedule').parsley().validate();
+            // var isValid = $('#frmSchedule').parsley().validate();
 
-        // if (isValid) {
-        //     // If the form is valid, proceed with the CreateSchedule logic
-        //     createSchedule();
-        // } else {
-        //     // If the form is invalid, focus on the first invalid field
-        //     $('#frmSchedule').parsley().validate({ focus: 'first' });
-        
-        // }
+            // if (isValid) {
+            //     // If the form is valid, proceed with the CreateSchedule logic
+            //     createSchedule();
+            // } else {
+            //     // If the form is invalid, focus on the first invalid field
+            //     $('#frmSchedule').parsley().validate({ focus: 'first' });
+
+            // }
         });
 
         $('#btnDeleteSchedule').click(function (e) {
@@ -681,7 +745,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             if (isAppointmentShow) {
                 $('#scheduleModal .modal-body .appointments-container').removeClass('show').fadeOut(300, function () {
-                    $(this).remove(); 
+                    $(this).remove();
                 });
                 $icon.removeClass('fa-angles-up').addClass('fa-angles-down');
                 $('#btnEditSchedule').fadeIn(300);
@@ -731,8 +795,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             $(this).removeAttr('aria-hidden'); // Remove aria-hidden when the modal is visible
         });
         $('#scheduleModal').on('hidden.bs.modal', function () {
-            const $icon = $('#btnAppointments').find('i'); 
-            $('#scheduleModal .modal-body .appointments-container').remove(); 
+            const $icon = $('#btnAppointments').find('i');
+            $('#scheduleModal .modal-body .appointments-container').remove();
             $icon.removeClass('fa-angles-up').addClass('fa-angles-down');
             prslyFrmSchedule.destroy();
             $('.receipt-container').addClass('d-none');

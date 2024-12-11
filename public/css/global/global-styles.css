@@ -405,6 +405,9 @@ form input, form label {
 /*************************** BOOTSTRAP CUSTOM CLASS STYLES ************************************/
 
 .custom-text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* white-space: nowrap; */
     white-space: wrap;
     -webkit-line-clamp: 2;
     display: -webkit-box;

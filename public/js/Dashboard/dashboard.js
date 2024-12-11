@@ -1,19 +1,19 @@
 "use strict";
 $(function () {
-    const Homepage = function () {
-        return new Homepage.init();
+    const Dashboard = function () {
+        return new Dashboard.init();
     }
-    Homepage.init = function () {
+    Dashboard.init = function () {
 
     }
-    Homepage.prototype = {
+    Dashboard.prototype = {
        
     }
 
-    Homepage.init.prototype = Homepage.prototype;
+    Dashboard.init.prototype = Dashboard.prototype;
 
     $(document).ready(function() {
-        var _H = Homepage();
+        var _D = Dashboard();
 
     });
 });

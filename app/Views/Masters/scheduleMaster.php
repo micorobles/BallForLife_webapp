@@ -21,34 +21,10 @@
     <div id="appointments" class="float-widget">
         <div class="widget-header">
             Appointments
-            <i class="fa-solid fa-minimize"></i>
+            <i class="fa-solid fa-square-caret-up toggle-widget"></i>
         </div>
         <div class="widget-body">
             <ul class="list-group">
-                <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
-                    <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
-                        Game for A Cause
-                    </span>
-                    <span id="appointmentCount" class="badge bg-danger">4</span>
-                </li>
-                <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
-                    <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
-                        Papawis ni Renato fadssssssssss
-                    </span>
-                    <span id="appointmentCount" class="badge bg-danger">4</span>
-                </li>
-                <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
-                    <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
-                        Game for A Cause
-                    </span>
-                    <span id="appointmentCount" class="badge bg-danger">4</span>
-                </li>
-                <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
-                    <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
-                        Papawis ni Renato fadssssssssss
-                    </span>
-                    <span id="appointmentCount" class="badge bg-danger">4</span>
-                </li>
             </ul>
         </div>
     </div>
