@@ -256,7 +256,7 @@ class ScheduleMasterController extends BaseController
     {
 
         $appointments = $this->schedules
-            ->select('schedules.title, `schedules-appointment`.status, COUNT(`schedules-appointment`.ID) as appointmentCount')
+            ->select('schedules.ID as schedID, schedules.title, schedules.maxPlayer, `schedules-appointment`.status, COUNT(`schedules-appointment`.ID) as appointmentCount')
             ->join('`schedules-appointment`', 'schedules.ID = `schedules-appointment`.schedID', 'left')
             ->where('`schedules-appointment`.is_deleted', false)
             ->where('schedules.startDate >', date('Y-m-d'))
@@ -277,14 +277,17 @@ class ScheduleMasterController extends BaseController
             switch ($appointment['status']) {
                 case 'Pending':
                     $appointmentPending[] = [
+                        'schedID' => $appointment['schedID'],
                         'title' => $appointment['title'],
                         'count' => $appointment['appointmentCount'],
                     ];
                     break;
                 case 'Joined':
                     $appointmentJoined[] = [
+                        'schedID' => $appointment['schedID'],
                         'title' => $appointment['title'],
                         'count' => $appointment['appointmentCount'],
+                        'maxPlayer' => $appointment['maxPlayer'],
                     ];
                     break;
             }

@@ -100,47 +100,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     // console.log('FETCH INFO: ', fetchInfo);
                     console.log('GET ALL EVENTS: ', getAllEvents);
                 },
-                eventClick: async function (event) {
-                    // console.log(event);
-
-                    self.eventID = event.event.id;
-                    self.eventTitle = event.event.title;
-
-                    const getSingleEvent = await ajaxRequest('GET', baseURL + `/getSingleSchedule/${self.eventID}`);
-
-                    if (!getSingleEvent) {
-                        showToast('error', 'Error: ', getSingleEvent.message);
-                    }
-
-                    self.resetModal();
-                    self.scheduleModal.modal('show');
-                    $('#btnEditSchedule').show();
-                    $('#btnDeleteSchedule').show();
-                    $('#btnAppointments').show();
-                    $('#scheduleModalLabel').text('View Schedule');
-                    // $('#btnSaveSchedule').attr('data-id', event.event.id);
-
-                    $.each(getSingleEvent.data, function (key, value) {
-
-                        let id = `#modal-sched${ucfirst(key)}`;
-
-                        if (key === 'startDate' || key === 'endDate') {
-                            value = moment(value).format('MMMM D, YYYY - h:mm A');
-                            self.renderDateTimePicker(value, id);
-                        }
-
-                        if (key === 'color') {
-                            $('#colorPicker').css('background-color', value);
-                        }
-
-                        $(id).val(value);
-                        $(id).prop('disabled', true);
-
-                        // console.log(key, ' : ', value); 
-                        // console.log(id, ' : ', value); 
-                    });
-
-                },
+                eventClick: self.handleEventClick.bind(this),
                 eventDrop: async function (event) {
 
                     var dateChanges = {
@@ -226,6 +186,48 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             calendar.render();
             return calendar;
         },
+        handleEventClick: async function (event) {
+            var self = this;
+
+            self.eventID = event.event.id;
+            self.eventTitle = event.event.title;
+
+            const getSingleEvent = await ajaxRequest('GET', baseURL + `/getSingleSchedule/${self.eventID}`);
+
+            if (!getSingleEvent) {
+                showToast('error', 'Error: ', getSingleEvent.message);
+            }
+
+            self.resetModal();
+            self.scheduleModal.modal('show');
+            $('#btnEditSchedule').show();
+            $('#btnDeleteSchedule').show();
+            $('#btnAppointments').show();
+            $('#scheduleModalLabel').text('View Schedule');
+            // $('#btnSaveSchedule').attr('data-id', event.event.id);
+
+            $.each(getSingleEvent.data, function (key, value) {
+
+                let id = `#modal-sched${ucfirst(key)}`;
+
+                if (key === 'startDate' || key === 'endDate') {
+                    value = moment(value).format('MMMM D, YYYY - h:mm A');
+                    self.renderDateTimePicker(value, id);
+                }
+
+                if (key === 'color') {
+                    $('#colorPicker').css('background-color', value);
+                }
+
+                $(id).val(value);
+                $(id).prop('disabled', true);
+
+                // console.log(key, ' : ', value); 
+                // console.log(id, ' : ', value); 
+            });
+
+            return this;
+        },
         renderWidgets: async function () {
             var self = this;
 
@@ -242,23 +244,41 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             // APPOINTMENT REQUESTS WIDGET
             $('.float-widget .widget-body ul.list-group').empty();
-            var html = '';
+            var appointmentHTML = '';
 
             $.each(apptPending, function (i, appt) {
 
-                html += `
-                        <li id="appointmentItem" class="list-group-item d-flex justify-content-between">
+                appointmentHTML += `
+                <li id="appointmentItem" class="list-group-item d-flex justify-content-between" data-id="${appt.schedID}">
+                            <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                                ${appt.title}
+                                </span>
+                                <span id="appointmentCount" class="badge bg-danger">${appt.count}</span>
+                        </li>
+                        
+                        `;
+            });
+
+            $('#appointments-widget .widget-body ul.list-group').append(appointmentHTML);
+
+            // PLAYERS JOINED WIDGET
+            var playersHTML = '';
+
+            $.each(apptJoined, function (i, appt) {
+
+                playersHTML += `
+                        <li id="playersItem" class="list-group-item d-flex justify-content-between" data-id="${appt.schedID}">
                             <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
                                 ${appt.title}
                             </span>
-                            <span id="appointmentCount" class="badge bg-danger">${appt.count}</span>
+                            <span id="playersCount" class="badge bg-secondary">${appt.count}/${appt.maxPlayer}</span>
                         </li>
                 
                         `;
             });
 
+            $('#players-widget .widget-body ul.list-group').append(playersHTML);
 
-            $('.float-widget .widget-body ul.list-group').append(html);
             return this;
         },
         createSchedule: function () {
@@ -549,6 +569,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             // console.log(saveSchedule);
             showToast('success', '', appointmentAction.message);
             self.$tblAppointments.ajax.reload();
+            self.renderWidgets();
 
             return this;
         },
@@ -679,6 +700,19 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
         _S.drawCalendar();
         _S.renderWidgets();
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const focusEl = urlParams.get('focus') ?? '';
+
+        if (focusEl !== '') {
+            const $element = $('#' + focusEl);
+
+            $element.addClass('focus-highlight');
+
+            setTimeout(function () {
+                $element.removeClass('focus-highlight');
+            }, 2000);
+        }
+
         $('.toggle-widget').on('click', function () {
             const $widget = $(this).closest('.float-widget');
             $widget.toggleClass('minimized');
@@ -690,22 +724,42 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             }
         });
 
+        $(document).on('click', '.list-group-item', function (e) {
+            e.preventDefault();
+            let schedID = $(this).attr('data-id');
+            let schedTitle = $(this).find('#scheduleName').text().trim();
+
+            const event = {
+                event: {
+                    id: schedID,
+                    title: schedTitle,
+                },
+            };
+
+            _S.handleEventClick(event);
+            setTimeout(function () {
+                $('#btnAppointments').trigger('click');
+
+                const $schedModal = $('#scheduleModal');
+                const $focusDiv = $('.appointments');
+
+                $schedModal.animate({
+                    scrollTop: $schedModal.prop('scrollHeight'),
+                }, 1000);
+
+                $focusDiv.addClass('focus-highlight');
+
+                setTimeout(function () {
+                    $focusDiv.removeClass('focus-highlight');
+                }, 2000);
+
+            }, 1000);
+        });
+
         $('#btnCreateSchedule').click(function (e) {
             e.preventDefault();
             // console.log(frmSchedule.isValid());
             prslyFrmSchedule.isValid() ? _S.createSchedule() : prslyFrmSchedule.validate({ focus: 'first' });
-
-            // Validate the form using Parsley
-            // var isValid = $('#frmSchedule').parsley().validate();
-
-            // if (isValid) {
-            //     // If the form is valid, proceed with the CreateSchedule logic
-            //     createSchedule();
-            // } else {
-            //     // If the form is invalid, focus on the first invalid field
-            //     $('#frmSchedule').parsley().validate({ focus: 'first' });
-
-            // }
         });
 
         $('#btnDeleteSchedule').click(function (e) {

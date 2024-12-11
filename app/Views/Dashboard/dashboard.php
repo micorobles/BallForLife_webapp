@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="stats-link">
-                    <a href="<?= base_url('scheduleMaster') ?>">
+                    <a href="<?= base_url('scheduleMaster?focus=appointments-widget') ?>">
                         View Detail
                         <i class="fa-solid fa-circle-arrow-right ms-1"></i>
                     </a>
