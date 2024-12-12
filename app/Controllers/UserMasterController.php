@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Libraries\TokenHelper;
+use Config\Services;
 
 class UserMasterController extends BaseController
 {
@@ -11,12 +12,14 @@ class UserMasterController extends BaseController
     protected $users;
     protected $session;
     protected $tokenHelper;
+    protected $emailService;
 
     public function __construct()
     {
         $this->users = model(User::class);  // Inject the User model into the controller
-        $this->session = \Config\Services::session();
+        $this->session = Services::session();
         $this->tokenHelper = new TokenHelper();
+        $this->emailService = Services::EmailService();
     }
 
     public function index(): string
@@ -34,8 +37,8 @@ class UserMasterController extends BaseController
         $start = intval($this->request->getPost('start'));
         $length = intval($this->request->getPost('length'));
         $order = $this->request->getPost('order') ?? []; // Use empty array if not set
-        $columns = ['id','email', 'firstname', 'lastname', 'position', 'status', 'updated_at'];
-        
+        $columns = ['id', 'email', 'firstname', 'lastname', 'position', 'status', 'updated_at'];
+
         // Determine sorting
         $sortColumnIndex = $order[0]['column'] ?? 5; // Default to first column
         $sortDirection = $order[0]['dir'] ?? 'desc';
@@ -133,6 +136,26 @@ class UserMasterController extends BaseController
 
         if (!$acceptUser) {
             return $this->jsonResponse(false, 'Error accepting user', $acceptUser);
+        }
+
+        $user = $this->users->find($userID);
+
+        if (!$user) {
+            return $this->jsonResponse(false, 'User not found after update', null);
+        }
+
+        try {
+            $this->emailService->sendEmail(
+                $user['email'],
+                'User Accepted',
+                "You are now accepted as a member of Ball For Life. Feel free to join upcoming schedules!",
+                $user['firstname'] . ' ' . $user['lastname'],
+                'Dashboard',
+                'dashboard'
+            );
+        } catch (\Exception $e) {
+            // Log the error for debugging purposes
+            log_message('error', 'Failed to send email to user ID ' . $userID . ': ' . $e->getMessage());
         }
 
         return $this->jsonResponse(true, 'User accepted!', '');

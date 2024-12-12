@@ -19,7 +19,8 @@ class TokenHelper
             'user_id' => $userID,
             'user_role' => $userRole,
             'iat' => time(),        // Issued at
-            'exp' => time() + 3600, // Token expires in 1 hour
+            // 'exp' => time() + 3600, // Token expires in 1 hour
+            'exp' => time() + 86400, // Token expires in 24hrs
         ]);
 
         // Encode header and payload

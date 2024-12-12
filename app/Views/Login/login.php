@@ -54,14 +54,14 @@
                 </div>
             </div>
 
-            <div class="checkbox checkbox-css">
+            <!-- <div class="checkbox checkbox-css">
                 <input type="checkbox" name="rememberMe" id="rememberMe" class="rounded-sm">
                 <label for="rememberMe" class="text-secondary font-xs light-text" style="display: inline-block; vertical-align: middle; margin-left: 2px;">
                     <small>Remember Me</small>
                 </label>
-            </div>
+            </div> -->
 
-            <div class="mt-2 d-grid">
+            <div class="mt-1 d-grid">
                 <input id="btnLogin" type="submit" class="btn btn-primary btn-md btn-custom-color font-sm regular-text" style="height: 35px;" value="Login"></input>
             </div>
 

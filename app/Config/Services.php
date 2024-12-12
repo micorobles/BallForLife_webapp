@@ -4,6 +4,7 @@ namespace Config;
 
 use CodeIgniter\Config\BaseService;
 use App\Services\FileUploadService;
+use App\Services\EmailService;
 /**
  * Services Configuration file.
  *
@@ -37,6 +38,14 @@ class Services extends BaseService
         }
 
         return new FileUploadService();
+     }
+     public static function emailService($getShared = true)
+     {
+        if ($getShared) {
+            return Static::getSharedInstance('emailService');
+        }
+
+        return new EmailService();
      }
 
 }

@@ -34,7 +34,7 @@ class AuthFilter implements FilterInterface
             // error_log("No authToken in cookie, redirecting to login page.");
 
             // Set flashdata for showing the message after redirect
-            session()->setFlashdata('authMessage', 'You are not logged in. Please log in to continue.');
+            session()->setFlashdata('authMessage', 'Your session has expired. Please log in to continue.');
             return redirect()->to('/');
         }
 

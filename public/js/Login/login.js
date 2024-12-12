@@ -95,7 +95,7 @@ async function handleLogin(e) {
     const loginData = {
         email: $('#email').val(),
         password: $('#password').val().trim(),
-        rememberMe: $('#rememberMe').is(':checked')
+        // rememberMe: $('#rememberMe').is(':checked')
     };
 
     const url = $(this).attr('action');

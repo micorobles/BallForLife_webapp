@@ -41,6 +41,7 @@ $routes->post('bookSchedule', 'ScheduleController::bookSchedule', ['filter' => '
 
 $routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth:Admin,User']);
 $routes->get('logout', 'DashboardController::logout', ['filter' => 'auth:Admin,User']); 
+
 // $routes->post('homepage', 'HomepageController::register');
 
 // $routes->get('schedule', 'ScheduleController::index', ['filter' => 'auth:Admin']);

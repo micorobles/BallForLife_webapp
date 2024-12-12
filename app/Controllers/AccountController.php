@@ -18,6 +18,7 @@ class AccountController extends BaseController
     protected $session;
     protected $tokenHelper;
     protected $fileUploadService;
+    protected $emailService;
 
     public function __construct()
     {
@@ -25,6 +26,7 @@ class AccountController extends BaseController
         $this->session = Services::session();
         $this->tokenHelper = new TokenHelper();
         $this->fileUploadService = Services::fileUploadService();
+        $this->emailService = Services::EmailService();
     }
 
     public function index()
@@ -58,7 +60,7 @@ class AccountController extends BaseController
         $data['title'] = "Login";
         $data['email'] = $this->request->getPost('email');
         $data['password'] = $this->request->getPost('password');
-        $data['rememberMe'] = $this->request->getPost('rememberMe');
+        // $data['rememberMe'] = $this->request->getPost('rememberMe');
 
         if (empty($data['email']) && empty($data['password'])) {
             return $this->jsonResponse(false, 'Cannot accept blank input!', $data);
@@ -73,12 +75,14 @@ class AccountController extends BaseController
             }
 
             $person = $authResult['person'];
-            error_log('Person ID: ' . $person['ID']);
-            error_log('Person ROLE: ' . $person['role']);
             $token = $this->generateAuthToken($person['ID'], $person['role']);
             $this->setSessionData($person);
 
-            // error_log('Person data: ' . print_r($person, true));
+            // $this->emailService->sendEmail('micholrobles27@gmail.com', 
+            //                            'Ball For Life Google Sign in.', 
+            //                            'Thank you for joining Ball For Life!', 
+            //                            'Mico Robles'
+            //                         );
 
             return $this->jsonResponse(true, 'Successfully logged in!',  $token);
         } catch (\Exception $e) {
@@ -127,8 +131,8 @@ class AccountController extends BaseController
 
             $person = $authResult['success'] ? $authResult['person'] : $this->registerGoogleUser($userData);
 
-            error_log('Person ID: ' . $person['ID']);
-            error_log('Person ROLE: ' . $person['role']);
+            // error_log('Person ID: ' . $person['ID']);
+            // error_log('Person ROLE: ' . $person['role']);
 
             $token = $this->generateAuthToken($person['ID'], $person['role']);
 
@@ -201,6 +205,16 @@ class AccountController extends BaseController
                 return $this->jsonResponse(false, 'Error registering new user');
             }
 
+            $this->emailService->sendEmail(
+                $userData['email'],
+                'Ball For Life Google Sign in.',
+                "Thank you for joining Ball For Life! Please wait for the admin's approval before you can view the available games.",
+                $userData['firstname'] . ' ' . $userData['lastname'],
+                'Dashboard',
+                'dashboard',
+            );
+
+            // $this->emailService->notifyAdmin();
 
             return $this->jsonResponse(true, 'Successfully registered!', $userData);
         } catch (\Exception $e) {
@@ -215,6 +229,22 @@ class AccountController extends BaseController
         if (!$registerUser) {
             throw new \Exception('Error registering your account.');
         }
+
+        $this->emailService->sendEmail(
+            $userData['email'],
+            'Ball For Life Google Sign in.',
+            "Thank you for joining Ball For Life! Please wait for the admin's approval before you can view the available games.",
+            $userData['firstname'] . ' ' . $userData['lastname'],
+            'Dashboard',
+            'dashboard',
+        );
+
+        $this->emailService->notifyAdmin(
+            'Pending user.',
+            $userData['firstname'] . ' ' . $userData['lastname'] . ' has joined Ball For Life! Please accept or delete this user.',
+            'User Master',
+            'userMaster',
+        );
 
         // Return the newly created user
         return $this->users->where('is_deleted', false)
