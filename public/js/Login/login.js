@@ -22,23 +22,27 @@ $(function () {
     function onSignIn(googleUser) {
         const id_token = googleUser.credential;
     
-        console.log('ID TOKEN: ', id_token);
+        // console.log('ID TOKEN: ', id_token);
     
         // Send the ID token to your server for verification using jQuery
         $.ajax({
             url: baseURL + '/google',
             type: 'POST',
             data: { id_token: id_token },
+            
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
+            beforeSend: function() {
+                $('#loader').show();
+            },
             success: function (response) {
                 if (response.success) {
-                    console.log('response: ', response);
+                    // console.log('response: ', response);
                     document.cookie = `authToken=${response.data}; path=/; max-age=3600`;
 
                     window.location.href = baseURL + '/dashboard'; 
-                    
+                    $('#loader').fadeOut(300);
                 } else {
                     console.error("Failed to login with Google: ", response.message);
                 }
@@ -112,7 +116,7 @@ async function handleLogin(e) {
         // showToast('success', '', loginUser.message);
 
         // Store token in local storage
-        console.log(loginUser);
+        // console.log(loginUser);
 
         document.cookie = `authToken=${loginUser.data}; path=/; max-age=3600`;
         window.location.href = window.location.origin + '/dashboard';

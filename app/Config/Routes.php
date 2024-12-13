@@ -18,6 +18,8 @@ $routes->get('profile/(:num)', 'AccountController::profile/$1', ['filter' => 'au
 $routes->post('editProfile', 'AccountController::editProfile', ['filter' => 'auth:Admin,User']);
 $routes->get('registration', 'AccountController::registration');
 $routes->post('register', 'AccountController::register');
+$routes->post('verifyEmail', 'AccountController::verifyEmail');
+$routes->post('verifyOTP', 'AccountController::verifyOTP');
 
 $routes->get('userMaster', 'UserMasterController::index', ['filter' => 'auth:Admin']);
 $routes->post('getUserList', 'UserMasterController::getUserList', ['filter' => 'auth:Admin']);

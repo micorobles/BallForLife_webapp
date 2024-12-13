@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\EmailVerifications;
 use App\Libraries\TokenHelper;
 use Config\Services;
 use Google_Client;
@@ -15,6 +16,7 @@ class AccountController extends BaseController
 {
 
     protected $users;
+    protected $emailVerification;
     protected $session;
     protected $tokenHelper;
     protected $fileUploadService;
@@ -23,6 +25,7 @@ class AccountController extends BaseController
     public function __construct()
     {
         $this->users = model(User::class);  // Inject the User model into the controller
+        $this->emailVerification = model(EmailVerifications::class);  // Inject the User model into the controller
         $this->session = Services::session();
         $this->tokenHelper = new TokenHelper();
         $this->fileUploadService = Services::fileUploadService();
@@ -32,7 +35,7 @@ class AccountController extends BaseController
     public function index()
     {
         if ($this->isLoggedIn()) {
-            return redirect()->to('homepage');
+            return redirect()->to(base_url('dashboard'));
         }
 
         $data['title'] = "Login";
@@ -161,10 +164,54 @@ class AccountController extends BaseController
         return view('Registration/registration', $data);
     }
 
-    public function register()
+    public function sendOTP($email)
     {
+        $otp = $this->generateOTP();
+
+        $insertEmailVerification = $this->emailVerification->insert([
+            'email' => $email,
+            'otp' => $otp
+        ]);
+
+        $this->emailService->sendEmail(
+            $email,
+            'Ball For Life - Email Verification.',
+            "Your OTP for registration is: <b>{$otp}</b>. It will expire in 10 minutes.",
+            '',
+            '',
+            '',
+            '#',
+        );
+
+        return $insertEmailVerification;
+    }
+
+    public function verifyOTP()
+    {
+        $email = $this->request->getPost('modal-email');
+        $otp = $this->request->getPost('modal-otp');
+
+        $verifyOTP = $this->emailVerification
+            ->where('email', $email)
+            ->where('otp', $otp)
+            ->where('created_at >', date('Y-m-d H:i:s', strtotime('-10 minutes')))
+            ->first();
+
+
+        if (!$verifyOTP) {
+            return $this->jsonResponse(false, 'Invalid or expired OTP.');
+        }
+
+        return $this->register();
+    }
+
+    public function verifyEmail()
+    {
+
         // Get user input
         $email = $this->request->getPost('email');
+
+
         $firstname = ucfirst($this->request->getPost('firstname'));
         $lastname = ucfirst($this->request->getPost('lastname'));
         $contactNum = $this->request->getPost('contactNum');
@@ -172,31 +219,42 @@ class AccountController extends BaseController
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // bycrypt by default
 
-        // Save to db
+        // CHECK FROM DB TO AVOID DUPLICATION OF EMAIL
+        $person = $this->users->where('is_deleted', false)
+            ->where('email', $email)
+            ->first();
+
+        if ($person) {
+            return $this->jsonResponse(false, 'Email is already used');
+        }
+
+        $sendOTP = $this->sendOTP($email);
+
+        $this->session->set('temp_user', [
+            'role' => 'User',
+            'profilePic' => 'images/uploads/user.png',
+            'coverPhoto' => 'images/uploads/cover-photo.jpg',
+            'email' => $email,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'contactNum' => $contactNum,
+            'position' => 'Member',
+            'password' => $hashedPassword,
+            'status' => 'Pending',
+        ]);
+
+        if (!$sendOTP) {
+            return $this->jsonResponse(false, 'Error sending OTP.');
+        }
+
+        return $this->jsonResponse(true, 'OTP sent to your email. Please verify.', $email);
+    }
+    public function register()
+    {
 
         try {
 
-            $userData = [
-                'role' => 'User',
-                'profilePic' => 'images/uploads/user.png',
-                'coverPhoto' => 'images/uploads/cover-photo.png',
-                'email' => $email,
-                'firstname' => $firstname,
-                'lastname' => $lastname,
-                'contactNum' => $contactNum,
-                'position' => 'Member',
-                'password' => $hashedPassword,
-                'status' => 'Pending',
-            ];
-
-            // CHECK FROM DB TO AVOID DUPLICATION OF EMAIL
-            $person = $this->users->where('is_deleted', false)
-                ->where('email', $email)
-                ->first();
-
-            if ($person) {
-                return $this->jsonResponse(false, 'Email is already used');
-            }
+            $userData = $this->session->get('temp_user');
 
             // INSERT IF EMAIL IS NOT YET EXISTED
             $registerUser = $this->users->insert($userData);
@@ -207,16 +265,24 @@ class AccountController extends BaseController
 
             $this->emailService->sendEmail(
                 $userData['email'],
-                'Ball For Life Google Sign in.',
+                'Ball For Life Register.',
                 "Thank you for joining Ball For Life! Please wait for the admin's approval before you can view the available games.",
+                '',
                 $userData['firstname'] . ' ' . $userData['lastname'],
                 'Dashboard',
                 'dashboard',
             );
 
+            $this->emailService->notifyAdmin(
+                'Pending user.',
+                $userData['firstname'] . ' ' . $userData['lastname'] . ' has joined Ball For Life! Please accept or delete this user.',
+                '',
+                'User Master',
+                'userMaster',
+            );
             // $this->emailService->notifyAdmin();
 
-            return $this->jsonResponse(true, 'Successfully registered!', $userData);
+            return $this->jsonResponse(true, 'Successfully registered! Please sign in your account.', $userData);
         } catch (\Exception $e) {
             return $this->jsonResponse(false, 'An error occurred while processing your request from account controller.', ['error' => $e->getMessage()]);
         }
@@ -224,6 +290,12 @@ class AccountController extends BaseController
 
     private function registerGoogleUser($userData)
     {
+        // Generate password if its google sign in
+        $defaultPassword = $this->generateRandomPass();
+        $defaultPasswordHashed = password_hash($defaultPassword, PASSWORD_DEFAULT);
+
+        $userData['password'] = $defaultPasswordHashed;
+
         $registerUser = $this->users->insert($userData);
 
         if (!$registerUser) {
@@ -234,6 +306,13 @@ class AccountController extends BaseController
             $userData['email'],
             'Ball For Life Google Sign in.',
             "Thank you for joining Ball For Life! Please wait for the admin's approval before you can view the available games.",
+            '<p><i>
+                            In case <b>Google Sign-In</b> is unavailable, <b>Ball For Life</b> has provided a default password for your account. 
+                            Simply sign in with your email and the provided password. It is recommended to change your password on your profile page after signing in.
+                        </i></p>
+                        <ul>
+                            <li><b>Default password: </b>' . $defaultPassword . ' </li>
+                        </ul>',
             $userData['firstname'] . ' ' . $userData['lastname'],
             'Dashboard',
             'dashboard',
@@ -242,6 +321,7 @@ class AccountController extends BaseController
         $this->emailService->notifyAdmin(
             'Pending user.',
             $userData['firstname'] . ' ' . $userData['lastname'] . ' has joined Ball For Life! Please accept or delete this user.',
+            '',
             'User Master',
             'userMaster',
         );
@@ -377,35 +457,40 @@ class AccountController extends BaseController
     {
         return $this->tokenHelper->generateToken($userId, $userRole);
     }
-    // /**
-    //  * Handle file upload and move to public directory.
-    //  *
-    //  * @param \CodeIgniter\HTTP\Files\UploadedFile $file The file to be uploaded.
-    //  * @param string $folder The folder where the file will be stored.
-    //  * @param string $userID The user ID to create a unique file name.
-    //  * @param array $profileData The array where the image path will be added.
-    //  * @param string $key The key under which the image path will be stored in profileData.
-    //  * @return void
-    //  */
-    // private function handleFileUpload(\CodeIgniter\HTTP\Files\UploadedFile $file, $folder, $userID, &$profileData, $key)
-    // {
-    //     if ($file && $file->isValid() && !$file->hasMoved()) {
-    //         // Define a new name for the uploaded file
-    //         $newFileName = $userID . '_' . $file->getName();
-    //         $uploadPath = WRITEPATH . 'images/uploads/' . $folder . '/'; // Change this to your upload directory
 
-    //         // Move the file to the writable directory
-    //         $file->move($uploadPath, $newFileName);
-
-    //         // Move to public folder
-    //         copy($uploadPath . $newFileName, 'images/uploads/' . $folder . '/' . $newFileName);
-
-    //         // Add the image path to the profile data
-    //         $profileData[$key] = 'images/uploads/' . $folder . '/' . $newFileName; // Store the path relative to your public directory
-    //     }
-    // }
     public function unauthorized()
     {
         return view('errors/html/unauthorized');
+    }
+
+    private function generateRandomPass($length = 12)
+    {
+        // Define character pools
+        $lowercase = 'abcdefghijklmnopqrstuvwxyz';
+        $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $numbers = '0123456789';
+        $specialChars = '!@#$%^&*()-_=+[]{}<>?';
+
+        // Combine all characters
+        $allChars = $lowercase . $uppercase . $numbers . $specialChars;
+
+        // Ensure the password contains at least one of each character type
+        $password = $lowercase[random_int(0, strlen($lowercase) - 1)] .
+            $uppercase[random_int(0, strlen($uppercase) - 1)] .
+            $numbers[random_int(0, strlen($numbers) - 1)] .
+            $specialChars[random_int(0, strlen($specialChars) - 1)];
+
+        // Fill the remaining length with random characters from the entire pool
+        for ($i = strlen($password); $i < $length; $i++) {
+            $password .= $allChars[random_int(0, strlen($allChars) - 1)];
+        }
+
+        // Shuffle the password to make it random
+        return str_shuffle($password);
+    }
+
+    private function generateOTP($length = 6)
+    {
+        return random_int(100000, 999999); // Generates a 6-digit number
     }
 }

@@ -130,9 +130,10 @@ class UserMasterController extends BaseController
     }
 
     public function acceptUser($userID)
-    {
-
-        $acceptUser = $this->users->update($userID, ['status' => 'Active']);
+    {  
+        $acceptUser = $this->users->update($userID, [
+            'status' => 'Active',
+        ]);
 
         if (!$acceptUser) {
             return $this->jsonResponse(false, 'Error accepting user', $acceptUser);
@@ -144,11 +145,13 @@ class UserMasterController extends BaseController
             return $this->jsonResponse(false, 'User not found after update', null);
         }
 
+
         try {
             $this->emailService->sendEmail(
                 $user['email'],
                 'User Accepted',
                 "You are now accepted as a member of Ball For Life. Feel free to join upcoming schedules!",
+                '',
                 $user['firstname'] . ' ' . $user['lastname'],
                 'Dashboard',
                 'dashboard'
@@ -160,4 +163,6 @@ class UserMasterController extends BaseController
 
         return $this->jsonResponse(true, 'User accepted!', '');
     }
+
+    
 }

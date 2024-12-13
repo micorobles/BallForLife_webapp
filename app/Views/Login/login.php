@@ -50,7 +50,6 @@
                     <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                 </div>
                 <div id="err-password" class="errMsg mb-4">
-
                 </div>
             </div>
 

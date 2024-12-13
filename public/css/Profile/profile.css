@@ -208,6 +208,49 @@
     border: 1px solid #dee2e6;
 }
 
+/* 
+ * CHANGE PASSWORD MODAL STYLES
+ */
+
+ .input-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.input-group-text {
+    width: 100%;
+    justify-content: center;
+    /* background-color: #a39d98; */
+    /* border: #a39d98d2; */
+    /* background-color: #800000; */
+    /* border: #800000e6; */
+    /* color: white; */
+}
+/* 
+.input-group-prepend {
+    width: 5%;
+} */
+
+.input-group-addon{
+    width: 40px !important;
+    background-color: #800000;
+    border: 0;
+    border-radius: 0rem .25rem .25rem 0rem;
+}
+
+.input-group-addon a {
+    /* color: #fff; */
+    color: rgba(255, 255, 255, .7);
+}
+
+.input-group-addon a:hover {
+    color: #fff;
+}
+
+
+
+
+ 
 /* Adjust the height for mobile views <<< */
 @media (max-width: 768px) {
     .container-fluid .cover-photo {

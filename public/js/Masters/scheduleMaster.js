@@ -198,6 +198,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 showToast('error', 'Error: ', getSingleEvent.message);
             }
 
+            console.log(getSingleEvent);
+
             self.resetModal();
             self.scheduleModal.modal('show');
             $('#btnEditSchedule').show();
@@ -211,7 +213,19 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 let id = `#modal-sched${ucfirst(key)}`;
 
                 if (key === 'startDate' || key === 'endDate') {
-                    value = moment(value).format('MMMM D, YYYY - h:mm A');
+
+                    let momentValue = moment(value);
+
+                    if (key === 'startDate') {
+                        let isStarted = momentValue.isBefore(moment(), 'minute');
+        
+                        // isStarted ? self.scheduleModal.attr('data-schedExecuted', true) : self.scheduleModal.attr('data-schedExecuted', false);
+                        isStarted ? self.scheduleModal.addClass('schedExecuted') : '';
+                        momentValue.isBefore(moment(), 'minute') ? console.log('true') : console.log('false');
+                    }
+                        
+
+                    value = momentValue.format('MMMM D, YYYY - h:mm A');
                     self.renderDateTimePicker(value, id);
                 }
 
@@ -686,6 +700,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             $('#scheduleModalLabel').text('');
             $('#btnSaveSchedule').attr('data-id');
             $('#scheduleModal .modal-body .appointments-container').empty();
+            $('#scheduleModal').removeClass('schedExecuted');
 
             return this;
         }

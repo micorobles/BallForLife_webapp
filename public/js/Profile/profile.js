@@ -1,9 +1,7 @@
 import {
     ajaxRequest, showToast, ucfirst, setTextIfExists, setValueIfExists, setSrcIfExists,
-    clearSelectIfExists, addOptionsIfExists
+    clearSelectIfExists, addOptionsIfExists, togglePassword
 } from "../global/global-functions.js";
-
-
 
 const currentURL = window.location.pathname;
 const userID = currentURL.split('/').pop();
@@ -45,13 +43,14 @@ $(function () {
                 return;
             }
 
+            // console.log(user);
             return await self.populateData(user);
         },
         populateData: function (user) {
             var self = this;
 
             // $("#loader").show();
-            console.log('USER: ', user);
+            // console.log('USER: ', user);
             // const skillsArray = JSON.parse(user.skills) ?? '';
             const skillsArray = Array.isArray(user.skills) ? user.skills : JSON.parse(user.skills || '[]');
 
@@ -234,6 +233,11 @@ $(function () {
             console.log(userID);
             _Profile.getProfileData(userID);
         }
+
+        const psrlyFrmChangePasswrd = $('#frmChangePassword').parsley();  
+
+        $('#show_hide_password a').on('click', togglePassword);
+
         _Profile.initializeSelect2();
         // initializeSelect2();
 
@@ -245,6 +249,27 @@ $(function () {
 
         _Profile.handleFilePreview('#pictureFile', '#profilePreview');
         _Profile.handleFilePreview('#coverPhotoFile', '#coverPhotoPreview');
+
+        $('#changePasswordModal').on('hidden.bs.modal', function () {
+            // Reset the form
+            $('#frmChangePassword')[0].reset();
+            $('#frmChangePassword').parsley().reset();
+        });
+
+        $('#btnFrmChangePassword').on('click', function (e) {
+            e.preventDefault();
+            psrlyFrmChangePasswrd.isValid() ? '' : psrlyFrmChangePasswrd.validate({ focus: 'first' });
+        });
+
+        window.Parsley.addValidator('confirmpassword', {
+            validateString: function (value, passwordSelector) {
+                var passwrodValue = $(passwordSelector).val();
+                return value === passwrodValue;
+            },
+            messages: {
+                en: 'Passwords do not match.'
+            }
+        });
     });
 
 });

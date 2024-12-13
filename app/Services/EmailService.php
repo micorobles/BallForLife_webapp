@@ -14,7 +14,7 @@ class EmailService
         $this->email = \Config\Services::email();
         $this->users = model(User::class);
     }
-    public function sendEmail($toEmail, $subject, $message, $userName, $redirectName, $redirectPage)
+    public function sendEmail($toEmail, $subject, $message, $htmlAddOn,  $userName, $redirectName, $redirectPage)
     {
         // $this->email = \Config\Services::email();
 
@@ -35,6 +35,7 @@ class EmailService
                                                                         <td style="font-family:sans-serif;font-size:14px;vertical-align:top" valign="top">
                                                                             <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;margin-bottom:15px">Hi ' . $userName . ',</p>
                                                                             <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;margin-bottom:15px"> </p><p> ' . $message . ' </p>
+                                                                            ' . $htmlAddOn . '
                                                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;width:100%" width="100%">
                                                                                 <tbody><tr>
                                                                                     <td align="center" style="font-family:sans-serif;font-size:14px;vertical-align:top;padding-bottom:15px" valign="top">
@@ -87,7 +88,7 @@ class EmailService
         }
     }
 
-    public function notifyAdmin($subject, $message, $redirectName, $redirectPage)
+    public function notifyAdmin($subject, $message, $htmlAddOn, $redirectName, $redirectPage)
     {
 
         $admins = $this->users->where('is_deleted', false)
@@ -115,11 +116,11 @@ class EmailService
                                                                             <td style="font-family:sans-serif;font-size:14px;vertical-align:top" valign="top">
                                                                                 <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;margin-bottom:15px">Hi ' . $admin['firstname'] . ' ' . $admin['lastname'] . ',</p>
                                                                                 <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;margin-bottom:15px"> </p><p> ' . $message . ' </p>
+                                                                                ' . $htmlAddOn . ' 
                                                                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;width:100%" width="100%">
                                                                                     <tbody><tr>
                                                                                         <td align="center" style="font-family:sans-serif;font-size:14px;vertical-align:top;padding-bottom:15px" valign="top">
                                                                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;width:auto">
-    
                                                                                                 <tbody><tr>
                                                                                                     <td style="font-family:sans-serif;vertical-align:top;padding-bottom:10px;padding-top:10px;color:#999999;font-size:12px;text-align:center" valign="top" align="center"><a href=" ' . base_url($redirectPage) . ' " style="border:solid 1px #3498db;border-radius:5px;box-sizing:border-box;display:inline-block;font-size:14px;font-weight:bold;margin:0;padding:12px 25px;text-decoration:none;text-transform:capitalize;background-color:#3498db;border-color:#3498db;color:#ffffff" target="_blank">Go to ' . $redirectName . '</a>
                                                                                                     </td>

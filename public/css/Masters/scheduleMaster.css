@@ -291,7 +291,8 @@ tr.rejected {
 tr.joined>td>button.btnAppointmentAction,
 tr.rejected>td>button.btnAppointmentAction,
 tr.joined>td.dtr-hidden>button.btnAppointmentAction,
-tr.rejected>td.dtr-hidden>button.btnAppointmentAction {
+tr.rejected>td.dtr-hidden>button.btnAppointmentAction,
+.modal.schedExecuted button.btnAppointmentAction {
     display: none;
 }
 

@@ -17,16 +17,31 @@
         <img id="coverPhoto" src="" alt="">
     </div>
 
-    <div class="profile-picture">
+    <div class="profile-picture border">
         <div class="status d-flex align-items-center">
             <span>Status: &nbsp;</span>
             <span id='txtStatus' class="status-text"><?= ucfirst(session()->get('status')) ?></span>
         </div>
         <img id='profilePic' src="" alt="">
-        <div class="profile-buttons">
-            <button class="btn btn-custom-color text-white font-sm light-text" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <div class="profile-buttons border">
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-custom-color text-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnGroupDrop1">
+                    <li><a class="dropdown-item regular-text font-sm" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-user-pen fa-1x me-2"></i>Edit Profile </a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item regular-text font-sm" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal"><i class="fa-solid fa-key fa-1x me-2"></i>Change Password </i></a></li>
+                </ul>
+            </div>
+            <!-- <button class="btn btn-custom-color text-white font-sm light-text" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Change Password <i class="fa-solid fa-key fa-1x"></i>
+            </button> -->
+            <!-- <button class="btn btn-custom-color text-white font-sm light-text" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Edit Profile <i class="fa-solid fa-user-pen fa-1x"></i>
-            </button>
+            </button> -->
         </div>
     </div>
 
@@ -177,6 +192,79 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button id='btnFrmProfile' type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title medium-text" id="changePasswordModalLabel">Change Password</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id='frmChangePassword' action="<?= base_url('changePassword') ?>">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center flex-column">
+                            <label>Current Password</label>
+                            <div id="show_hide_password" class="input-group has-validation">
+                                <!-- <div class="input-group-prepend">
+                                    <span class="input-group-text">*</span>
+                                </div> -->
+                                <input id="modal-currentPassword" name="modal-currentPassword" type="password" class="form-control"
+                                    placeholder="********" minlength="8" required data-parsley-trigger="change" data-parsley-minlength="8"
+                                    data-parsley-errors-container="#err-modal-currentPassword">
+                                <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
+                                    <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                                </div>
+                                <div id="err-modal-currentPassword" class="errMsg">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-center flex-column mt-3">
+                            <label>New Password</label>
+                            <div id="show_hide_password" class="input-group has-validation">
+                                <!-- <div class="input-group-prepend">
+                                    <span class="input-group-text">*</span>
+                                </div> -->
+                                <input id="modal-newPassword" name="modal-newPassword" type="password" class="form-control"
+                                    placeholder="********" minlength="8" required data-parsley-trigger="change" data-parsley-minlength="8"
+                                    data-parsley-errors-container="#err-modal-newPassword">
+                                <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
+                                    <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                                </div>
+                                <div id="err-modal-newPassword" class="errMsg">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center flex-column mt-3 mb-3">
+                            <label>Confirm New Password</label>
+                            <div id="show_hide_password" class="input-group has-validation">
+                                <!-- <div class="input-group-prepend">
+                                    <span class="input-group-text">*</span>
+                                </div> -->
+                                <input id="modal-confirmNewPassword" name="modal-confirmNewPassword" type="password" class="form-control"
+                                    placeholder="********" minlength="8" required data-parsley-trigger="change" data-parsley-minlength="8" data-parsley-confirmpassword="#modal-newPassword"
+                                    data-parsley-errors-container="#err-modal-confirmNewPassword">
+                                <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
+                                    <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                                </div>
+                                <div id="err-modal-confirmNewPassword" class="errMsg">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id='btnFrmChangePassword' type="submit" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
