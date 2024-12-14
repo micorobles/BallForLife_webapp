@@ -204,6 +204,33 @@ $(function () {
 
             return this;
         },
+        changePassword: async function () {
+            var self = this;
+
+            let formData = new FormData($('#frmChangePassword')[0]);
+            
+            // for (let [key, value] of formData.entries()) {
+            //     console.log(key, value);
+            // }
+
+            const changePassword = await ajaxRequest('POST', baseURL + 'changePassword', formData, {
+                contentType: false,
+                processData: false,
+            }).catch(function (error) {
+                console.error("AJAX error response:", error.responseText); // Log the response from the server
+                throw error;  // Rethrow the error after logging
+            });
+
+            if (!changePassword.success) {
+                showToast('error', 'Error: ', changePassword.message);
+                return;
+            }
+
+            $('#changePasswordModal').modal('hide');
+            showToast('success', '', changePassword.message);
+
+            return this;
+        },
         handleFilePreview: function (inputSelector, previewSelector) {
             var self = this;
 
@@ -258,7 +285,7 @@ $(function () {
 
         $('#btnFrmChangePassword').on('click', function (e) {
             e.preventDefault();
-            psrlyFrmChangePasswrd.isValid() ? '' : psrlyFrmChangePasswrd.validate({ focus: 'first' });
+            psrlyFrmChangePasswrd.isValid() ? _Profile.changePassword() : psrlyFrmChangePasswrd.validate({ focus: 'first' });
         });
 
         window.Parsley.addValidator('confirmpassword', {
@@ -268,6 +295,16 @@ $(function () {
             },
             messages: {
                 en: 'Passwords do not match.'
+            }
+        });
+
+        window.Parsley.addValidator('newpassword', {
+            validateString: function (value, passwordSelector) {
+                var passwordValue = $(passwordSelector).val();
+                return value !== passwordValue;
+            },
+            messages: {
+                en: 'New password must be unique to the current password.'
             }
         });
     });

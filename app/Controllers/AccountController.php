@@ -401,6 +401,69 @@ class AccountController extends BaseController
         }
     }
 
+    public function changePassword()
+    {
+        $userID = $this->session->get('ID');
+        // $formData = $this->request->getPost();
+        $currentPassword = $this->request->getPost('modal-currentPassword');
+        $newPassword = $this->request->getPost('modal-newPassword');
+        $confirmPassword = $this->request->getPost('modal-confirmNewPassword');
+
+        if (!$userID) {
+            return $this->jsonResponse(false, 'Server: User not logged in.');
+        }
+
+        error_log('CURRENT PASSWORD: ' . $currentPassword);
+        error_log('NEW PASSWORD: ' . $newPassword);
+        error_log('CONFIRM PASSWORD: ' . $confirmPassword);
+
+        if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+            return $this->jsonResponse(false, 'Server: All fields are required.');
+        }
+
+        if ($currentPassword === $newPassword) {
+            return $this->jsonResponse(false, 'Server: New password must be unique to the current password.');
+        }
+
+        if ($newPassword !== $confirmPassword) {
+            return $this->jsonResponse(false, 'Server: New password does not match.');
+        }
+
+        $user = $this->users->find($userID);
+
+        if (!$user) {
+            return $this->jsonResponse(false, 'Server: User not found.');
+        }
+
+        if (!password_verify($currentPassword, $user['password'])) {
+            return $this->jsonResponse(false, 'Server: Current password is incorrect.');
+        }
+
+        $hashedPassword = password_hash($confirmPassword, PASSWORD_DEFAULT);
+
+        $userChangePassword = $this->users->update($userID, [
+            'password' => $hashedPassword
+        ]);
+
+        if (!$userChangePassword) {
+            return $this->jsonResponse(false, 'Server: Error updating password.', $userChangePassword);
+        }
+
+        return $this->jsonResponse(true, 'You password has been changed successfully!', $userChangePassword);
+
+        // foreach ($formData as $key => $value) {
+
+        //     if (strpos($key, 'modal-') === 0) {
+        //         $password[str_replace('modal-', '', $key)] = $value;
+        //     } else {
+        //         $password[$key] = $value;
+        //     }
+
+        //     if ($password[$key] === 'mo')
+        // }
+
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////// COMMON FUNCTIONS ////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

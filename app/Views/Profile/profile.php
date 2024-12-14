@@ -232,7 +232,7 @@
                                     <span class="input-group-text">*</span>
                                 </div> -->
                                 <input id="modal-newPassword" name="modal-newPassword" type="password" class="form-control"
-                                    placeholder="********" minlength="8" required data-parsley-trigger="change" data-parsley-minlength="8"
+                                    placeholder="********" minlength="8" required data-parsley-trigger="change" data-parsley-minlength="8" data-parsley-newpassword="#modal-currentPassword"
                                     data-parsley-errors-container="#err-modal-newPassword">
                                 <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
                                     <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
@@ -249,7 +249,7 @@
                                 </div> -->
                                 <input id="modal-confirmNewPassword" name="modal-confirmNewPassword" type="password" class="form-control"
                                     placeholder="********" minlength="8" required data-parsley-trigger="change" data-parsley-minlength="8" data-parsley-confirmpassword="#modal-newPassword"
-                                    data-parsley-errors-container="#err-modal-confirmNewPassword">
+                                    data-parsley-newpassword="#modal-currentPassword" data-parsley-errors-container="#err-modal-confirmNewPassword">
                                 <div class="input-group-addon d-flex justify-content-center align-items-center" style="width: 30px;">
                                     <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                                 </div>

@@ -218,12 +218,12 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
                     if (key === 'startDate') {
                         let isStarted = momentValue.isBefore(moment(), 'minute');
-        
+
                         // isStarted ? self.scheduleModal.attr('data-schedExecuted', true) : self.scheduleModal.attr('data-schedExecuted', false);
                         isStarted ? self.scheduleModal.addClass('schedExecuted') : '';
                         momentValue.isBefore(moment(), 'minute') ? console.log('true') : console.log('false');
                     }
-                        
+
 
                     value = momentValue.format('MMMM D, YYYY - h:mm A');
                     self.renderDateTimePicker(value, id);
@@ -249,28 +249,40 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             if (!widgetsData.success) {
                 showToast('error', 'Error: ', widgetsData.message);
+                // console.info(widgetsData.message);
                 return;
             }
 
-            console.log(widgetsData.data);
-            const apptPending = widgetsData.data.appointmentsPending;
-            const apptJoined = widgetsData.data.appointmentsJoined;
+            // console.log(widgetsData.data);
+            const apptPending = widgetsData.data.appointmentsPending || [];
+            const apptJoined = widgetsData.data.appointmentsJoined || [];
 
             // APPOINTMENT REQUESTS WIDGET
             $('.float-widget .widget-body ul.list-group').empty();
             var appointmentHTML = '';
 
+            if (apptPending.length === 0) {
+                appointmentHTML += `
+                                    <li class="list-group-item d-flex justify-content-between" style="pointer-events: none;">
+                                        <span class="regular-text text-white font-xs" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                                            No appointments yet.
+                                            </span>
+                                    </li>
+                                    
+                                    `;
+            }
+
             $.each(apptPending, function (i, appt) {
 
                 appointmentHTML += `
-                <li id="appointmentItem" class="list-group-item d-flex justify-content-between" data-id="${appt.schedID}">
-                            <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
-                                ${appt.title}
-                                </span>
-                                <span id="appointmentCount" class="badge bg-danger">${appt.count}</span>
-                        </li>
-                        
-                        `;
+                                    <li id="appointmentItem" class="list-group-item d-flex justify-content-between" data-id="${appt.schedID}">
+                                        <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                                            ${appt.title}
+                                            </span>
+                                            <span id="appointmentCount" class="badge bg-danger">${appt.count}</span>
+                                    </li>
+                                    
+                                    `;
             });
 
             $('#appointments-widget .widget-body ul.list-group').append(appointmentHTML);
@@ -278,17 +290,28 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             // PLAYERS JOINED WIDGET
             var playersHTML = '';
 
+            if (apptJoined.length === 0) {
+                playersHTML += `
+                                    <li class="list-group-item d-flex justify-content-between" style="pointer-events: none;">
+                                        <span class="regular-text text-white font-xs" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                                            No players yet.
+                                            </span>
+                                    </li>
+                                    
+                                    `;
+            }
+
             $.each(apptJoined, function (i, appt) {
 
                 playersHTML += `
-                        <li id="playersItem" class="list-group-item d-flex justify-content-between" data-id="${appt.schedID}">
-                            <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
-                                ${appt.title}
-                            </span>
-                            <span id="playersCount" class="badge bg-secondary">${appt.count}/${appt.maxPlayer}</span>
-                        </li>
-                
-                        `;
+                                    <li id="playersItem" class="list-group-item d-flex justify-content-between" data-id="${appt.schedID}">
+                                        <span id="scheduleName" class="scheduleName text-truncate" style="flex-grow: 1; max-width: calc(100% - 30px);">
+                                            ${appt.title}
+                                        </span>
+                                        <span id="playersCount" class="badge bg-secondary">${appt.count}/${appt.maxPlayer}</span>
+                                    </li>
+                            
+                                `;
             });
 
             $('#players-widget .widget-body ul.list-group').append(playersHTML);

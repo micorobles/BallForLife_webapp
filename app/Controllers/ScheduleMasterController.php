@@ -263,11 +263,13 @@ class ScheduleMasterController extends BaseController
             ->groupBy(['schedules.ID', '`schedules-appointment`.status'])
             ->get()
             ->getResultArray(); // Use getResultArray() to fetch results
-
-
-        if (!$appointments) {
-            return $this->jsonResponse(false, 'Widgets are not available right now.');
-        }
+        
+            if (empty($appointments)) {
+                return $this->jsonResponse(true, 'No appointments yet.', [
+                    'appointmentsPending' => [],
+                    'appointmentsJoined' => []
+                ]);
+            }
 
         $appointmentPending = [];
         $appointmentJoined = [];

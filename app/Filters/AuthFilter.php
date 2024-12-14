@@ -35,7 +35,7 @@ class AuthFilter implements FilterInterface
 
             // Set flashdata for showing the message after redirect
             session()->setFlashdata('authMessage', 'Your session has expired. Please log in to continue.');
-            return redirect()->to('/');
+            return redirect()->to(base_url('/'));
         }
 
         // Validate the token
@@ -44,7 +44,7 @@ class AuthFilter implements FilterInterface
 
             // Set flashdata for showing the message after redirect
             session()->setFlashdata('authMessage', 'Your session has expired. Please log in to continue.');
-            return redirect()->to('/');
+            return redirect()->to(base_url('/'));
         }
 
         $decodedToken = $tokenHelper->decodeToken($cookieToken);
@@ -55,7 +55,7 @@ class AuthFilter implements FilterInterface
             // error_log("No userID found, redirecting to login page.");
 
             session()->setFlashdata('authMessage', 'Your session has expired. Please log in to continue.');
-            return redirect()->to('/');
+            return redirect()->to(base_url('/'));
         }
 
         if ($decodedToken['id'] !== session()->get('ID')) {
@@ -63,7 +63,7 @@ class AuthFilter implements FilterInterface
 
             // Set flashdata for showing the message after redirect
             session()->setFlashdata('authMessage', 'User ID mismatch. Please log in again');
-            return redirect()->to('/');
+            return redirect()->to(base_url('/'));
         }
 
         $userRole = $decodedToken['role'] ?? null;
