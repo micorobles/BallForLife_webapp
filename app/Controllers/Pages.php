@@ -9,7 +9,7 @@ class Pages extends BaseController
     {
         // $data['title'] = "Hello World!";
         // $data['message'] = "HI!";
-        return view('test');
+        return view('login');
     }
     public function view(string $page = 'home') 
     {
@@ -18,10 +18,10 @@ class Pages extends BaseController
             throw new PageNotFoundException($page);
         }
 
-        $data['title'] = ucfirst($page); // Capitalize the first letter
+        // $data['title'] = ucfirst($page); // Capitalize the first letter
 
-        return view ('templates/header', $data)
-         . view('pages/' . $page)
-         . view('templates/footer');
+        // return view ('templates/header', $data)
+        //  . view('pages/' . $page)
+        //  . view('templates/footer');
     }
 }

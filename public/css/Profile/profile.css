@@ -1,0 +1,303 @@
+.container {
+    background-color: #ededed5b;
+    /* border: 1px solid black; */
+    border-radius: 5px;
+    padding: 0;
+    padding-bottom: 20px;
+}
+
+.container .cover-photo {
+    /* height: 200px; */
+    height: 200px;
+    padding: 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cover-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 5px;
+    /* border: 1px solid #000; */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+}
+
+.profile-picture {
+    height: 80px;
+    position: relative;
+    padding: 20px 20px;
+}
+
+.profile-picture .status {
+    float: left;
+    /* padding: 4px 0px; */
+    font-size: 16px;
+}
+
+.profile-picture .status .status-text{
+    padding: 10px 12px;
+    border-radius: .25rem;
+    background-color: rgb(0, 128, 0);
+    border: 1px solid #dee2e6;
+    color: #fff;    
+    font-size: 14px;
+    font-weight: 400;
+}
+
+
+.profile-picture img {
+    border: 1px solid #000;
+    border-radius: 50%;
+    /* width: 150px;
+    height: 150px; */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.profile-picture .profile-buttons {
+    float: right;
+}
+
+.profile-picture .profile-buttons>button {
+    padding: 10px 12px;
+}
+
+.profile-picture .profile-buttons>button>i {
+    margin-left: 6px;
+}
+
+.general-information,
+.technical-information {
+    border: 2px solid #dee2e6;
+    border-radius: 5px;
+    margin: 20px 20px;
+    /* height: 100px; */
+    padding: 20px 20px;
+}
+
+.general-information>.information-header,
+.technical-information>.information-header {
+    font-size: 18px;
+    /* margin-bottom: 30px; */
+    padding-bottom: 10px;
+    border-bottom: 2px solid #800000;
+}
+
+.general-information>.information-body,
+.technical-information>.information-body {
+    margin-top: 20px;
+}
+
+.information-body label {
+    font-size: 16px;
+    color: #00000062;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.information-body span {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.general-information .information-body .row div:nth-last-child(-n+2) {
+    margin-top: 1.5rem;
+}
+
+.information-body .skills-select option {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+    height: 20px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.select2-results__option {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* Container tag */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    border: none;
+    padding: 0;
+    background-color: #800000;
+    color: white;
+}
+
+/* Name of tag */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    cursor: default;
+    padding-left: 10px;
+    padding-right: 20px;
+    font-size: 14px;
+}
+
+/* Remove button of tag */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    background-color: transparent;
+    border: none;
+    color: #ffffff81;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0px 6px;
+    position: absolute;
+    left: auto !important;
+    right: 0;
+    top: 0;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+    background-color: transparent;
+    color: #fff;
+    outline: none;
+}
+
+#select2-modal-skills-select-results {
+    z-index: 9999 !important;
+}
+
+#frmProfile #coverPhotoPreview {
+    width: 100%; 
+    height: 150px; 
+    border-radius: 3px;
+    border: 1px solid #000;
+    object-fit: cover;
+}
+
+#frmProfile #profilePreview {
+    width: 150px; 
+    height: 150px; 
+    border-radius: 50%;
+    border: 1px solid #000;
+    object-fit: cover;
+}
+
+#frmProfile .form-header {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+#frmProfile label {
+    margin-bottom: 10px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #717171bd;
+}
+
+#frmProfile .select2-container {
+    z-index: 1060 !important; /* Set a z-index higher than the modal */
+}
+
+#frmProfile .select2-dropdown {
+    z-index: 1060 !important; /* Ensures dropdown appears above the modal */
+}
+
+#frmProfile input {
+    font-size: 14px;
+    font-weight: 400;
+    /* color: #717171; */
+    padding: 6px;
+    border: 1px solid #dee2e6;
+}
+
+/* 
+ * CHANGE PASSWORD MODAL STYLES
+ */
+
+ .input-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.input-group-text {
+    width: 100%;
+    justify-content: center;
+    /* background-color: #a39d98; */
+    /* border: #a39d98d2; */
+    /* background-color: #800000; */
+    /* border: #800000e6; */
+    /* color: white; */
+}
+/* 
+.input-group-prepend {
+    width: 5%;
+} */
+
+.input-group-addon{
+    width: 40px !important;
+    background-color: #800000;
+    border: 0;
+    border-radius: 0rem .25rem .25rem 0rem;
+}
+
+.input-group-addon a {
+    /* color: #fff; */
+    color: rgba(255, 255, 255, .7);
+}
+
+.input-group-addon a:hover {
+    color: #fff;
+}
+
+
+
+
+ 
+/* Adjust the height for mobile views <<< */
+@media (max-width: 768px) {
+    .container-fluid .cover-photo {
+        height: 120px;
+        /* Smaller height for mobile screens */
+    }
+
+    .profile-picture img {
+        width: 100px;
+        height: 100px;
+        top: -60px;
+    }
+
+    .profile-buttons, .status {
+        margin-top: 30px;
+    }
+
+    .general-information {
+        margin-top: 30px;
+    }
+    /* .general-information .information-body .row div:nth-last-child(2) {
+        margin-top: 0;
+    } */
+}
+
+/* Adjust the height for larger desktop screens >>> */
+@media (min-width: 769px) {
+    .container-fluid .cover-photo {
+        height: 200px;
+        /* Default desktop view */
+    }
+
+    .profile-picture img {
+        width: 130px;
+        height: 130px;
+        top: -60px;
+    }
+    
+    .general-information .information-body .row div:nth-last-child(2) {
+        margin-top: 0;
+    }
+
+    
+}
+
+@media (min-width: 992px) {
+    .general-information .information-body .row div:nth-last-child(1) {
+        margin-top: 0;
+    }
+}

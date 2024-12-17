@@ -1,0 +1,165 @@
+.crud-buttons {   
+    width: 100%;
+}
+
+.status-container {
+    text-align: center;
+    padding: 4px;
+    border-radius: 3px;
+    border-color: transparent;
+}
+
+.status-container span {
+    font-weight: 400;
+}
+
+table {
+    width: 100%;
+    /* border: 1px solid #800000; */
+}
+
+th,
+td {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+th {
+    background-color: #800000;
+    border: 1px solid #800000;
+    color: white;
+}
+
+tr {
+    border-left: 1px solid #800000 !important;
+    border-right: 1px;
+    border-style: solid;
+    border-color: #800000 !important;
+}
+
+tr:nth-child(odd) {
+    background-color: rgba(188, 186, 186, 0.4) !important;
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.023);
+    /* box-shadow: inset 0 0 0 9999px rgba(var(--dt-row-stripe), 0.023); */
+}
+
+div.dt-container.dt-empty-footer tbody>tr:last-child>* {
+    border-bottom: 1px solid #800000;
+}
+
+table thead tr:nth-child(2)>th {
+    background-color: white;
+    padding: 0 !important;
+    border: 1px solid #800000;
+    /* pointer-events: none; */
+    /* padding-right: 0 !important; */
+}
+
+td {
+    border: none;
+    border-right: 1px solid #4f54583c;
+    /* border-bottom: 1px solid #4f54583c; */
+    /* border-right: 1px;
+    border-bottom: 1px;
+    border-style: solid;
+    border-color: #4f54583c; */
+}
+
+td:last-child {
+    border-right: none;
+}
+
+table thead tr:nth-child(2)>th>span>input {
+    /* width: 100%; */
+    /* pointer-events: auto; */
+    border: none;
+    /* border-color: 1px solid gray; */
+}
+
+table thead tr:nth-child(2)>th>span>.form-control:focus {
+    /* color: #212529;
+    background-color: #fff; */
+    border-color: none !important;
+    /* outline: 0; */
+    box-shadow: none !important;
+}
+
+table thead tr:nth-child(2)>th>.dt-column-order {
+    display: none;
+}
+
+#tblUser_wrapper #dt-length-0,
+#tblUser_wrapper .dt-search label {
+    margin-right: 8px;
+}
+
+div.dt-container .dt-input,
+div.dt-container .dt-search input  {
+    border: 1px solid #800000;
+}
+
+div.dt-container .dt-search input:focus-visible {
+    outline: 2px solid #800000;  /* Add a green outline when focused */
+    border: 1px solid #800000;   /* Change border color on focus */
+    background-color: #f0f0f0;   /* Light gray background on focus */
+    color: #333;                 /* Change text color */
+    box-shadow: 0 0 5px rgba(128, 0, 0, 0.5); /* Add subtle box shadow */
+    transition: all 0.2s ease;   /* Smooth transition */
+}
+
+#frmUserProfile .form-check-input {
+    margin-top: .3rem;
+}
+
+#frmUserProfile .form-check-label {
+    font-weight: 400;
+    font-size: 15px;
+    color: black;
+}
+
+#frmUserProfile .password-input-group {
+    position: relative;
+}
+
+#frmUserProfile #pwCopy {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    cursor: pointer;
+}
+
+#frmUserProfile #shuffle-icon {
+    cursor: pointer;
+    border-radius: 0rem .25rem .25rem 0rem;
+    background-color: #800000;
+    border: 1px solid #800000bf;
+    color: white;
+    font-weight: 400;
+}
+
+#frmUserProfile #modal-role{
+    font-size: 15px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+    div.dt-container div.dt-layout-row:not(.dt-layout-table) {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 576px) {
+
+    /* Data table entries and search container */
+    #tblUser_wrapper > div:nth-child(1) {
+        display: flex;
+    }
+
+    /* Data table pagination container */
+    #tblUser_wrapper > div:nth-child(3) {
+        margin-top: 10px;
+        display: block;
+    }
+
+}

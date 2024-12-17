@@ -27,6 +27,7 @@ abstract class BaseController extends Controller
      * @var CLIRequest|IncomingRequest
      */
     protected $request;
+    protected $session;
 
     /**
      * An array of helpers to be loaded automatically upon
@@ -35,7 +36,10 @@ abstract class BaseController extends Controller
      *
      * @var list<string>
      */
-    protected $helpers = [];
+    protected $helpers = [
+        'cookie',
+        'breadcrumbs'
+    ];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -52,7 +56,17 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         // Preload any models, libraries, etc, here.
+        $this->session = \Config\Services::session();
 
         // E.g.: $this->session = \Config\Services::session();
+    }
+
+    protected function jsonResponse($success, $message, $data = [])
+    {
+        return $this->response->setJSON(compact(
+            'success',
+            'message',
+            'data',
+        ));
     }
 }

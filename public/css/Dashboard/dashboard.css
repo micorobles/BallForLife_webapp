@@ -1,0 +1,46 @@
+.stats-card {
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.stats-info {
+    color: white;
+    position: relative;
+}
+
+.stats-icon {
+    color: rgba(0, 0, 0, .15);
+    position: absolute;
+    right: 8px;
+    top: 10px;
+    bottom: 0;
+}
+
+.stats-info span {
+    color: rgba(255, 255, 255, .7);
+}
+
+.stats-info h2 {
+    margin-top: 8px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
+}
+
+.stats-link a {
+    display: block;
+    padding: 7px 15px;
+    margin: 15px -15px -15px;
+    background: rgba(0, 0, 0, .4);
+    text-align: right;
+    text-decoration: none;
+    color: rgba(255, 255, 255, .7);
+    font-weight: 400;
+    font-size: 12px;
+    border-radius: 0px 0px 4px 4px;
+}
+
+.stats-link a:hover {
+    background: rgba(0, 0, 0, .6);
+    color: #fff;
+   
+}
