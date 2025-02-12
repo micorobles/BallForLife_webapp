@@ -231,6 +231,7 @@ class AccountController extends BaseController
         $sendOTP = $this->sendOTP($email);
 
         $this->session->set('temp_user', [
+            'id' => $person['ID'],
             'role' => 'User',
             'profilePic' => 'images/uploads/user.png',
             'coverPhoto' => 'images/uploads/cover-photo.jpg',
@@ -302,6 +303,15 @@ class AccountController extends BaseController
             throw new \Exception('Error registering your account.');
         }
 
+        $userInsertedID = $this->users->getInsertID();
+
+        if (!$userInsertedID) {
+            throw new \Exception('Error registering your account.');
+        }
+
+        error_log('Inserted ID: ' . $userInsertedID);
+        // error_log('TEMP USER: ' . print_r($userData, true));
+
         $this->emailService->sendEmail(
             $userData['email'],
             'Ball For Life Google Sign in.',
@@ -314,8 +324,8 @@ class AccountController extends BaseController
                             <li><b>Default password: </b>' . $defaultPassword . ' </li>
                         </ul>',
             $userData['firstname'] . ' ' . $userData['lastname'],
-            'Dashboard',
-            'dashboard',
+            'Change Password',
+            'profile/' . $userInsertedID . '?changePassword=true&focus=changePasswordModal-content',
         );
 
         $this->emailService->notifyAdmin(

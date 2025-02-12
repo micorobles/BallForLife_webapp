@@ -200,7 +200,7 @@
 <!-- Change Password Modal -->
 <div class="modal fade" id="changePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div id="changePasswordModal-content" class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title medium-text" id="changePasswordModalLabel">Change Password</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
