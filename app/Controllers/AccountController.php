@@ -183,7 +183,13 @@ class AccountController extends BaseController
             '#',
         );
 
-        return $insertEmailVerification;
+        if (!$insertEmailVerification) {
+            return false;
+        }
+
+        return true;
+
+        // return $insertEmailVerification;
     }
 
     public function verifyOTP()
@@ -207,10 +213,8 @@ class AccountController extends BaseController
 
     public function verifyEmail()
     {
-
         // Get user input
         $email = $this->request->getPost('email');
-
 
         $firstname = ucfirst($this->request->getPost('firstname'));
         $lastname = ucfirst($this->request->getPost('lastname'));
@@ -230,8 +234,11 @@ class AccountController extends BaseController
 
         $sendOTP = $this->sendOTP($email);
 
+        error_log('OTP: ' . $sendOTP);
+
+        error_log('PERSON: ' . print_r($person, true));
+
         $this->session->set('temp_user', [
-            'id' => $person['ID'],
             'role' => 'User',
             'profilePic' => 'images/uploads/user.png',
             'coverPhoto' => 'images/uploads/cover-photo.jpg',
