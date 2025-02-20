@@ -574,3 +574,16 @@ class AccountController extends BaseController
         return random_int(100000, 999999); // Generates a 6-digit number
     }
 }
+
+
+// email.fromEmail = "mauenice188@gmail.com"
+// email.fromName = "Ball For Life"
+// email.protocol = "smtp"
+// email.SMTPHost = "smtp.gmail.com"
+// email.SMTPUser = "mauenice188@gmail.com"
+// email.SMTPPass = "wdcv nwog rycy bszr"
+// email.SMTPPort = 587
+// email.SMTPCrypto = "tls"
+// email.mailType = "html"
+// email.charset = "utf-8"
+// email.wordWrap = true
