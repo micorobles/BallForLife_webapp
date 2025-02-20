@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2024 at 09:39 AM
+-- Generation Time: Feb 20, 2025 at 06:47 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -39,17 +39,19 @@ CREATE TABLE `email_verifications` (
 --
 
 INSERT INTO `email_verifications` (`ID`, `email`, `otp`, `created_at`) VALUES
-(1, 'micholrobles27@gmail.com', '845674', '2024-12-13 18:44:48'),
-(9, 'twixnamakulet@gmail.com', '206177', '2024-12-13 19:31:41'),
-(10, 'twixnamakulet@gmail.com', '940237', '2024-12-13 19:33:46'),
-(11, 'twixnamakulet@gmail.com', '922984', '2024-12-13 19:35:17'),
-(12, 'twixnamakulet@gmail.com', '918055', '2024-12-13 19:38:45'),
-(13, 'twixnamakulet@gmail.com', '400057', '2024-12-13 19:39:42'),
-(14, 'twixnamakulet@gmail.com', '662099', '2024-12-13 19:45:29'),
-(15, 'twixnamakulet@gmail.com', '928775', '2024-12-13 19:57:23'),
-(16, 'twixnamakulet@gmail.com', '210614', '2024-12-13 20:00:25'),
-(17, 'twixnamakulet@gmail.com', '529052', '2024-12-13 20:01:18'),
-(18, 'twixnamakulet@gmail.com', '776038', '2024-12-13 20:01:37');
+(1, 'twixnamakulet@gmail.com', '604406', '2025-02-13 15:34:51'),
+(2, 'twixnamakulet@gmail.com', '427063', '2025-02-13 15:37:24'),
+(3, 'twixnamakulet@gmail.com', '384877', '2025-02-13 15:38:42'),
+(4, 'twixnamakulet@gmail.com', '365600', '2025-02-13 15:41:33'),
+(5, 'twixnamakulet@gmail.com', '418522', '2025-02-13 15:42:08'),
+(6, 'twixnamakulet@gmail.com', '455871', '2025-02-13 15:42:57'),
+(7, 'twixnamakulet@gmail.com', '930272', '2025-02-13 15:45:38'),
+(8, 'twixnamakulet@gmail.com', '509022', '2025-02-13 15:48:18'),
+(9, 'twixnamakulet@gmail.com', '631913', '2025-02-13 15:50:54'),
+(10, 'twixnamakulet@gmail.com', '127161', '2025-02-13 15:54:46'),
+(11, 'twixnamakulet@gmail.com', '764546', '2025-02-13 15:55:24'),
+(12, 'twixnamakulet@gmail.com', '797176', '2025-02-13 15:59:16'),
+(13, 'twixnamakulet@gmail.com', '124583', '2025-02-13 16:00:40');
 
 -- --------------------------------------------------------
 
@@ -79,7 +81,7 @@ CREATE TABLE `schedules` (
 --
 
 INSERT INTO `schedules` (`ID`, `title`, `description`, `venue`, `startDate`, `endDate`, `color`, `textColor`, `maxPlayer`, `gameFee`, `notes`, `created_at`, `is_deleted`, `updated_at`) VALUES
-(43, 'First Game of the Year', 'This is a game for a cause', 'Uncle Drew Court', '2024-12-16 17:00:00', '2024-12-16 22:00:00', '#0000ff', '#ffffff', 20, '500', 'Please bring towels, bottles, and extra money.', '2024-12-14 16:26:28', 0, '2024-12-14 16:26:28');
+(1, '1st Game', 'Game for A Cause', 'Uncle Drew Court', '2025-02-14 18:00:00', '2025-02-14 21:00:00', '#ff00ff', '#ffffff', 30, '500', 'Bring money, towels, and water.', '2025-02-13 16:11:00', 0, '2025-02-13 16:11:00');
 
 -- --------------------------------------------------------
 
@@ -104,7 +106,8 @@ CREATE TABLE `schedules-appointment` (
 --
 
 INSERT INTO `schedules-appointment` (`ID`, `userID`, `schedID`, `receipt`, `status`, `remarks`, `created_at`, `is_deleted`, `updated_at`) VALUES
-(13, 76, 43, 'images/uploads/receipts/76_Drivers License.jpg', 'Joined', NULL, '2024-12-14 16:27:09', 0, '2024-12-14 16:27:36');
+(1, 85, 1, 'images/uploads/receipts/85_ROBLES, MICHOL JOHN CAYETANO 5750.jpg', 'Rejected', NULL, '2025-02-13 16:12:02', 0, '2025-02-13 16:13:55'),
+(2, 86, 1, 'images/uploads/receipts/86_WIN_20240619_18_34_43_Pro.jpg', 'Joined', NULL, '2025-02-13 16:18:10', 0, '2025-02-13 16:18:37');
 
 -- --------------------------------------------------------
 
@@ -139,8 +142,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`ID`, `role`, `coverPhoto`, `profilePic`, `firstname`, `lastname`, `contactnum`, `position`, `heightFeet`, `heightInch`, `weight`, `skills`, `email`, `password`, `status`, `created_at`, `is_deleted`, `updated_at`) VALUES
 (62, 'Admin', 'images/uploads/cover-photos/62_cover_photo.jpg', 'images/uploads/user.png', 'Michol John', 'Robles', '', 'Member', 0, 0, 0, 'null', 'micholrobles27@gmail.com', '', 'Active', '2024-11-18 12:55:26', 0, '2024-12-13 17:37:23'),
-(75, 'User', 'images/uploads/cover-photo.jpg', 'images/uploads/user.png', 'Mauenice', '', '', 'Member', NULL, NULL, NULL, NULL, 'mauenice188@gmail.com', '$2y$10$4GYlGZR3rC0pdjcSlvi0AeuoD6FhoFY8kUpmlzQhVeCLGcs8ZGnaW', 'Active', '2024-12-13 19:51:37', 0, '2024-12-14 16:04:37'),
-(76, 'User', 'images/uploads/cover-photo.jpg', 'images/uploads/user.png', 'Twix', 'Jiao', '09283716232', 'Member', 0, 0, 0, 'null', 'twixnamakulet@gmail.com', '$2y$10$XhKanauNq5QutOrv88lXAe0X5D0RMHHDY04/1n5VlB0P17lfK8TQu', 'Active', '2024-12-13 20:02:13', 0, '2024-12-14 16:04:41');
+(85, 'User', 'images/uploads/cover-photo.jpg', 'images/uploads/user.png', 'Twix', 'Kulet', '09230853052', 'Member', NULL, NULL, NULL, NULL, 'twixnamakulet@gmail.com', '$2y$10$bnF9BILuHa5xm3VFbcsAJuSuTSUnFPeEigqS2a1/pa3PlD0b.SnLW', 'Active', '2025-02-13 16:00:58', 0, '2025-02-13 16:09:02'),
+(86, 'User', 'images/uploads/cover-photo.jpg', 'images/uploads/user.png', 'Mauenice', '', '', 'Member', NULL, NULL, NULL, NULL, 'mauenice188@gmail.com', '$2y$10$GPbTDrrQAbs4Ns6wAca4i.wjZ4KQLZxEJX5q02PTuh8MAUS8XHzb6', 'Active', '2025-02-13 16:15:11', 0, '2025-02-13 16:17:10');
 
 --
 -- Indexes for dumped tables
@@ -180,25 +183,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `email_verifications`
 --
 ALTER TABLE `email_verifications`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `schedules-appointment`
 --
 ALTER TABLE `schedules-appointment`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- Constraints for dumped tables

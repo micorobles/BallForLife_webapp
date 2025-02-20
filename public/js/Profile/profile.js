@@ -261,6 +261,28 @@ $(function () {
             _Profile.getProfileData(userID);
         }
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const focusEl = urlParams.get('focus') ?? '';
+
+        console.log(focusEl);
+        if (urlParams.has('changePassword')) {
+            $('#changePasswordModal').modal('show');
+
+            if (focusEl !== '') {
+                const $element = $('#' + focusEl);
+    
+                $element.addClass('focus-highlight');
+    
+                setTimeout(function () {
+                    $element.removeClass('focus-highlight');
+                }, 2000);
+            }
+
+        }
+        
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+
         const psrlyFrmChangePasswrd = $('#frmChangePassword').parsley();  
 
         $('#show_hide_password a').on('click', togglePassword);

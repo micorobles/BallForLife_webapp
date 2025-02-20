@@ -28,8 +28,14 @@ $(function () {
                 password: password,
             };
 
+            console.log('REGISTRATION DATA: ', registrationData);
+
             const url = $(self.frmID).attr('action');
+
+            console.log('URL: ', url);
+            
             const verifyEmail = await ajaxRequest('POST', url, registrationData);
+
 
             try {
 
