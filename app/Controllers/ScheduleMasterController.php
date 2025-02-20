@@ -259,7 +259,7 @@ class ScheduleMasterController extends BaseController
             ->select('schedules.ID as schedID, schedules.title, schedules.maxPlayer, `schedules-appointment`.status, COUNT(`schedules-appointment`.ID) as appointmentCount')
             ->join('`schedules-appointment`', 'schedules.ID = `schedules-appointment`.schedID', 'left')
             ->where('`schedules-appointment`.is_deleted', false)
-            ->where('schedules.startDate >', date('Y-m-d'))
+            ->where('schedules.startDate >', date('Y-m-d H:i:s'))
             ->groupBy(['schedules.ID', '`schedules-appointment`.status'])
             ->get()
             ->getResultArray(); // Use getResultArray() to fetch results

@@ -211,6 +211,10 @@
                                     <span class="input-group-text" id="shuffle-icon"><i class="fa-solid fa-shuffle fa-1x"></i></span>
                                     <i id="pwCopy" class="fa-solid fa-copy fa-1x"></i>
                                 </div>
+                                <!-- <div class="input-group">
+                                    <input type="text" id="modal-schedEndDate" class="form-control datetimepicker" name="modal-schedEndDate" required="" disabled="">
+                                    <span class="input-group-text" id="calendar-icon"><i class="fa-solid fa-calendar fa-1x" aria-hidden="true"></i></span>
+                                </div> -->
                             </div>
                         </div>
                     </div>

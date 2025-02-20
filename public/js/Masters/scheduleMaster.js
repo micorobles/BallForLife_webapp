@@ -123,30 +123,32 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                     showToast('success', '', 'Schedule moved!');
                 },
                 eventDidMount: function (info) {
-                    // console.log('INFO: ', info);
+                    console.log('INFO: ', info);
 
-                    let hasAppointment = info.event.extendedProps.appointmentCount > 0 ? true : false;
-                    // console.log(hasAppointment);
-                    // var appointments = {};
+                    // let hasAppointment = info.event.extendedProps.appointmentCount > 0 ? true : false;
+                    // hasAppointment ? info.event.setProp('editable', false) : '';
 
-                    hasAppointment ? info.event.setProp('editable', false) : '';
+                    // info.isEnd ? info.el.classList.add('event-ended') : '';
+                    // info.isPast ? info.el.classList.add('event-past') : '';
 
-                    // if (hasAppointment && !info.isPast) {
-                    //     info.event.setProp('editable', false);
 
-                    //     self.appointments.push({
-                    //         title: info.event.title,
-                    //         count: info.event.extendedProps.appointmentCount
-                    //     });
+                    setTimeout(() => {
+                        let hasAppointment = info.event.extendedProps.appointmentCount > 0;
 
-                    // self.appointments['title'] = info.event.title;
-                    // self.appointments['count'] = info.event.extendedProps.appointmentCount;
-                    // self.renderAppointmentWidget(info.event.title, info.event.extendedProps.appointmentCount);
+                        hasAppointment ? info.event.setProp('editable', false) : '';
+
+                        info.isEnd ? info.el.classList.add('event-ended') : '';
+                        info.isPast ? info.el.classList.add('event-past') : '';
+                    }, 0);
+
+                    // hasAppointment ? info.el.draggable = false : '';
+                    // hasAppointment ? info.isDraggable = false : '';
+
+                    // if (hasAppointment) {
+                    //     $(info.el).off('mousedown');  // Disable dragging by removing the mouse events
+                    //     $(info.el).off('touchstart'); // Disable touch dragging
+                    //     // $(info.el).css('cursor', 'not-allowed');
                     // }
-
-                    // console.log('appointments object: ', self.appointments);
-                    info.isEnd ? info.el.classList.add('event-ended') : '';
-                    info.isPast ? info.el.classList.add('event-past') : '';
 
                 },
                 eventContent: function (arg) {
@@ -174,7 +176,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
                     var startTime = moment(arg.event.start).format('ha'); // Format the time to '2pm' format
 
-                    var eventTitle = `<span><i><strong>${startTime}</strong></i> ${arg.event.title}</span>`;
+                    var eventTitle = `<span><i><strong>${startTime}</strong></i><span class="text-truncate"> ${arg.event.title}</span></span>`;
 
                     return {
                         html: eventTitle
@@ -910,9 +912,9 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 let endDate = moment($(otherFieldSelector).val(), 'MMMM D, YYYY - h:mm A');
                 console.log(value, otherFieldSelector);
                 // console.log(startDate, endDate);
-                console.log('START DATE: ', startDate);
-                console.log('END DATE: ', endDate);
-                return startDate.isBefore(endDate);
+                // console.log('START DATE: ', startDate);
+                // console.log('END DATE: ', endDate);
+                return startDate.isBefore(endDate, 'minute');
             },
             messages: {
                 en: 'Start Date must be before End Date.'

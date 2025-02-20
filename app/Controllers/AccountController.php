@@ -183,7 +183,13 @@ class AccountController extends BaseController
             '#',
         );
 
-        return $insertEmailVerification;
+        if (!$insertEmailVerification) {
+            return false;
+        }
+
+        return true;
+
+        // return $insertEmailVerification;
     }
 
     public function verifyOTP()
@@ -207,10 +213,8 @@ class AccountController extends BaseController
 
     public function verifyEmail()
     {
-
         // Get user input
         $email = $this->request->getPost('email');
-
 
         $firstname = ucfirst($this->request->getPost('firstname'));
         $lastname = ucfirst($this->request->getPost('lastname'));
@@ -229,6 +233,10 @@ class AccountController extends BaseController
         }
 
         $sendOTP = $this->sendOTP($email);
+
+        error_log('OTP: ' . $sendOTP);
+
+        error_log('PERSON: ' . print_r($person, true));
 
         $this->session->set('temp_user', [
             'role' => 'User',
@@ -302,6 +310,15 @@ class AccountController extends BaseController
             throw new \Exception('Error registering your account.');
         }
 
+        $userInsertedID = $this->users->getInsertID();
+
+        if (!$userInsertedID) {
+            throw new \Exception('Error registering your account.');
+        }
+
+        error_log('Inserted ID: ' . $userInsertedID);
+        // error_log('TEMP USER: ' . print_r($userData, true));
+
         $this->emailService->sendEmail(
             $userData['email'],
             'Ball For Life Google Sign in.',
@@ -314,8 +331,8 @@ class AccountController extends BaseController
                             <li><b>Default password: </b>' . $defaultPassword . ' </li>
                         </ul>',
             $userData['firstname'] . ' ' . $userData['lastname'],
-            'Dashboard',
-            'dashboard',
+            'Change Password',
+            'profile/' . $userInsertedID . '?changePassword=true&focus=changePasswordModal-content',
         );
 
         $this->emailService->notifyAdmin(

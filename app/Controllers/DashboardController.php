@@ -33,6 +33,9 @@ class DashboardController extends BaseController
             'appointmentJoined' => $this->dashboard->getAppointmentJoined(),
         ];
 
+        $requests = $this->dashboard->getAppointmentRequests();
+
+        error_log('REQUESTS: ' . print_r($requests, true));
         return view('Dashboard/Dashboard', $data);
     }
 

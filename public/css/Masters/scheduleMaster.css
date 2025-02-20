@@ -98,6 +98,13 @@
     /* Make sure calendar container is positioned */
 }
 
+.fc-daygrid-event {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
 .fc-toolbar-title {
     font-weight: 500;
 }
