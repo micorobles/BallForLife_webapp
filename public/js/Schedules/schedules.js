@@ -156,6 +156,15 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 $('.schedules-body > .row').append(html);
             });
 
+            if ($('#scheduleCard').length === 0) {
+                console.log('No schedules yet');
+
+                $('.schedules-body > .row').append(`<div class="col-12 mt-4 d-flex justify-content-center">
+                                                        <span class="regular-text font-lg">No schedules yet.</span>
+                                                     </div>       
+                                                    `);
+            }
+            
             return this;
         },
         renderModal: function (scheduleID) {
