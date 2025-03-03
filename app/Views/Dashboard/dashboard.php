@@ -158,6 +158,7 @@
        
     <?php endif; ?>
 </div>
+
 <?= $this->endSection(); ?>
 
 <!-- ADDITIONAL JS -->
