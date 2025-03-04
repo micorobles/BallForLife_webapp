@@ -78,13 +78,22 @@
     aria-labelledby="previewScheduleModalLabel">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
+
+            <div class="container qrCode-container d-none">
+                <div class="imgQRCode">
+                    <img id="imgQRCode"
+                        src="<?= base_url(' images/uploads/payment-settings/gcash_qr.jpg') ?>">
+                    <span class="close">&times;</span>
+                </div>
+            </div>
+
             <div class="modal-header">
                 <h3 class="modal-title medium-text" id="previewScheduleModalLabel"></h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
-                
+
 
                 <!-- <form id='frmSchedule' action="<?= base_url('createSchedule') ?>">
                     <div class="row">

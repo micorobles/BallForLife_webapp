@@ -98,6 +98,7 @@ class AccountController extends BaseController
         // Get the ID token from the POST request
         $id_token = $this->request->getPost('id_token');
 
+        error_log("ID TOKEN: " . $id_token);
         if (!$id_token) {
             return $this->jsonResponse(false, 'ID token is required', '');
         }

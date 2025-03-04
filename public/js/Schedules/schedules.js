@@ -25,16 +25,16 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             }
 
             self.renderScheduleCard(getAllSchedule.data);
-            
+
             return this;
         },
         renderScheduleCard: function (schedules) {
             var self = this;
-            
+
             console.log(schedules);
-            
+
             self.schedule = schedules;
-            
+
             $('.schedules-body > .row').empty();
             var html = '';
 
@@ -164,7 +164,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                                                      </div>       
                                                     `);
             }
-            
+
             return this;
         },
         renderModal: function (scheduleID) {
@@ -275,13 +275,34 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
 
             html = `
                 <label class="font-md text-muted mt-3" >Payment Receipt</label>
-                <div class="container gcash-container d-flex justify-content-center align-items-center mt-2">
-                    <h3>Gcash:</h3>
-                    <div class="d-block ms-3 text-center">
-                        <span class="gcashName font-md regular-text">LY.A EU...E J.</span><br>
-                        <span class="gcashNum font-md">09230853051</span>
+                <div class="container gcash-container mt-2">
+                    <div class="text-center" style="color: #00000080;">
+                        <h4>Send Gcash payment through:</h4>
+                    </div>
+                    <div class="d-flex mt-3">
+                        <div class="gcashNumber w-50 text-center">
+                            <div style="border-bottom: 1px solid #00000080; color: #00000080;">
+                                <h4>Number</h4>
+                            </div>
+                            <div class="p-2">
+                                <span class="gcashName font-md regular-text">MI***L JO*N R.</span><br>
+                                <span class="gcashNum font-md">09230853051</span>
+                            </div>
+                        </div>
+                        <div class="gcashQr w-50 text-center">
+                            <div style="border-bottom: 1px solid #00000080; color: #00000080;">
+                                <h4>QR Code</h4>
+                            </div>
+                            <div class="p-2">
+                                <button id="btnSeeQr" class="btn btn-md btn-primary font-sm mt-2">
+                                    <i class="fa-solid fa-qrcode me-2"></i>
+                                    See QR Code
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
                 <form id='frmBookSchedule' class="mt-3 dropzone" action="<?= base_url('') ?> ">
                     <i id="uploadIcon" class="fa-solid fa-circle-plus fa-3x"></i>
                     <input type="text" id="booking-schedID" name="booking-schedID" value="${$('#schedID').text()}" hidden>
@@ -415,24 +436,37 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             _Schedules.joinSchedule();
         });
 
+        $(document).on('click', '#btnSeeQr', function (e) {
+            e.preventDefault();
+
+            $('.qrCode-container').removeClass('d-none');
+            // _Schedules.seeQrCode();
+        });
+
+        $(document).on('click', '.close', function (e) {
+            e.preventDefault();
+
+            $('.qrCode-container').addClass('d-none');
+        });
+
         $('#btnSendRequest').on('click', function (e) {
             e.preventDefault();
             _Schedules.bookSchedule();
         });
 
-       $(document).on('click', '#imgReceipt', function () {
+        $(document).on('click', '#imgReceipt', function () {
             console.log('clicked');
             $(this).css('transform', 'scale(4)');
-       });
+        });
 
-       $(document).on('click', function (e) {
-        if (
-            !$(e.target).closest('#imgReceipt').length
-           
-        ) {
-            $('#imgReceipt').css('transform', 'scale(1)');
-        }
-    });
+        $(document).on('click', function (e) {
+            if (
+                !$(e.target).closest('#imgReceipt').length
+
+            ) {
+                $('#imgReceipt').css('transform', 'scale(1)');
+            }
+        });
 
     });
 

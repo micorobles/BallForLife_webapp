@@ -102,3 +102,74 @@
     background-color: #dee2e6;
     padding: 10px 0px;
 }
+
+.gcash-container .gcashQr {
+    border-left: 1px solid #00000080;
+}
+
+.gcash-container .gcashNumber {
+    border-right: 1px solid #00000080;
+}
+
+.qrCode-container {
+    z-index: 99999;
+    /* background-color: rgba(255, 255, 255, 0.52); */
+    background-color: rgba(209, 204, 204, 0.79);
+    position: absolute;
+    padding: 2rem 2rem 2rem 2rem;
+    /* padding: 2rem; */
+    top: 0rem;
+    left: 0rem;
+    right: 0rem;
+    bottom: 0rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: all 0.3s ease;
+}
+
+.qrCode-container .imgQRCode {
+    height: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.qrCode-container .imgQRCode img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    object-position: center;
+    animation-name: zoomIn;
+    animation-duration: 0.4s
+}
+
+.qrCode-container .close {
+    position: absolute;
+    cursor: pointer;
+    top: -47px;
+    right: -18;
+    color: #000;
+    font-size: 40px;
+    font-weight: 400;
+    transition: 0.3s;
+}
+
+@-webkit-keyframes zoomIn {
+    from {
+        -webkit-transform: scale(0)
+    }
+
+    to {
+        -webkit-transform: scale(1)
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
