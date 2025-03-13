@@ -84,6 +84,7 @@ class ScheduleMasterController extends BaseController
                 'allDay' => false,
                 'display' => 'block',
                 'appointmentCount' => $schedule['appointments'],
+                // IS FULL TODO
             ];
             error_log('SCHED: ' . $schedule['title']);
             error_log('HAS APPOINTMENT: ' . $schedule['appointments']);

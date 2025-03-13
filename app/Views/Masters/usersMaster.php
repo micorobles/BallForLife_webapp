@@ -59,7 +59,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title medium-text" id="viewProfileModalLabel">View Profile</h3>
+                <h3 class="modal-title medium-text" id="viewProfileModalLabel">View User</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -150,7 +150,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title medium-text" id="modifyUserModalLabel">Edit Profile</h3>
+                <h3 class="modal-title medium-text" id="modifyUserModalLabel">Modify User</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

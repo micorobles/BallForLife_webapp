@@ -24,6 +24,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                 return console.error(getAllSchedule.message);
             }
 
+            console.log(getAllSchedule.data);
             self.renderScheduleCard(getAllSchedule.data);
 
             return this;
@@ -94,6 +95,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                         statusIconClass = 'fa-xmark-circle';
                         break;
                 }
+
                 // let displayStatus = `${schedule.bookingStatus}` 
 
                 html = `
@@ -106,7 +108,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                                                 <h3 id='schedTitle' class="card-title mb-0 text-nowrap custom-text-truncate">${schedule.title}</h3>
                                             </div>
                                             <div class="col-2 p-0 d-flex justify-content-end">
-                                                <span id='schedMaxPlayer' class="max-players font-xs text-muted regular-text me-2">${schedule.maxPlayer} <i class="fa-solid fa-people-group fa-1x text-muted"></i></span>
+                                                <span id='schedMaxPlayer' class="max-players font-xs text-muted regular-text me-2">${schedule.joinedCount}/${schedule.maxPlayer} <i class="fa-solid fa-people-group fa-1x text-muted"></i></span>
                                             </div>
                                             <div class="col-12 d-flex align-items-center mt-1">
                                                 <i class="fa-solid fa-location-dot fa-1x text-muted font-xs me-2"></i>
@@ -194,6 +196,8 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
             let bookingReceipt = schedule.bookingReceipt ?? '';
             let receiptName = bookingReceipt.substring(bookingReceipt.lastIndexOf('/') + 1);
 
+            let isScheduleFull = schedule.joinedCount === schedule.maxPlayer;
+
             html = `
                     <div class="card-heading border-bottom pb-2">
                         <div class="row">
@@ -204,7 +208,7 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                             </div>
                             <div class="col-2 p-0 d-flex justify-content-end">
                                 <span id='schedMaxPlayer'
-                                    class="max-players font-xs text-muted regular-text me-2"><span class="semi-bold-text">Max Player: </span> ${schedule.maxPlayer}
+                                    class="max-players font-xs text-muted regular-text me-2"><span class="semi-bold-text">Players: </span> ${schedule.joinedCount}/${schedule.maxPlayer}
                                     <i class="fa-solid fa-people-group fa-1x text-muted"></i></span>
                             </div>
                            
@@ -258,6 +262,19 @@ import { ajaxRequest, showToast, showQuestionToast, isIziToastActive, ucfirst } 
                             </div>
                         </div>
                         `;
+            }
+
+            if (isScheduleFull) {
+                $('#btnJoinSchedule')
+                    .html('Schedule Full! <i class="fa-solid fa-calendar-check ms-1"></i>')
+                    .css('background-color', 'green')
+                    .prop('disabled', true)
+            } else {
+                $('#btnJoinSchedule')
+                    .html('Join <i class="fa-solid fa-user-plus ms-1 fa-1x"></i>')
+                    .removeAttr('style')
+                    .prop('disabled', false)
+                    .attr('class', 'btn btn-custom-color text-white');
             }
 
             html += `

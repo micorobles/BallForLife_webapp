@@ -32,7 +32,8 @@ class ScheduleController extends BaseController
     {
         // $getAllSchedules = $this->schedules->where('is_deleted', false)->findAll();
         $getAllSchedules = $this->schedules
-                                ->select('schedules.*, sa.ID as bookingID, sa.schedID, sa.userID as userID, sa.status as bookingStatus, sa.receipt as bookingReceipt')
+                                ->select('schedules.*, sa.ID as bookingID, sa.schedID, sa.userID as userID, sa.status as bookingStatus, sa.receipt as bookingReceipt,
+                                (SELECT COUNT(*) FROM `schedules-appointment` sa2 WHERE sa2.schedID = schedules.ID AND sa2.status = "joined" AND sa2.is_deleted = false) as joinedCount')
                                 ->join('schedules-appointment sa', 'schedules.ID = sa.schedID AND sa.userID = ' . $this->session->get('ID') . ' ', 'left')
                                 // ->where('sa.is_deleted', false)
                                 ->where('schedules.is_deleted', false)

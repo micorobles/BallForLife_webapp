@@ -88,7 +88,7 @@
         <div class="col-12 mt-4 col-sm-6 col-lg-4 col-xl-3">
             <div class="stats-card border" style="background-color: #6c757d;">
                 <div class="stats-info">
-                    <span class="font-sm">APPOINTMENT REQUESTS</span>
+                    <span class="font-sm">JOIN REQUESTS</span>
                     <h2><?= $appointmentRequests; ?></h2>
                     <div class="stats-icon">
                         <i class="fa-solid fa-person-circle-question fa-3x"></i>
@@ -124,7 +124,7 @@
         <div class="col-12 mt-4 col-sm-6 mt-sm-0 col-lg-4">
             <div class="stats-card bg-warning border">
                 <div class="stats-info">
-                    <span class="font-sm">APPOINTMENT PENDING</span>
+                    <span class="font-sm">SCHEDULE PENDING</span>
                     <h2><?= $appointmentPending; ?></h2>
                     <div class="stats-icon">
                         <i class="fa-regular fa-calendar-minus fa-3x"></i>
@@ -141,7 +141,7 @@
         <div class="col-12 mt-4 col-sm-6 col-lg-4 mt-lg-0">
             <div class="stats-card bg-success border">
                 <div class="stats-info">
-                    <span class="font-sm">APPOINTMENT JOINED</span>
+                    <span class="font-sm">SCHEDULE JOINED</span>
                     <h2><?= $appointmentJoined; ?></h2>
                     <div class="stats-icon">
                         <i class="fa-regular fa-calendar-check fa-3x"></i>

@@ -91,7 +91,7 @@
         <div class="overlay"></div>
         <!-- Footer start -->
         <footer class="bg-light text-center text-muted p-2">
-            <span>&copy; 2024 Your Company</span>
+            <span>&copy; 2024 Mico Robles. All rights reserved.</span>
         </footer>
         <!-- Footer end -->
 
